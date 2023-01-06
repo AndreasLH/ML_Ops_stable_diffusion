@@ -27,12 +27,16 @@ requirements: test_environment
 
 ## Make Dataset
 data: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
+	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/processed
 
 ## Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
+
+## Make evaluate
+evaluate:
+	$(PYTHON_INTERPRETER) src/models/predict_model.py hydra.job.chdir=True
 
 ## Lint using flake8
 lint:
