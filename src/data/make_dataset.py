@@ -54,8 +54,7 @@ def main(output_filepath):
     train_ = [dataset[i]['images'] for i in range(len(dataset))]
     train = torch.stack(train_)
 
-
-    print(os.getcwd())
+    # print(os.getcwd())
     torch.save(train, os.path.join(output_filepath, 'train.pt'))
 
 if __name__ == '__main__':
