@@ -34,6 +34,10 @@ clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 
+## Make evaluate
+evaluate:
+	$(PYTHON_INTERPRETER) src/models/predict_model.py hydra.job.chdir=True
+
 ## Lint using flake8
 lint:
 	flake8 src
