@@ -22,8 +22,8 @@ This notebook leverages the [🤗 Datasets](https://huggingface.co/docs/datasets
 
 """As google colab has disabled external widgtes, we need to enable it explicitly. Run the following cell to be able to use `notebook_login` and `tqdm`:"""
 
-from google.colab import output
-output.enable_custom_widget_manager()
+# from google.colab import output
+# output.enable_custom_widget_manager()
 
 
 
@@ -34,9 +34,9 @@ To be able to share your model with the community, there are a few more steps to
 First you have to store your authentication token from the Hugging Face website (sign up [here](https://huggingface.co/join) if you haven't already!) then execute the following cell and input your **write** token:
 """
 
-from huggingface_hub import notebook_login
+# from huggingface_hub import notebook_login
 
-notebook_login()
+# notebook_login()
 
 """
 Then you need to install Git-LFS to upload your model checkpoints:"""
@@ -56,8 +56,8 @@ from dataclasses import dataclass
 
 @dataclass
 class TrainingConfig:
-    image_size = 128  # the generated image resolution
-    train_batch_size = 16
+    image_size = 64  # the generated image resolution
+    train_batch_size = 8
     eval_batch_size = 16  # how many images to sample during evaluation
     num_epochs = 5
     gradient_accumulation_steps = 1
@@ -65,10 +65,10 @@ class TrainingConfig:
     lr_warmup_steps = 500
     save_image_epochs = 10
     save_model_epochs = 30
-    mixed_precision = 'fp16'  # `no` for float32, `fp16` for automatic mixed precision
+    mixed_precision = 'no'  # `no` for float32, `fp16` for automatic mixed precision
     output_dir = 'ddpm-butterflies-128'  # the model namy locally and on the HF Hub
 
-    push_to_hub = True  # whether to upload the saved model to the HF Hub
+    push_to_hub = False  # whether to upload the saved model to the HF Hub
     hub_private_repo = False  
     overwrite_output_dir = True  # overwrite the old model when re-running the notebook
     seed = 0

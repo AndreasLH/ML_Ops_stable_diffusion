@@ -1,9 +1,33 @@
-ML_Ops stable diffusion
+ML_Ops stable diffusion Butterfly Image generation
 ==============================
 
 A project for the DTU course Machine Learning Operations. The primary focus is on MLOps and not the models specifically
 
-# Project description
+# Project description: Butterfly Image generation
+by:
+Andreas H: s194235
+Andreas H: s194238
+Yucheng F: s194241
+Christian A: s194255
+Malthe A: s194257
+
+## Overall goal of the project
+The goal of the project is to train a stable diffusion image generator to generate photorealistic images of butterflies.
+## What framework are you going to use (PyTorch Image Models, Transformer, Pytorch-Geometrics)
+
+|Data specific framework| Training framework |Utility framework|
+|:----:|:----:|:----:|
+|Huggingface Diffusers|Pytorch lightning|Hydra|
+
+We are using [Huggingface Diffusers](https://github.com/huggingface/diffusers) as our main framework. To code the model and make it simple we will use Pytorch lightning. We are going to use Hydra to configure the models. Furthermore, we will use W&B to log relevant information pertaining to the training of models.
+## How to you intend to include the framework into your project
+The Huggingface framework provides some convenience functions to load the data that we are going to use.
+Pytorch lightning has some tools to evaluate the quality of the reconstructed images ([Inception score](https://torchmetrics.readthedocs.io/en/stable/image/inception_score.html)), which we are going to use. 
+## What data are you going to run on (initially, may change)
+We are using a dataset called “[Smithsonian butterflies subset](https://huggingface.co/datasets/huggan/smithsonian_butterflies_subset)”. The dataset is a subset of 1000 images of butterflies. Additionally, we might also use a similar dataset with flowers.
+## What deep learning models do you expect to use
+The deep learning model is an unconditional stable diffusion model, developed by Google. The stable diffusion model generates images by learning to remove noise. It is unconditional because it can generate images directly from noise, without an additional input, such as a text prompt.
+
 
 # Original source
 https://huggingface.co/google/ddpm-cifar10-32
