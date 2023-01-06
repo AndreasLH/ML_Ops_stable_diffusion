@@ -13,4 +13,6 @@ hparams:
   push_to_hub: True  # whether to upload the saved model to the HF Hub
   hub_private_repo: False  
   overwrite_output_dir: True  # overwrite the old model when re-running the notebook
-  seed: 0
+  seed: 123
+  workers: 0 #Workers for training with pytorch lightning
+  log_frequency: 2

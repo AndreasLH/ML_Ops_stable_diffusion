@@ -5,17 +5,26 @@ from src.data.dataloader import ButterflyDataloader
 
 import torch
 
-class Dummy(Dataset):
-    def __init__(self):
-        self.data = torch.randn((10, 3, 128, 128))
-    def __getitem__(self, idx):
-        return {'images': self.data[idx]}
-    def __len__(self):
-        return self.data.shape[0]
+@hydra.main(config_path="conf", config_name="config.yaml")
+def main(cfg):
+    hpms = cfg.experiment['hyperparameters']
+    seed = hpms.seed
+    epochs = hpms.num_epochs
+    log_frequency = hpms.log_frequency
+    learning_rate = hpms.learning_rate
+    sample_size = hpms.sample_size
+    batch_size = hpms.train_batch_size
+    workers = hpms.workers
 
-path = "C:/Users/elleh/OneDrive/MachineLearningOperation/project/ML_Ops_stable_diffusion/data/processed/train.pt"
+    torch.manual_seed(seed) #Set seed
 
-model = UNet2DModelPL()
-trainer = pl.Trainer(max_epochs=3, log_every_n_steps=2)
-dataloaders = {'train': DataLoader(dataset=ButterflyDataloader(path=path), batch_size=1, num_workers=0)}
-trainer.fit(model, dataloaders['train'])
+
+    path = "C:/Users/elleh/OneDrive/MachineLearningOperation/project/ML_Ops_stable_diffusion/data/processed/train.pt"
+
+    model = UNet2DModelPL(sample_size,learning_rate)
+    trainer = pl.Trainer(max_epochs=epochs, log_every_n_steps=log_frequency)
+    dataloaders = {'train': DataLoader(dataset=ButterflyDataloader(path=path), batch_size=batch_size, num_workers=workers)}
+    trainer.fit(model, dataloaders['train'])
+
+if __name__=="__main__":
+    main()
