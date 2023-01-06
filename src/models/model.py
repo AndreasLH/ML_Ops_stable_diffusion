@@ -80,3 +80,4 @@ class UNet2DModelPL(pl.LightningModule):
             generator=torch.manual_seed(seed)
         ).images
         return images
+
