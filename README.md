@@ -3,6 +3,27 @@ ML_Ops stable diffusion
 
 A project for the DTU course Machine Learning Operations. The primary focus is on MLOps and not the models specifically
 
+# Project description
+
+# Original source
+https://huggingface.co/google/ddpm-cifar10-32
+
+# Data
+https://huggingface.co/datasets/huggan/smithsonian_butterflies_subset
+
+# To set up repo
+```
+git pull
+dvc pull
+pip install -r requirements.txt
+```
+or use the dockerfile
+```docker build -f env.dockerfile . -t env:latest```
+
+
+
+
+
 Project Organization
 ------------
 
