@@ -8,11 +8,11 @@ import torch.nn.functional as F
 
 class UNet2DModelPL(pl.LightningModule):
 
-    def __init__(self, config): # jeg gætter på, det er en tuple
+    def __init__(self): # jeg gætter på, det er en tuple
         super().__init__()
-        self.config = config
+        # self.config = config
         self.UNet2DModel = UNet2DModel(
-                sample_size=self.config.image_size,  # the target image resolution
+                sample_size=16,  # the target image resolution #DEBUG implementer config
                 in_channels=3,  # the number of input channels, 3 for RGB images
                 out_channels=3,  # the number of output channels
                 layers_per_block=2,  # how many ResNet layers to use per UNet block
@@ -62,15 +62,15 @@ class UNet2DModelPL(pl.LightningModule):
 
         # Add noise to the clean images according to the noise magnitude at each timestep
         # (this is the forward diffusion process)
-        noisy_images = self.noise_scheduler.add_noise(clean_images, noise, timesteps)
+        noisy_images = self.noise_scheduler.add_noise(clean_images, noise, timesteps) #DEBUG her fjernede jeg [0].
 
         # Predict the noise residual
-        noise_pred = self(noisy_images, timesteps, return_dict=False)[0]
+        noise_pred = self(noisy_images, timesteps, return_dict=False)
         loss = F.mse_loss(noise_pred, noise)
         return loss
 
     def configure_optimizers(self):
-        return torch.optim.AdamW(self.parameters(), lr=self.config.learning_rate)
+        return torch.optim.AdamW(self.parameters(), lr=10**(-3)) #DEBUG implementer config
 
 
 
