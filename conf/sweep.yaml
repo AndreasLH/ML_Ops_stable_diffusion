@@ -1,0 +1,30 @@
+program: train_model.py
+method: bayes
+metric:
+  name: e_loss
+  goal: minimize
+
+parameters:
+  dataset_path: '/data/processed/'
+  x_dim: 784
+  seed: 0
+  epochs:
+    distribution: int_uniform
+      min: 5
+      max: 20
+  lr:
+    distribution: uniform
+      min: 0.0001
+      max: 0.1
+  hidden_dim:
+    distribution: int_uniform 
+      min: 200
+      max: 800
+  hidden_dim2:
+    distribution: int_uniform
+      min: 200
+      max: 800
+  latent_dim:
+    distribution: int_uniform
+      min: 200
+      max: 800
