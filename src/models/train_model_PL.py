@@ -13,9 +13,11 @@ class Dummy(Dataset):
     def __len__(self):
         return self.data.shape[0]
 
-path = "C:/Users/elleh/OneDrive/MachineLearningOperation/project/ML_Ops_stable_diffusion/data/processed/train.pt"
+path = "data/processed/train.pt"
+
+# dataset = Dummy()
 
 model = UNet2DModelPL()
-trainer = pl.Trainer(max_epochs=3, log_every_n_steps=2)
+trainer = pl.Trainer(max_epochs=3, log_every_n_steps=2, default_root_dir="models/path/")
 dataloaders = {'train': DataLoader(dataset=ButterflyDataloader(path=path), batch_size=1, num_workers=0)}
 trainer.fit(model, dataloaders['train'])
