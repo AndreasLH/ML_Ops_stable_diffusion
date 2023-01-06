@@ -1,4 +1,4 @@
-hparams:
+hyperparameters:
   image_size: 128  # the generated image resolution
   train_batch_size: 16
   eval_batch_size: 16  # how many images to sample during evaluation
@@ -16,3 +16,4 @@ hparams:
   seed: 123
   workers: 0 #Workers for training with pytorch lightning
   log_frequency: 2
+  sample_size: 16
