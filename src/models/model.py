@@ -7,13 +7,15 @@ import os
 import torch.nn.functional as F
 from diffusers import DDPMPipeline
 
+
 class UNet2DModelPL(pl.LightningModule):
 
-    def __init__(self): # jeg gætter på, det er en tuple
+    def __init__(self, sample_size: int, learning_rate = 1e-3): # jeg gætter på, det er en tuple
         super().__init__()
+        self.lr = learning_rate
         # self.config = config
         self.UNet2DModel = UNet2DModel(
-                sample_size=16,  # the target image resolution #DEBUG implementer config
+                sample_size=sample_size,  # the target image resolution #DEBUG implementer config
                 in_channels=3,  # the number of input channels, 3 for RGB images
                 out_channels=3,  # the number of output channels
                 layers_per_block=2,  # how many ResNet layers to use per UNet block
@@ -74,7 +76,7 @@ class UNet2DModelPL(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        return torch.optim.AdamW(self.parameters(), lr=10**(-3)) #DEBUG implementer config
+        return torch.optim.AdamW(self.parameters(), lr=self.lr) #DEBUG implementer config
 
 
 

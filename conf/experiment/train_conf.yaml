@@ -1,4 +1,4 @@
-hparams:
+hyperparameters:
   image_size: 128  # the generated image resolution
   train_batch_size: 16
   eval_batch_size: 16  # how many images to sample during evaluation
@@ -13,4 +13,7 @@ hparams:
   push_to_hub: False  # whether to upload the saved model to the HF Hub
   hub_private_repo: False  
   overwrite_output_dir: True  # overwrite the old model when re-running the notebook
-  seed: 0
+  seed: 123
+  workers: 0 #Workers for training with pytorch lightning
+  log_frequency: 2
+  sample_size: 16
