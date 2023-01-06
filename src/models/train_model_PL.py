@@ -21,6 +21,9 @@ def main(cfg):
 
     torch.manual_seed(seed) #Set seed
 
+path = "data/processed/train.pt"
+
+# dataset = Dummy()
 
     path = os.path.join(os.getcwd(),"data/processed/train.pt")
 
@@ -28,6 +31,10 @@ def main(cfg):
     trainer = pl.Trainer(max_epochs=epochs, log_every_n_steps=log_frequency)
     dataloaders = {'train': DataLoader(dataset=ButterflyDataloader(path=path), batch_size=batch_size, num_workers=workers)}
     trainer.fit(model, dataloaders['train'])
+model = UNet2DModelPL()
+trainer = pl.Trainer(max_epochs=3, log_every_n_steps=2, default_root_dir="models/path/")
+dataloaders = {'train': DataLoader(dataset=ButterflyDataloader(path=path), batch_size=1, num_workers=0)}
+trainer.fit(model, dataloaders['train'])
 
 if __name__=="__main__":
     main()

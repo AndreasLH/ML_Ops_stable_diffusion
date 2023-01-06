@@ -17,7 +17,7 @@ from diffusers import DDPMScheduler
 noise_scheduler = DDPMScheduler(num_train_timesteps=1000)
 
 log = logging.getLogger(__name__)
-wandb.init(project='MNIST_Cookie_test')
+# wandb.init(project='Butterflies')
 
 # python src/models/predict_model.py hydra.job.chdir=True
 
@@ -26,25 +26,24 @@ def evaluate(config):
     # Sample some images from random noise (this is the backward diffusion process).
     # The default pipeline output type is `List[PIL.Image]`
     log.info(f"configuration: \n{OmegaConf.to_yaml(config)}")
-    model_checkpoint =  get_original_cwd()+"/models/checkpoint.pth"
+    config = config.experiment
+    model_checkpoint =  get_original_cwd()+"/models/model.ckpt"
     model = UNet2DModelPL()
-    state_dict = torch.load(model_checkpoint, map_location=torch.device('cpu'))
-    model.load_state_dict(state_dict)
+    # state_dict = torch.load(model_checkpoint, map_location=torch.device('cpu'))
+    # model.load_state_dict(state_dict)
+# C:\Users\andre\OneDriveDTU\MLops 02476\ML_Ops_stable_diffusion\models\lightning_logs\version_0\checkpoints\epoch=2-step=30.ckpt
+    model = UNet2DModelPL.load_from_checkpoint(model_checkpoint)
+    model.eval()
 
-    pipeline = DDPMPipeline(unet=model, scheduler=noise_scheduler)
-    epoch = 0
-    images = pipeline(
-        batch_size = config.eval_batch_size, 
-        generator=torch.manual_seed(config.seed),
-    ).images
+    images = model.sample(config.hparams.eval_batch_size, config.hparams.seed)
 
     # Make a grid out of the images
     image_grid = make_grid(images, rows=4, cols=4)
 
     # Save the images
-    test_dir = os.path.join(config.output_dir, "samples")
+    test_dir = os.path.join(config.hparams.output_dir, "samples")
     os.makedirs(test_dir, exist_ok=True)
-    image_grid.save(f"{test_dir}/{epoch:04d}.png")
+    image_grid.save(f"{test_dir}/hej.png")
 
 
 def make_grid(images, rows, cols):

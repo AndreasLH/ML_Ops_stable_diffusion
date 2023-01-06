@@ -5,6 +5,7 @@ from typing import Optional, Tuple, Union
 from accelerate import Accelerator
 import os
 import torch.nn.functional as F
+from diffusers import DDPMPipeline
 
 
 class UNet2DModelPL(pl.LightningModule):
@@ -74,9 +75,11 @@ class UNet2DModelPL(pl.LightningModule):
     def configure_optimizers(self):
         return torch.optim.AdamW(self.parameters(), lr=self.lr) #DEBUG implementer config
 
-
-
-
-
-
+    def sample(self, batch_size=4, seed=0):
+        pipeline = DDPMPipeline(unet=self.UNet2DModel, scheduler=self.noise_scheduler)
+        images = pipeline(
+            batch_size = batch_size, 
+            generator=torch.manual_seed(seed)
+        ).images
+        return images
 
