@@ -1,12 +1,14 @@
 import os
+
 import pytorch_lightning as pl
-from pytorch_lightning.loggers import WandbLogger
-from pytorch_lightning import LightningModule
-from src.models.model import UNet2DModelPL
-from torch.utils.data import Dataset, DataLoader
-from src.data.dataloader import ButterflyDataloader
-import wandb
 import torch
+from pytorch_lightning import LightningModule
+from pytorch_lightning.loggers import WandbLogger
+from torch.utils.data import DataLoader, Dataset
+
+import wandb
+from src.data.dataloader import ButterflyDataloader
+from src.models.model import UNet2DModelPL
 
 wandb_logger = WandbLogger(name="Oldehammer-Master", project="mlopsproject21")
 path = os.path.join(os.getcwd(), "data/processed/train.pt")
@@ -14,13 +16,14 @@ path = os.path.join(os.getcwd(), "data/processed/train.pt")
 model = UNet2DModelPL()
 trainer = pl.Trainer(max_epochs=2, log_every_n_steps=2, logger=wandb_logger)
 
-import pytorch_lightning as pl
-from src.models.model import UNet2DModelPL
-from torch.utils.data import Dataset, DataLoader
-from src.data.dataloader import ButterflyDataloader
 import hydra
-
+import pytorch_lightning as pl
 import torch
+from torch.utils.data import DataLoader, Dataset
+
+from src.data.dataloader import ButterflyDataloader
+from src.models.model import UNet2DModelPL
+
 
 @hydra.main(config_path="../../conf/", config_name="config.yaml")
 def main(cfg):

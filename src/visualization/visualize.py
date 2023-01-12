@@ -1,6 +1,7 @@
-from src.data.dataloader import ButterflyDataloader
-import matplotlib.pyplot as plt
 import click
+import matplotlib.pyplot as plt
+
+from src.data.dataloader import ButterflyDataloader
 
 
 @click.group()
