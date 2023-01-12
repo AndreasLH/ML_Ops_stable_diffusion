@@ -3,59 +3,46 @@ from dataclasses import dataclass
 
 import torch
 import torch.nn.functional as F
+import torch.nn as nn
 from accelerate import Accelerator, notebook_launcher
 from datasets import load_dataset
 from diffusers import DDPMPipeline, DDPMScheduler, UNet2DModel
 from diffusers.hub_utils import init_git_repo, push_to_hub
 from diffusers.optimization import get_cosine_schedule_with_warmup
 from tqdm.auto import tqdm
+from typing import Callable, Optional, Tuple, Union, List
+from torch.utils.data import DataLoader
+from PIL import Image
 import os
 import hydra
 from PIL import Image
 from torch.utils.data import DataLoader
+import wandb
 
 from torchvision import transforms
 from tqdm.auto import tqdm
 
 from src.data.dataset import ButterflyDataset
 
+wandb.init(name="Yucheng", project='mlopsproject21')
 
 # Setup config
-@hydra.main(config_path="../../conf/", config_name="config.yaml")
-def main(cfg):
+@hydra.main(config_path="../../conf/", config_name="config.yaml", version_base="1.2")
+def main(cfg : dict) -> None:
+    """
+    Runs training for the denoising diffusion probabilistic model.
+    :param cfg: config file containing the hyperparameters
+    :return: None
+    """
     config = cfg.experiment['hyperparameters']
 
 
     # load dataset
-    #config.dataset_name = "huggan/smithsonian_butterflies_subset"
-    #datapath = "../../data/processed/train.pt"
     datapath = config.datapath
     train_dataset = ButterflyDataset(datapath)
-    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=config.train_batch_size, shuffle=True)
-
-    # from datasets import load_dataset
-    #
-    # config.dataset_name = "huggan/smithsonian_butterflies_subset"
-    # dataset = load_dataset(config.dataset_name, split="train")
-    #
-    #
-    # def transform(examples):
-    #     preprocess = transforms.Compose(
-    #         [
-    #             transforms.Resize((128, 128)), # config.image_size = 128
-    #             transforms.RandomHorizontalFlip(),
-    #             transforms.ToTensor(),
-    #             transforms.Normalize([0.5], [0.5]),
-    #         ]
-    #     )
-    #
-    #     images = [preprocess(image.convert("RGB")) for image in examples["image"]]
-    #     return {"images": images}
-    #
-    # dataset.set_transform(transform)
+    train_dataloader = DataLoader(train_dataset, batch_size=config.train_batch_size, shuffle=True)
 
     # Define diffusion model
-
     model = UNet2DModel(
         sample_size=config.image_size,  # the target image resolution
         in_channels=3,  # the number of input channels, 3 for RGB images
@@ -82,8 +69,7 @@ def main(cfg):
     model = model.to('cpu')
 
     # Define denoising scheduler
-    noise_scheduler = DDPMScheduler(num_train_timesteps=500)
-
+    noise_scheduler = DDPMScheduler(num_train_timesteps=1000)
 
     ###  Training ###
 
@@ -98,15 +84,30 @@ def main(cfg):
         num_training_steps=(len(train_dataloader) * config.num_epochs),
     )
 
-    # helper functions
-    def make_grid(images, rows, cols):
+    # helper functions - import from somewhere else?
+    def make_grid(images : List, rows : int, cols : int) -> Image.Image:
+        """
+        Creates grid of images for predictions of the model.
+        :param images:
+        :param rows: Number of rows in grid
+        :param cols: Number of columns in grid
+        :return: PIL Image object
+        """
+
         w, h = images[0].size
         grid = Image.new('RGB', size=(cols*w, rows*h))
         for i, image in enumerate(images):
             grid.paste(image, box=(i%cols*w, i//cols*h))
         return grid
 
-    def evaluate(config, epoch, pipeline):
+    def evaluate(config : dict, epoch : int , pipeline : Callable) -> None:
+        """
+        Generate images from random noise
+        :param config: dict from config file containing hyperparameters
+        :param epoch: Number of epoch
+        :param pipeline: pipeline object
+        :return: None
+        """
         # Sample some images from random noise (this is the backward diffusion process).
         # The default pipeline output type is `List[PIL.Image]`
         images = pipeline(
@@ -123,7 +124,19 @@ def main(cfg):
         image_grid.save(f"{test_dir}/{epoch:04d}.png")
 
     # train loop
-    def train_loop(config, model, noise_scheduler, optimizer, train_dataloader, lr_scheduler):
+    def train_loop(config, model : nn.Module, noise_scheduler : Union[Callable, nn.Module],
+                   optimizer : Union[Callable, nn.Module], train_dataloader : DataLoader,
+                   lr_scheduler : Union[Callable, nn.Module]) -> None:
+        """
+        Main training loop
+        :param config: dict from config file containing hyperparameters
+        :param model: the nn.Module U-Net model
+        :param noise_scheduler: DDPM scheduler
+        :param optimizer: AdamW optimiser
+        :param train_dataloader: torch dataloader class
+        :param lr_scheduler: learning rate scheduler
+        :return: None
+        """
         # Initialize accelerator and tensorboard logging
         accelerator = Accelerator(
             mixed_precision=config.mixed_precision,
@@ -177,6 +190,7 @@ def main(cfg):
 
                 progress_bar.update(1)
                 logs = {"loss": loss.detach().item(), "lr": lr_scheduler.get_last_lr()[0], "step": global_step}
+                wandb.log(data={"loss": loss.detach().item(), "lr": lr_scheduler.get_last_lr()[0]}, step=global_step)
                 progress_bar.set_postfix(**logs)
                 accelerator.log(logs, step=global_step)
                 global_step += 1
