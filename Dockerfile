@@ -17,7 +17,7 @@ COPY .dvc/ .dvc/
 COPY data.dvc data.dvc
 
 WORKDIR /
-RUN dvc pull
 RUN pip install -r requirements_cuda.txt --no-cache-dir
+RUN dvc pull
 
 ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
