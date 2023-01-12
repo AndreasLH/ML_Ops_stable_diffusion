@@ -1,4 +1,4 @@
-name: code_coverage
+name: code__coverage
 
 on:
   push:
