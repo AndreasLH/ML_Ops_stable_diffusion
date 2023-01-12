@@ -11,7 +11,8 @@ from diffusers.optimization import get_cosine_schedule_with_warmup
 from tqdm.auto import tqdm
 import os
 import hydra
-
+from PIL import Image
+from torch.utils.data import DataLoader
 
 from torchvision import transforms
 from tqdm.auto import tqdm
@@ -60,7 +61,7 @@ def main(cfg):
         in_channels=3,  # the number of input channels, 3 for RGB images
         out_channels=3,  # the number of output channels
         layers_per_block=2,  # how many ResNet layers to use per UNet block
-        block_out_channels=(128, 128, 256, 256, 512, 512),  # the number of output channels for each UNet block
+        block_out_channels=(128, 128, 256, 256, 512, 512),  # the number of output channes for each UNet block
         down_block_types=(
             "DownBlock2D",  # a regular ResNet downsampling block
             "DownBlock2D",
