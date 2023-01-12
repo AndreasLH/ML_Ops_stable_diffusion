@@ -54,6 +54,7 @@ Here we choose reasonable defaults for hyperparameters like `num_epochs`, `learn
 
 from dataclasses import dataclass
 
+
 @dataclass
 class TrainingConfig:
     image_size = 64  # the generated image resolution
@@ -188,7 +189,6 @@ Note that `down_block_types` correspond to the downsampling blocks (green on the
 
 from diffusers import UNet2DModel
 
-
 model = UNet2DModel(
     sample_size=config.image_size,  # the target image resolution
     in_channels=3,  # the number of input channels, 3 for RGB images
@@ -274,9 +274,10 @@ lr_scheduler = get_cosine_schedule_with_warmup(
 
 """To evaluate our model, we use the `DDPMPipeline` which is an easy way to perform end-to-end inference (see this notebook [TODO link] for more detail). We will use this pipeline to generate a batch of sample images and save it as a grid to the disk. """
 
+import math
+
 from diffusers import DDPMPipeline
 
-import math
 
 def make_grid(images, rows, cols):
     w, h = images[0].size
@@ -303,11 +304,12 @@ def evaluate(config, epoch, pipeline):
 
 """With this in end, we can group all together and write our training function. This just wraps the training step we saw in the previous section in a loop, using Accelerate for easy TensorBoard logging, gradient accumulation, mixed precision training and multi-GPUs or TPU training."""
 
+import os
+
 from accelerate import Accelerator
 from diffusers.hub_utils import init_git_repo, push_to_hub
-
 from tqdm.auto import tqdm
-import os
+
 
 def train_loop(config, model, noise_scheduler, optimizer, train_dataloader, lr_scheduler):
     # Initialize accelerator and tensorboard logging
@@ -385,6 +387,7 @@ Let's launch the training (including multi-GPU training) from the notebook using
 """
 
 from accelerate import notebook_launcher
+
 args = (config, model, noise_scheduler, optimizer, train_dataloader, lr_scheduler)
 
 print(config.num_epochs)
