@@ -1,4 +1,6 @@
 [core]
-    remote = storage
+    remote = remote_storage
 ['remote "storage"']
     url = gdrive://1OjmFVTHllOUtpP1RkhoQ1x52Lt8ndCo4
+['remote "remote_storage"']
+    url = gs://butterfly_jar/
