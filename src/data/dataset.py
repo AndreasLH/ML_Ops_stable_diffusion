@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import Dataset
 
 
-class ButterflyDataloader(Dataset):
+class ButterflyDataset(Dataset):
     def __init__(self, path):
 
         self.images = torch.load(path)
