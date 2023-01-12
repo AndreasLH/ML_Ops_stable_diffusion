@@ -7,6 +7,7 @@ from accelerate import Accelerator, notebook_launcher
 from datasets import load_dataset
 from diffusers import DDPMPipeline, DDPMScheduler, UNet2DModel
 from diffusers.hub_utils import init_git_repo, push_to_hub
+from diffusers.optimization import get_cosine_schedule_with_warmup
 from tqdm.auto import tqdm
 import os
 import hydra
