@@ -84,7 +84,8 @@ class UNet2DModelPL(pl.LightningModule):
         pipeline = DDPMPipeline(unet=self.UNet2DModel, scheduler=self.noise_scheduler)
         images = pipeline(
             batch_size = batch_size, 
-            generator=torch.manual_seed(seed)
+            generator=torch.manual_seed(seed),
+            num_inference_steps=2
         ).images
         return images
 

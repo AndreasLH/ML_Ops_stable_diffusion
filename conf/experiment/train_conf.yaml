@@ -16,5 +16,3 @@ hyperparameters:
   seed: 123
   workers: 0 #Workers for training with pytorch lightning
   log_frequency: 2
-  dataset_name: "huggan/smithsonian_butterflies_subset"
-  datapath: "../../../data/processed/train.pt" #Hyrda sets cwd to outputs logs folder
