@@ -1,18 +1,17 @@
-import torch
-import hydra
 import logging
 import os
-import wandb
+
+import hydra
 import numpy as np
+import torch
+from diffusers import DDPMPipeline, DDPMScheduler
 from hydra.utils import get_original_cwd
-
 from omegaconf import OmegaConf
-
-from src.data.dataloader import ButterflyDataloader
-from src.models.model import UNet2DModelPL
 from PIL import Image
-from diffusers import DDPMPipeline
-from diffusers import DDPMScheduler
+
+import wandb
+from src.data.dataset import ButterflyDataset
+from src.models.model import UNet2DModelPL
 
 noise_scheduler = DDPMScheduler(num_train_timesteps=1000)
 

@@ -1,21 +1,18 @@
 # -*- coding: utf-8 -*-
-import click
 import logging
-from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
-from datasets import load_dataset
-from torchvision import transforms
-import torch
 import os
+from pathlib import Path
 
+import click
+import torch
+from datasets import load_dataset
+from dotenv import find_dotenv, load_dotenv
+from torchvision import transforms
 
 
 @click.command()
 # @click.argument('input_filepath', type=click.Path(exists=True))
 @click.argument('output_filepath', type=click.Path())
-
-
-
 def main(output_filepath):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
