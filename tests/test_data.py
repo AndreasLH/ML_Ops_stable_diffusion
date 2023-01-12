@@ -1,10 +1,10 @@
-from tests import _PATH_DATA
-import pytest
 import os
+import pytest
 import torch
 from torch.utils.data import DataLoader
 
 from src.data.dataset import ButterflyDataset
+from tests import _PATH_DATA
 
 
 @pytest.mark.skipif(not os.path.exists(f'{_PATH_DATA}/processed'), reason="Data files not found") # skip this test if dir data/processed does not exist
