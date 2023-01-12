@@ -7,7 +7,7 @@ from pytorch_lightning.loggers import WandbLogger
 from torch.utils.data import DataLoader, Dataset
 
 import wandb
-from src.data.dataloader import ButterflyDataloader
+from src.data.dataset import ButterflyDataset
 from src.models.model import UNet2DModelPL
 
 wandb_logger = WandbLogger(name="Oldehammer-Master", project="mlopsproject21")
@@ -21,7 +21,7 @@ import pytorch_lightning as pl
 import torch
 from torch.utils.data import DataLoader, Dataset
 
-from src.data.dataloader import ButterflyDataloader
+from src.data.dataset import ButterflyDataset
 from src.models.model import UNet2DModelPL
 
 
@@ -43,12 +43,12 @@ path = os.path.join(os.getcwd(),"data/processed/train.pt")
 model = UNet2DModelPL()
 trainer = pl.Trainer(max_epochs=3, log_every_n_steps=2, default_root_dir="models/path/")
 
-dataloaders = {'train': DataLoader(dataset=ButterflyDataloader(path=path), batch_size=1, num_workers=0)}
+dataloaders = {'train': DataLoader(dataset=ButterflyDataset(path=path), batch_size=1, num_workers=0)}
 trainer.fit(model, dataloaders['train'])
 
     model = UNet2DModelPL(sample_size,learning_rate)
     trainer = pl.Trainer(max_epochs=epochs, log_every_n_steps=log_frequency, default_root_dir="models/path/")
-    dataloaders = {'train': DataLoader(dataset=ButterflyDataloader(path=path), batch_size=batch_size, num_workers=workers)}
+    dataloaders = {'train': DataLoader(dataset=ButterflyDataset(path=path), batch_size=batch_size, num_workers=workers)}
     trainer.fit(model, dataloaders['train'])
 
 if __name__=="__main__":

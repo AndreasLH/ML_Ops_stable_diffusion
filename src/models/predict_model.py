@@ -10,7 +10,7 @@ from omegaconf import OmegaConf
 from PIL import Image
 
 import wandb
-from src.data.dataloader import ButterflyDataloader
+from src.data.dataset import ButterflyDataset
 from src.models.model import UNet2DModelPL
 
 noise_scheduler = DDPMScheduler(num_train_timesteps=1000)

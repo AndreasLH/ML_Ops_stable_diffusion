@@ -13,7 +13,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from tqdm.auto import tqdm
 
-from src.data.dataloader import ButterflyDataloader
+from src.data.dataset import ButterflyDataset
 
 
 # Setup config
@@ -42,7 +42,7 @@ config = TrainingConfig()
 # load dataset
 config.dataset_name = "huggan/smithsonian_butterflies_subset"
 datapath = "../../data/processed/train.pt"
-train_dataset = ButterflyDataloader(datapath)
+train_dataset = ButterflyDataset(datapath)
 train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=config.train_batch_size, shuffle=True)
 
 # from datasets import load_dataset

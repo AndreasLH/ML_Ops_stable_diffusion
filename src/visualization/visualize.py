@@ -1,7 +1,7 @@
 import click
 import matplotlib.pyplot as plt
 
-from src.data.dataloader import ButterflyDataloader
+from src.data.dataset import ButterflyDataset
 
 
 @click.group()
@@ -38,7 +38,7 @@ def visualize(datapath, n=6, m=3):
     assert isinstance(m,int) == True, "m must be an integer"
     assert n >= m, "must be n >= m"
 
-    train_dataset = ButterflyDataloader(datapath)
+    train_dataset = ButterflyDataset(datapath)
 
     # plot n images
     j = 0

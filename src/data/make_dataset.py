@@ -13,9 +13,6 @@ from torchvision import transforms
 @click.command()
 # @click.argument('input_filepath', type=click.Path(exists=True))
 @click.argument('output_filepath', type=click.Path())
-
-
-
 def main(output_filepath):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
