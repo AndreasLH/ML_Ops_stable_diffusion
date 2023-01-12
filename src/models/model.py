@@ -1,11 +1,11 @@
+import os
+from typing import Optional, Tuple, Union
+
 import pytorch_lightning as pl
 import torch
-from diffusers import UNet2DModel, DDPMScheduler
-from typing import Optional, Tuple, Union
-from accelerate import Accelerator
-import os
 import torch.nn.functional as F
-from diffusers import DDPMPipeline
+from accelerate import Accelerator
+from diffusers import DDPMPipeline, DDPMScheduler, UNet2DModel
 
 
 class UNet2DModelPL(pl.LightningModule):

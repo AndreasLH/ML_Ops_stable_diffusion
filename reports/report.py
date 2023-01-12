@@ -2,11 +2,12 @@
 # pip install click
 # pip install markdown
 
+import re
+import warnings
+from functools import partial
+
 import click
 import markdown
-import warnings
-import re
-from functools import partial
 
 
 class TeacherWarning(UserWarning):
