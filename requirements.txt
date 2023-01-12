@@ -33,4 +33,4 @@ tensorboard==2.11.0
 snakeviz==2.1.1
 pytorch_lightning==1.8.6
 google-api-python-client
-PyYAML==6.0
+PyYAML==5.5
