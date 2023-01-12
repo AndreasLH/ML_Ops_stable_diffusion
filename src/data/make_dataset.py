@@ -52,6 +52,7 @@ def main(output_filepath):
     dataset.set_transform(transform)
 
     train_ = [dataset[i]['images'] for i in range(len(dataset))]
+    # train_ = [dataset[i]['images'] for i in range(200)]
     train = torch.stack(train_)
 
     # print(os.getcwd())
