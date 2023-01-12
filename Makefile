@@ -29,6 +29,14 @@ requirements: test_environment
 data: requirements
 	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/processed
 
+train: 
+	$(PYTHON_INTERPRETER) src/models/train_model.py hydra.job.chdir=True
+
+build_docker_image:
+	docker build -f training.dockerfile . -t training:latest
+
+
+
 ## Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete
