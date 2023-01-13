@@ -14,11 +14,13 @@ COPY models/ models/
 COPY reports/ reports/
 COPY conf/ conf/
 COPY .dvc/ .dvc/
-COPY .git/ .git/
+# COPY .git/ .git/
 COPY data.dvc data.dvc
+RUN dvc init --no-scm
+RUN dvc remote add -d myremote gs://butterfly_jar/
 
 WORKDIR /
 RUN pip install -r requirements_cuda.txt --no-cache-dir
-RUN dvc pull -v
+RUN dvc pull 
 
 ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
