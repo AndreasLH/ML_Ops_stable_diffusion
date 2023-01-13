@@ -15,8 +15,7 @@ class ButterflyDataset(Dataset):
         Allows len to be used on ButterflyDataset
         :return: length of dataset
         """
-        # return len(self.images)
-        return 30
+        return len(self.images)
 
     def __getitem__(self, idx: int) -> torch.Tensor:
         """
