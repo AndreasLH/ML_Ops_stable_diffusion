@@ -20,4 +20,4 @@ jobs:
         python -m pip install flake8
     - name: Run flake8
       run: |
-        flake8 . --max-line-length 200 --max-complexity = 15 --exclude docs/conf.py, tests/test_model.py --ignore = E203, E266, E501, W503
+        flake8 . --max-line-length 200 --max-complexity 15 --exclude docs/conf.py, tests/test_model.py --ignore = E203, E266, E501, W503
