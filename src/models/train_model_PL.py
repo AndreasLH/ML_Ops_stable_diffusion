@@ -25,7 +25,6 @@ def main(cfg):
     learning_rate = hpms.learning_rate
     image_size = hpms.image_size
     batch_size = hpms.train_batch_size
-    eval_batch_size = hpms.eval_batch_size
     validation_n_samples = hpms.validation_n_samples
 
     workers = hpms.workers
