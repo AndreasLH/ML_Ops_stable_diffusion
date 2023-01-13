@@ -20,6 +20,8 @@ tqdm==4.64.1
 
 # project stuff
 diffusers[training]==0.11.1
+torchmetrics==0.11.0
+torch-fidelity==0.3.0
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==1.13.1
 torchaudio==0.13.1
