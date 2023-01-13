@@ -13,7 +13,6 @@ COPY src/ src/
 COPY models/ models/
 COPY reports/ reports/
 COPY conf/ conf/
-COPY .dvc/ .dvc/
 # COPY .git/ .git/
 COPY data.dvc data.dvc
 
