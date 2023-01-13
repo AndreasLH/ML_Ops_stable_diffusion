@@ -12,6 +12,7 @@ from diffusers.optimization import get_cosine_schedule_with_warmup
 from PIL import Image
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
+from torchmetrics.image.inception import InceptionScore
 
 import wandb
 from src.data.dataset import ButterflyDataset
@@ -29,6 +30,8 @@ def main(cfg: dict) -> None:
     """
     config = cfg.experiment['hyperparameters']
 
+    torch.manual_seed(config.seed)  # Set seed
+    
     # load dataset
     datapath = config.datapath
     train_dataset = ButterflyDataset(datapath)
@@ -61,7 +64,7 @@ def main(cfg: dict) -> None:
     model = model.to('cpu')
 
     # Define denoising scheduler
-    noise_scheduler = DDPMScheduler(num_train_timesteps=1000)
+    noise_scheduler = DDPMScheduler(num_train_timesteps=2)
 
     #  Training #
 
@@ -76,8 +79,21 @@ def main(cfg: dict) -> None:
         num_training_steps=(len(train_dataloader) * config.num_epochs),
     )
 
+
+
     # helper functions - import from somewhere else?
-    def make_grid(images: List, rows: int, cols: int) -> Image.Image:
+
+    def compute_inceptionscore(batch : torch.Tensor) -> torch.Tensor:
+        _ = torch.manual_seed(config.seed)
+        # normalize False,so batch needs to be in range [0, 255] and dtype uint8
+        inception = InceptionScore(normalize=False)
+        inception.update(batch)
+        inception_mean, _ = inception.compute()
+
+        return inception_mean
+
+
+    def make_grid(images : List, rows : int, cols : int) -> Image.Image:
         """
         Creates grid of images for predictions of the model.
         :param images:
@@ -92,12 +108,13 @@ def main(cfg: dict) -> None:
             grid.paste(image, box=(i % cols*w, i // cols*h))
         return grid
 
-    def evaluate(config: dict, epoch: int, pipeline: Callable) -> None:
+    def evaluate(config : dict, epoch : int , pipeline : Callable, global_step : int) -> None:
         """
         Generate images from random noise
         :param config: dict from config file containing hyperparameters
         :param epoch: Number of epoch
         :param pipeline: pipeline object
+        :param global_step: global step parameter used for logging
         :return: None
         """
         # Sample some images from random noise (this is the backward diffusion process).
@@ -106,6 +123,15 @@ def main(cfg: dict) -> None:
             batch_size=config.eval_batch_size,
             generator=torch.manual_seed(config.seed),
         ).images
+
+        # transform PIL Image to tensors to compute inception score
+        transform = transforms.Compose([transforms.PILToTensor()])
+        images_as_tensors = torch.stack([transform(i) for i in images])
+
+        inception_score = compute_inceptionscore(images_as_tensors)
+
+        # log inception score
+        wandb.log(data={"inception score": inception_score.detach().item()}, step=global_step)
 
         # Make a grid out of the images
         image_grid = make_grid(images, rows=4, cols=4)
@@ -192,7 +218,7 @@ def main(cfg: dict) -> None:
                 pipeline = DDPMPipeline(unet=accelerator.unwrap_model(model), scheduler=noise_scheduler)
 
                 if (epoch + 1) % config.save_image_epochs == 0 or epoch == config.num_epochs - 1:
-                    evaluate(config, epoch, pipeline)
+                    evaluate(config, epoch, pipeline, global_step)
 
                 if (epoch + 1) % config.save_model_epochs == 0 or epoch == config.num_epochs - 1:
                     if config.push_to_hub:

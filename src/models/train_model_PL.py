@@ -21,20 +21,23 @@ def main(cfg):
     learning_rate = hpms.learning_rate
     image_size = hpms.image_size
     batch_size = hpms.train_batch_size
+    eval_batch_size = hpms.eval_batch_size
+
     workers = hpms.workers
 
     torch.manual_seed(seed)  # Set seed
 
     path = os.path.join(_PATH_DATA, "processed/train.pt")
 
-    model = UNet2DModelPL(image_size, learning_rate)
+    model = UNet2DModelPL(image_size, learning_rate, eval_batch_size)
     logger = WandbLogger(name="Oldehammer-Master", project="mlopsproject21")
     checkpoint_callback = ModelCheckpoint(
         dirpath="checkpoints",
         save_top_k=1,
-        monitor="train_loss",
+        monitor="inception score",
+        mode='max',
         every_n_epochs=1,
-        filename="{epoch}-{train_loss:.12f}",
+        filename="{epoch}-{inception score:.12f}",
     )
     trainer = pl.Trainer(
         max_epochs=epochs,
