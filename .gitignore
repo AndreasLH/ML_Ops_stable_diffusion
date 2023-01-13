@@ -1,6 +1,7 @@
 outputs/
 wandb/
 samples/
+models/
 checkpoints/
 
 # Byte-compiled / optimized / DLL files

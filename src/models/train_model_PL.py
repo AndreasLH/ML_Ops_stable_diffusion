@@ -36,12 +36,12 @@ def main(cfg):
     model = UNet2DModelPL(image_size, learning_rate, hpms)
     logger = WandbLogger(name="Oldehammer-Master", project="mlopsproject21")
     checkpoint_callback = ModelCheckpoint(
-        dirpath="checkpoints",
+        dirpath=os.path.join(_PROJECT_ROOT, 'models'),
         save_top_k=1,
         monitor="inception score",
         mode="max",
         every_n_epochs=1,
-        filename="{epoch}-{inception score:.12f}",
+        filename="best",
     )
     trainer = pl.Trainer(
         max_epochs=epochs,
