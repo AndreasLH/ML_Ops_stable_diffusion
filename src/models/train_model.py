@@ -1,34 +1,28 @@
 import os
-from dataclasses import dataclass
+from typing import Callable, List, Union
 
+import hydra
 import torch
-import torch.nn.functional as F
 import torch.nn as nn
+import torch.nn.functional as F
 from accelerate import Accelerator, notebook_launcher
-from datasets import load_dataset
 from diffusers import DDPMPipeline, DDPMScheduler, UNet2DModel
 from diffusers.hub_utils import init_git_repo, push_to_hub
 from diffusers.optimization import get_cosine_schedule_with_warmup
+from PIL import Image
+from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
-from typing import Callable, Optional, Tuple, Union, List
-from torch.utils.data import DataLoader
-from PIL import Image
-import os
-import hydra
-from PIL import Image
-from torch.utils.data import DataLoader
+from torchmetrics.image.inception import InceptionScore
+
 import wandb
-
-from torchvision import transforms
-from tqdm.auto import tqdm
-
 from src.data.dataset import ButterflyDataset
 
 wandb.init(name="Yucheng", project='mlopsproject21')
 
+
 # Setup config
 @hydra.main(config_path="../../conf/", config_name="config.yaml", version_base="1.2")
-def main(cfg : dict) -> None:
+def main(cfg: dict) -> None:
     """
     Runs training for the denoising diffusion probabilistic model.
     :param cfg: config file containing the hyperparameters
@@ -36,7 +30,8 @@ def main(cfg : dict) -> None:
     """
     config = cfg.experiment['hyperparameters']
 
-
+    torch.manual_seed(config.seed)  # Set seed
+    
     # load dataset
     datapath = config.datapath
     train_dataset = ButterflyDataset(datapath)
@@ -69,9 +64,9 @@ def main(cfg : dict) -> None:
     model = model.to('cpu')
 
     # Define denoising scheduler
-    noise_scheduler = DDPMScheduler(num_train_timesteps=1000)
+    noise_scheduler = DDPMScheduler(num_train_timesteps=2)
 
-    ###  Training ###
+    #  Training #
 
     # optimiser
     optimizer = torch.optim.AdamW(model.parameters(), lr=config.learning_rate)
@@ -84,7 +79,20 @@ def main(cfg : dict) -> None:
         num_training_steps=(len(train_dataloader) * config.num_epochs),
     )
 
+
+
     # helper functions - import from somewhere else?
+
+    def compute_inceptionscore(batch : torch.Tensor) -> torch.Tensor:
+        _ = torch.manual_seed(config.seed)
+        # normalize False,so batch needs to be in range [0, 255] and dtype uint8
+        inception = InceptionScore(normalize=False)
+        inception.update(batch)
+        inception_mean, _ = inception.compute()
+
+        return inception_mean
+
+
     def make_grid(images : List, rows : int, cols : int) -> Image.Image:
         """
         Creates grid of images for predictions of the model.
@@ -97,23 +105,33 @@ def main(cfg : dict) -> None:
         w, h = images[0].size
         grid = Image.new('RGB', size=(cols*w, rows*h))
         for i, image in enumerate(images):
-            grid.paste(image, box=(i%cols*w, i//cols*h))
+            grid.paste(image, box=(i % cols*w, i // cols*h))
         return grid
 
-    def evaluate(config : dict, epoch : int , pipeline : Callable) -> None:
+    def evaluate(config : dict, epoch : int , pipeline : Callable, global_step : int) -> None:
         """
         Generate images from random noise
         :param config: dict from config file containing hyperparameters
         :param epoch: Number of epoch
         :param pipeline: pipeline object
+        :param global_step: global step parameter used for logging
         :return: None
         """
         # Sample some images from random noise (this is the backward diffusion process).
         # The default pipeline output type is `List[PIL.Image]`
         images = pipeline(
-            batch_size = config.eval_batch_size,
+            batch_size=config.eval_batch_size,
             generator=torch.manual_seed(config.seed),
         ).images
+
+        # transform PIL Image to tensors to compute inception score
+        transform = transforms.Compose([transforms.PILToTensor()])
+        images_as_tensors = torch.stack([transform(i) for i in images])
+
+        inception_score = compute_inceptionscore(images_as_tensors)
+
+        # log inception score
+        wandb.log(data={"inception score": inception_score.detach().item()}, step=global_step)
 
         # Make a grid out of the images
         image_grid = make_grid(images, rows=4, cols=4)
@@ -124,9 +142,9 @@ def main(cfg : dict) -> None:
         image_grid.save(f"{test_dir}/{epoch:04d}.png")
 
     # train loop
-    def train_loop(config, model : nn.Module, noise_scheduler : Union[Callable, nn.Module],
-                   optimizer : Union[Callable, nn.Module], train_dataloader : DataLoader,
-                   lr_scheduler : Union[Callable, nn.Module]) -> None:
+    def train_loop(config, model: nn.Module, noise_scheduler: Union[Callable, nn.Module],
+                   optimizer: Union[Callable, nn.Module], train_dataloader: DataLoader,
+                   lr_scheduler: Union[Callable, nn.Module]) -> None:
         """
         Main training loop
         :param config: dict from config file containing hyperparameters
@@ -200,7 +218,7 @@ def main(cfg : dict) -> None:
                 pipeline = DDPMPipeline(unet=accelerator.unwrap_model(model), scheduler=noise_scheduler)
 
                 if (epoch + 1) % config.save_image_epochs == 0 or epoch == config.num_epochs - 1:
-                    evaluate(config, epoch, pipeline)
+                    evaluate(config, epoch, pipeline, global_step)
 
                 if (epoch + 1) % config.save_model_epochs == 0 or epoch == config.num_epochs - 1:
                     if config.push_to_hub:
@@ -215,5 +233,6 @@ def main(cfg : dict) -> None:
     # train
     notebook_launcher(train_loop, args, num_processes=0)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()

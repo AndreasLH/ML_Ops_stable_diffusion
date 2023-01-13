@@ -18,4 +18,5 @@ hyperparameters:
   log_frequency: 2
   dataset_name: "huggan/smithsonian_butterflies_subset"
   datapath: "../../data/processed/train.pt" # Hydra sets cwd to outputs logs folder
-  wandb_log: True
+  num_inference_steps: 2
+  wandb_log: True #maybe remove?

@@ -1,0 +1,8 @@
+# config_cpu.yaml
+workerPoolSpecs:
+   machineSpec:
+      machineType: n1-highmem-16
+   replicaCount: 1
+   containerSpec:
+      imageUri: gcr.io/mlops-butterflies/testing
+# gcloud ai custom-jobs create --region=europe-west1 --display-name=test-run --config=src/models/config_cpu.yaml

@@ -3,7 +3,7 @@ from torch.utils.data import Dataset
 
 
 class ButterflyDataset(Dataset):
-    def __init__(self, path : str) -> None:
+    def __init__(self, path: str) -> None:
         """
 
         :param path: path to where the processed dataset is located
@@ -17,7 +17,7 @@ class ButterflyDataset(Dataset):
         """
         return len(self.images)
 
-    def __getitem__(self, idx : int) -> torch.Tensor:
+    def __getitem__(self, idx: int) -> torch.Tensor:
         """
         Allows ButterflyDataset to be indexed.
         :param idx: index
