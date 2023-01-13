@@ -8,11 +8,15 @@ from pytorch_lightning.loggers import WandbLogger
 from torch.utils.data import DataLoader
 
 from src import _PATH_DATA, _PROJECT_ROOT
-from src.data.dataset import ButterflyDataset
+from src.data.dataset import ButterflyDataset, ValidationDataset
 from src.models.model import UNet2DModelPL
 
 
-@hydra.main(version_base="1.2", config_path=os.path.join(_PROJECT_ROOT, "conf"), config_name="config.yaml", )
+@hydra.main(
+    version_base="1.2",
+    config_path=os.path.join(_PROJECT_ROOT, "conf"),
+    config_name="config.yaml",
+)
 def main(cfg):
     hpms = cfg.experiment["hyperparameters"]
     seed = hpms.seed
@@ -22,6 +26,7 @@ def main(cfg):
     image_size = hpms.image_size
     batch_size = hpms.train_batch_size
     eval_batch_size = hpms.eval_batch_size
+    validation_n_samples = hpms.validation_n_samples
 
     workers = hpms.workers
 
@@ -35,7 +40,7 @@ def main(cfg):
         dirpath="checkpoints",
         save_top_k=1,
         monitor="inception score",
-        mode='max',
+        mode="max",
         every_n_epochs=1,
         filename="{epoch}-{inception score:.12f}",
     )
@@ -53,7 +58,7 @@ def main(cfg):
             num_workers=workers,
         ),
         "val": DataLoader(
-            dataset=ButterflyDataset(path=path),
+            dataset=ValidationDataset(n_samples=validation_n_samples),
             batch_size=batch_size,
             num_workers=workers,
         ),
