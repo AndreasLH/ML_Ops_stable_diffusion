@@ -34,7 +34,7 @@ def main(output_filepath):
 
     preprocess = transforms.Compose(
         [
-            transforms.Resize((128, 128)), # config.image_size = 128
+            transforms.Resize((128, 128)),  # config.image_size = 128
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.Normalize([0.5], [0.5]),
