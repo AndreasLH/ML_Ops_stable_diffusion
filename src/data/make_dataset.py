@@ -10,12 +10,16 @@ from dotenv import find_dotenv, load_dotenv
 from torchvision import transforms
 
 
+
+
 @click.command()
-# @click.argument('input_filepath', type=click.Path(exists=True))
 @click.argument('output_filepath', type=click.Path())
-def main(output_filepath):
-    """ Runs data processing scripts to turn raw data from (../raw) into
+def main(output_filepath : str) -> None:
+    """
+    Runs data processing scripts to turn the raw Smithsonian butterfly dataset from huggan into
         cleaned data ready to be analyzed (saved in ../processed).
+    :param output_filepath: path where the processed data is outputted
+    :return: None
     """
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
@@ -28,15 +32,12 @@ def main(output_filepath):
     # config.dataset_name = "huggan/flowers-102-categories"
     # dataset = load_dataset(config.dataset_name, split="train")
 
-    # Or just load images from a local folder!
-    # config.dataset_name = "imagefolder"
-    # dataset = load_dataset(config.dataset_name, data_dir="path/to/folder")
-
     preprocess = transforms.Compose(
         [
             transforms.Resize((128, 128)), # config.image_size = 128
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
+            # normalise pixel values to the range [-1,1]
             transforms.Normalize([0.5], [0.5]),
         ]
     )
@@ -45,14 +46,11 @@ def main(output_filepath):
         images = [preprocess(image.convert("RGB")) for image in examples["image"]]
         return {"images": images}
 
-
     dataset.set_transform(transform)
 
     train_ = [dataset[i]['images'] for i in range(len(dataset))]
-    # train_ = [dataset[i]['images'] for i in range(200)]
     train = torch.stack(train_)
 
-    # print(os.getcwd())
     torch.save(train, os.path.join(output_filepath, 'train.pt'))
 
 if __name__ == '__main__':
