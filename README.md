@@ -1,5 +1,9 @@
 ML_Ops stable diffusion Butterfly Image generation
 ==============================
+[![Run tests](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/tests.yml/badge.svg)](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/tests.yml)
+[![isort](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/isort.yml/badge.svg)](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/isort.yml)
+[![flake8](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/flake8.yml/badge.svg)](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/flake8.yml)
+[![codecov](https://codecov.io/gh/AndreasLH/ML_Ops_stable_diffusion/branch/master/graph/badge.svg?token=G9R1JP9118)](https://codecov.io/gh/AndreasLH/ML_Ops_stable_diffusion)
 
 A project for the DTU course Machine Learning Operations. The primary focus is on MLOps and not the models specifically
 

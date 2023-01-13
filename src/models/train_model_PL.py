@@ -1,12 +1,14 @@
 import os
+
 import hydra
 import pytorch_lightning as pl
 import torch
-from torch.utils.data import DataLoader, Dataset
 from pytorch_lightning.loggers import WandbLogger
+from torch.utils.data import DataLoader, Dataset
+
+from src import _PATH_DATA, _PROJECT_ROOT
 from src.data.dataset import ButterflyDataset
 from src.models.model import UNet2DModelPL
-from src import _PATH_DATA, _PROJECT_ROOT
 
 
 @hydra.main(config_path=os.path.join(_PROJECT_ROOT, 'conf'), config_name="config.yaml")

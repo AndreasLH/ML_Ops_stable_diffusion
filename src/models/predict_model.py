@@ -1,8 +1,10 @@
-from src.models.model import UNet2DModelPL
-from src import _PROJECT_ROOT
 import os
+
 import hydra
 from PIL import Image
+
+from src import _PROJECT_ROOT
+from src.models.model import UNet2DModelPL
 
 
 @hydra.main(version_base=None, config_path=os.path.join(_PROJECT_ROOT, 'conf'), config_name="config.yaml")
