@@ -18,3 +18,4 @@ hyperparameters:
   log_frequency: 2
   dataset_name: "huggan/smithsonian_butterflies_subset"
   datapath: "../../data/processed/train.pt" # Hydra sets cwd to outputs logs folder
+  num_inference_steps: 2
