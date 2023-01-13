@@ -10,7 +10,8 @@ from torchvision import transforms
 
 class UNet2DModelPL(pl.LightningModule):
     def __init__(
-        self, sample_size: int, learning_rate : int = 1e-3, hpms : dict = None):  # jeg gætter på, det er en tuple
+        self, sample_size: int, learning_rate: int = 1e-3, hpms: dict = None
+    ):  # jeg gætter på, det er en tuple
         super().__init__()
         self.lr = learning_rate
         # self.config = config
@@ -87,7 +88,7 @@ class UNet2DModelPL(pl.LightningModule):
 
         return loss
 
-    def compute_inceptionscore(self, batch : torch.Tensor) -> torch.Tensor:
+    def compute_inceptionscore(self, batch: torch.Tensor) -> torch.Tensor:
         """
         Computes the inception score for a batch of images
         :param batch: Batch of images
