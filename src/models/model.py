@@ -1,10 +1,8 @@
-import os
-from typing import Optional, Tuple, Union
+from typing import Tuple, Union
 
 import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
-from accelerate import Accelerator
 from diffusers import DDPMPipeline, DDPMScheduler, UNet2DModel
 from torchmetrics.image.inception import InceptionScore
 
@@ -117,11 +115,11 @@ class UNet2DModelPL(pl.LightningModule):
             self.parameters(), lr=self.lr
         )  # DEBUG implementer config
 
-    def sample(self, batch_size=4, seed=0):
+    def sample(self, batch_size=4, seed=0, num_inference_steps=2):
         pipeline = DDPMPipeline(unet=self.UNet2DModel, scheduler=self.noise_scheduler)
         images = pipeline(
             batch_size=batch_size,
             generator=torch.manual_seed(seed),
-            num_inference_steps=2,
+            num_inference_steps=num_inference_steps,
         ).images
         return images
