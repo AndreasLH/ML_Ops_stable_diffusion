@@ -4,8 +4,8 @@ import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 from diffusers import DDPMPipeline, DDPMScheduler, UNet2DModel
-from torchvision import transforms
 from torchmetrics.image.inception import InceptionScore
+from torchvision import transforms
 
 
 class UNet2DModelPL(pl.LightningModule):

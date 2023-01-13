@@ -11,8 +11,8 @@ from diffusers.hub_utils import init_git_repo, push_to_hub
 from diffusers.optimization import get_cosine_schedule_with_warmup
 from PIL import Image
 from torch.utils.data import DataLoader
-from tqdm.auto import tqdm
 from torchmetrics.image.inception import InceptionScore
+from tqdm.auto import tqdm
 
 import wandb
 from src.data.dataset import ButterflyDataset
