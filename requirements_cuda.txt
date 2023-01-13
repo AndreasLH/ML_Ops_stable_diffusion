@@ -19,7 +19,7 @@ pandas==1.5.2
 tqdm==4.64.1
 
 # project stuff
-diffusers[training]==0.5.1
+diffusers[training]==0.11.1
 torch
 torchaudio
 torchvision

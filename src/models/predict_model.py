@@ -12,11 +12,19 @@ from src.models.model import UNet2DModelPL
 @click.command()
 @click.option("--model_dir", default="", help="model's directory")
 def evaluate(model_dir):
+    eval(model_dir)
+
+
+def eval(model_dir, steps=None, n_images=None):
     with open(
         os.path.join(_PROJECT_ROOT, model_dir, ".hydra", "config.yaml"), "r"
     ) as f:
         conf = yaml.safe_load(f)
     hpms = conf["experiment"]["hyperparameters"]
+    if steps is not None:
+        hpms["num_inference_steps"] = steps
+    if n_images is not None:
+        hpms["eval_batch_size"] = n_images
 
     for checkpoint in os.listdir(os.path.join(_PROJECT_ROOT, model_dir, "checkpoints")):
         n = hpms["eval_batch_size"]
@@ -36,7 +44,9 @@ def evaluate(model_dir):
         image_grid = make_grid(images, rows, cols)
         test_dir = os.path.join(_PROJECT_ROOT, "samples")
         os.makedirs(test_dir, exist_ok=True)
-        image_grid.save(f"{test_dir}/{os.path.basename(model_path)[:-5]}.png")
+        save_point = f"{test_dir}/{os.path.basename(model_path)[:-5]}.png"
+        image_grid.save(save_point)
+        return save_point
 
 
 def make_grid(images, rows, cols):
