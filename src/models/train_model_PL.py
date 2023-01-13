@@ -36,7 +36,7 @@ def main(cfg):
     model = UNet2DModelPL(image_size, learning_rate, hpms)
     logger = WandbLogger(name="Oldehammer-Master", project="mlopsproject21")
     checkpoint_callback = ModelCheckpoint(
-        dirpath=os.path.join(_PROJECT_ROOT, 'models'),
+        dirpath='/gcs/butterfly_jar/model1',
         save_top_k=1,
         monitor="inception score",
         mode="max",
