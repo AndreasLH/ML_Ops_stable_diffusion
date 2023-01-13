@@ -8,9 +8,6 @@ from pytorch_lightning.loggers import WandbLogger
 from torch.utils.data import DataLoader, Dataset
 
 from src import _PATH_DATA, _PROJECT_ROOT
-from torch.utils.data import DataLoader, Dataset
-
-from src import _PATH_DATA, _PROJECT_ROOT
 from src.data.dataset import ButterflyDataset
 from src.models.model import UNet2DModelPL
 

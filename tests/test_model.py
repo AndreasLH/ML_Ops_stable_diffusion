@@ -1,9 +1,11 @@
-from tests import _PROJECT_ROOT
 import os
-import torch
+
 import pytest
+import torch
 #from models import UNet2DmodelPL
 from diffusers import UNet2DModel
+
+from tests import _PROJECT_ROOT
 
 #create inputs to model output size test
 test_input = [{"input": torch.ones(1,3,i,i),"output_size":i} for i in [32,64,128,256]]

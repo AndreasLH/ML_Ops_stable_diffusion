@@ -10,8 +10,6 @@ from dotenv import find_dotenv, load_dotenv
 from torchvision import transforms
 
 
-
-
 @click.command()
 @click.argument('output_filepath', type=click.Path())
 def main(output_filepath : str) -> None:
