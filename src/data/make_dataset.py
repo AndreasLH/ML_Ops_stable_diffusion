@@ -12,7 +12,7 @@ from torchvision import transforms
 
 @click.command()
 @click.argument('output_filepath', type=click.Path())
-def main(output_filepath : str) -> None:
+def main(output_filepath: str) -> None:
     """
     Runs data processing scripts to turn the raw Smithsonian butterfly dataset from huggan into
         cleaned data ready to be analyzed (saved in ../processed).
@@ -50,6 +50,7 @@ def main(output_filepath : str) -> None:
     train = torch.stack(train_)
 
     torch.save(train, os.path.join(output_filepath, 'train.pt'))
+
 
 if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'

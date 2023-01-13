@@ -1,10 +1,8 @@
-import os
-from typing import Optional, Tuple, Union
+from typing import Tuple, Union
 
 import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
-from accelerate import Accelerator
 from diffusers import DDPMPipeline, DDPMScheduler, UNet2DModel
 
 
