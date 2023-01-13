@@ -14,6 +14,8 @@ def read_item(item_id: int):
 
 
 from enum import Enum
+
+
 class ItemEnum(Enum):
     alexnet = "alexnet"
     resnet = "resnet"
@@ -43,8 +45,8 @@ def login(username: str, password: str):
     return "login saved"
 
 
-from http import HTTPStatus
 import re
+from http import HTTPStatus
 
 
 @app.get("/text_model/")
@@ -60,7 +62,9 @@ def contains_email(data: str):
 
 
 from enum import Enum
+
 from pydantic import BaseModel
+
 
 class DomainEnum(Enum):
     gmail = "gmail"
@@ -85,10 +89,11 @@ def contains_email_domain(data: Item):
     return response
 
 
-from fastapi import UploadFile, File
-from fastapi.responses import FileResponse
 # import cv2
 from typing import Optional
+
+from fastapi import File, UploadFile
+from fastapi.responses import FileResponse
 
 # @app.post("/cv_model/")
 # async def cv_model(data: UploadFile = File(...), h: Optional[int] = 28, w: Optional[int] = 28):

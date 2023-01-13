@@ -17,7 +17,7 @@ def test_data_length():
 @pytest.mark.skipif(not os.path.exists(f'{_PATH_DATA}/processed'), reason="Data files not found")  # skip this test if dir data/processed does not exist
 def test_data_shape():
     dataset = ButterflyDataset(os.path.join(_PATH_DATA, 'processed/train.pt'))
-    assert torch.all(torch.tensor([i['images'].shape == (3, 128, 128) for i in dataset])) is True, "Samples in the dataset does not have the correct shape (3, 128, 128)"
+    assert torch.all(torch.tensor([i['images'].shape == (3, 128, 128) for i in dataset])) == True, "Samples in the dataset does not have the correct shape (3, 128, 128)"
     # assert all images have shape (3, 128, 128) (channel, width, height)
 
 

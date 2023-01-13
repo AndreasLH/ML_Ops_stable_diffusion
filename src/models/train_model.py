@@ -11,8 +11,8 @@ from diffusers.hub_utils import init_git_repo, push_to_hub
 from diffusers.optimization import get_cosine_schedule_with_warmup
 from PIL import Image
 from torch.utils.data import DataLoader
-from tqdm.auto import tqdm
 from torchmetrics.image.inception import InceptionScore
+from tqdm.auto import tqdm
 
 import wandb
 from src.data.dataset import ButterflyDataset
@@ -84,6 +84,11 @@ def main(cfg: dict) -> None:
     # helper functions - import from somewhere else?
 
     def compute_inceptionscore(batch : torch.Tensor) -> torch.Tensor:
+        """
+        Computes the inception score for a batch of images
+        :param batch: Batch of images
+        :return: inception score stored as a torch Tensor
+        """
         _ = torch.manual_seed(config.seed)
         # normalize False,so batch needs to be in range [0, 255] and dtype uint8
         inception = InceptionScore(normalize=False)
