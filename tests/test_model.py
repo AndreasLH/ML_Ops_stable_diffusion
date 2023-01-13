@@ -2,7 +2,7 @@ import os
 
 import pytest
 import torch
-# from models import UNet2DmodelPL
+from src.models.model import UNet2DModelPL
 from diffusers import UNet2DModel
 
 from tests import _PROJECT_ROOT
@@ -36,4 +36,10 @@ def test_model_output(test_input, expected):
             "UpBlock2D"
         ),
     )
-    assert model(test_input["input"], timestep=5).sample.shape == torch.Size(expected)
+    assert model(test_input["input"], timestep=1).sample.shape == torch.Size(expected)
+
+@pytest.mark.parametrize("test_input,expected", [(test_input[i], (1, 3, test_input[i]['output_size'], test_input[i]['output_size'])) for i in range(len(test_input))])
+def test_model_output_PL(test_input,expected):
+    model_PL = UNet2DModelPL(16, 1e-3, 16)
+    assert model_PL(test_input["input"], timestep=1).shape == torch.Size(expected)
+
