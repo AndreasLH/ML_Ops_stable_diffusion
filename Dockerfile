@@ -13,7 +13,7 @@ COPY src/ src/
 COPY models/ models/
 COPY reports/ reports/
 COPY conf/ conf/
-COPY .dvc/ .dvc/
+# COPY .dvc/ .dvc/
 # COPY .git/ .git/
 COPY data.dvc data.dvc
 
@@ -23,4 +23,4 @@ RUN dvc init --no-scm
 RUN dvc remote add -d myremote gs://butterfly_jar/
 RUN dvc pull 
 
-ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
+ENTRYPOINT ["python", "-u", "src/models/train_model_PL.py"]

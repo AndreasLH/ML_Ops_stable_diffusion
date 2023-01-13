@@ -34,3 +34,4 @@ snakeviz==2.1.1
 pytorch_lightning==1.8.6
 google-api-python-client
 PyYAML==5.4
+protobuf==3.20

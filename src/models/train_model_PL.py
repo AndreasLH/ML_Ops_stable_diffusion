@@ -15,7 +15,7 @@ from src.data.dataset import ButterflyDataset
 from src.models.model import UNet2DModelPL
 
 
-@hydra.main(config_path=os.path.join(_PROJECT_ROOT, "conf"), config_name="config.yaml")
+@hydra.main(version_base="1.2", config_path=os.path.join(_PROJECT_ROOT, "conf"), config_name="config.yaml", )
 def main(cfg):
     hpms = cfg.experiment["hyperparameters"]
     seed = hpms.seed
