@@ -28,7 +28,11 @@ def evaluate(model_dir):
         model = UNet2DModelPL.load_from_checkpoint(
             model_path, sample_size=hpms["image_size"]
         )
-        images = model.sample(n)
+        images = model.sample(
+            batch_size=n,
+            seed=hpms["seed"],
+            num_inference_steps=hpms["num_inference_steps"],
+        )
         image_grid = make_grid(images, rows, cols)
         test_dir = os.path.join(_PROJECT_ROOT, "samples")
         os.makedirs(test_dir, exist_ok=True)
