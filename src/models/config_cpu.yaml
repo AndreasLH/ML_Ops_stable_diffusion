@@ -1,0 +1,7 @@
+# config_cpu.yaml
+workerPoolSpecs:
+   machineSpec:
+      machineType: n1-highmem-2
+   replicaCount: 1
+   containerSpec:
+      imageUri: gcr.io/mlops-butterflies/testing
