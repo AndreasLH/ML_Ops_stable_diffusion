@@ -4,12 +4,13 @@ import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 from diffusers import DDPMPipeline, DDPMScheduler, UNet2DModel
+from torchvision import transforms
 from torchmetrics.image.inception import InceptionScore
 
 
 class UNet2DModelPL(pl.LightningModule):
     def __init__(
-        self, sample_size: int, learning_rate=1e-3, eval_batch_size=16):  # jeg gætter på, det er en tuple
+        self, sample_size: int, learning_rate=1e-3, hpms=None):  # jeg gætter på, det er en tuple
         super().__init__()
         self.lr = learning_rate
         # self.config = config
@@ -45,7 +46,7 @@ class UNet2DModelPL(pl.LightningModule):
         )
 
         self.noise_scheduler = DDPMScheduler(num_train_timesteps=1000)
-        self.eval_batch_size = eval_batch_size
+        self.hpms = hpms
 
     # a change was made such that forward return torch.tensor instead of Union[UNet2DOutput, Tuple]
     def forward(
@@ -87,7 +88,7 @@ class UNet2DModelPL(pl.LightningModule):
         return loss
 
     def compute_inceptionscore(self, batch : torch.Tensor) -> torch.Tensor:
-        _ = torch.manual_seed(config.seed)
+        _ = torch.manual_seed(self.hpms.seed)
         # normalize False,so batch needs to be in range [0, 255] and dtype uint8
         inception = InceptionScore(normalize=False)
         inception.update(batch)
@@ -97,13 +98,13 @@ class UNet2DModelPL(pl.LightningModule):
 
     # todo: den her gør bare det samme som training_step. Den skal returne inception score i stedet :)
     def validation_step(self, batch: int, batch_idx: int) -> torch.Tensor:
-        images = self.sample(self.eval_batch_size)
+        images = self.sample(self.hpms.eval_batch_size)
 
         # transform PIL Image to tensors to compute inception score
         transform = transforms.Compose([transforms.PILToTensor()])
         images_as_tensors = torch.stack([transform(i) for i in images])
 
-        inception_score = compute_inceptionscore(images_as_tensors)
+        inception_score = self.compute_inceptionscore(images_as_tensors)
 
         # log inception score
         self.log("inception score", inception_score)

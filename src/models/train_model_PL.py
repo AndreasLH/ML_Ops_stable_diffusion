@@ -29,7 +29,7 @@ def main(cfg):
 
     path = os.path.join(_PATH_DATA, "processed/train.pt")
 
-    model = UNet2DModelPL(image_size, learning_rate, eval_batch_size)
+    model = UNet2DModelPL(image_size, learning_rate, hpms)
     logger = WandbLogger(name="Oldehammer-Master", project="mlopsproject21")
     checkpoint_callback = ModelCheckpoint(
         dirpath="checkpoints",
