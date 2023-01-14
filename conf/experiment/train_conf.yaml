@@ -3,7 +3,7 @@ hyperparameters:
   train_batch_size: 16
   eval_batch_size: 16  # how many images to sample during evaluation
   validation_n_samples: 16
-  num_epochs: 1
+  num_epochs: 30
   gradient_accumulation_steps: 1
   learning_rate: 1e-5
   lr_warmup_steps: 500
@@ -12,9 +12,10 @@ hyperparameters:
   mixed_precision: 'no'  # `no` for float32, `fp16` for automatic mixed precision
   output_dir: 'ddpm-butterflies-128'  # the model namy locally and on the HF Hub
   seed: 123
-  workers: 0 # Workers for training with pytorch lightning
+  workers: 4 # Workers for training with pytorch lightning
   log_frequency: 2
   dataset_name: "huggan/smithsonian_butterflies_subset"
   datapath: "../../data/processed/train.pt" # Hydra sets cwd to outputs logs folder
   num_inference_steps: 2
   wandb_log: True #maybe remove?
+  experiment_name: "full-run-inception-score"

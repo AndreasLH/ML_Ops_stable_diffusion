@@ -26,6 +26,7 @@ def main(cfg):
     image_size = hpms.image_size
     batch_size = hpms.train_batch_size
     validation_n_samples = hpms.validation_n_samples
+    name = hpms.experiment_name
 
     workers = hpms.workers
 
@@ -34,9 +35,9 @@ def main(cfg):
     path = os.path.join(_PATH_DATA, "processed/train.pt")
 
     model = UNet2DModelPL(image_size, learning_rate, hpms)
-    logger = WandbLogger(name="Oldehammer-Master", project="mlopsproject21")
+    logger = WandbLogger(name=name, project="mlopsproject21")
     checkpoint_callback = ModelCheckpoint(
-        dirpath='/gcs/butterfly_jar/model1',
+        dirpath='/gcs/butterfly_jar/model_best',
         save_top_k=1,
         monitor="inception score",
         mode="max",
