@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from fastapi import FastAPI
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse
 
 from src.models.predict_model import eval_gcs
 
@@ -35,10 +35,10 @@ def generate_sample(steps: int, n_images: int):
             "status-code": HTTPStatus.BAD_REQUEST,
         }
         return response
-    response = {
-        # "input": image,
-        "output": FileResponse(image_grid),
-        "message": HTTPStatus.OK.phrase,
-        "status-code": HTTPStatus.OK,
-    }
-    return response
+    # response = {
+    #     # "input": image,
+    #     "output": FileResponse(file),
+    #     "message": HTTPStatus.OK.phrase,
+    #     "status-code": HTTPStatus.OK,
+    # }
+    return FileResponse(image_grid)
