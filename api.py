@@ -28,7 +28,7 @@ def read_item(item_id: int):
 @app.get("/generate_sample/")
 def generate_sample(steps: int, n_images: int):
     try:
-        save_point = eval_gcs("/gcs/butterfly_jar/model_best/best.ckpt", steps, n_images)
+        save_point = eval_gcs("best.ckpt", steps, n_images)
     except AssertionError as message:
         response = {
             "message": "error " + str(message),
