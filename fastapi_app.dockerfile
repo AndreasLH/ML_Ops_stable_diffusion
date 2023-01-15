@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
 COPY api.py api.py
 COPY src/ src/
 
+RUN pip install -r requirements.txt
 RUN pip install fastapi
 RUN pip install pydantic
 RUN pip install uvicorn
