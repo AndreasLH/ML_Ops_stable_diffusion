@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
     git \
     && rm -rf /var/lib/apt/lists/*
-RUN apt install curl -y
+RUN apt-get install -y curl
 
 COPY setup.py setup.py
 COPY requirements.txt requirements.txt
