@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 
 from src.models.predict_model import eval_gcs
 
@@ -28,7 +28,7 @@ def read_item(item_id: int):
 @app.get("/generate_sample/")
 def generate_sample(steps: int, n_images: int):
     try:
-        save_point = eval_gcs("best.ckpt", steps, n_images)
+        image_grid = eval_gcs("best.ckpt", steps, n_images)
     except AssertionError as message:
         response = {
             "message": "error " + str(message),
@@ -37,7 +37,7 @@ def generate_sample(steps: int, n_images: int):
         return response
     response = {
         # "input": image,
-        "output": FileResponse(save_point),
+        "output": FileResponse(image_grid),
         "message": HTTPStatus.OK.phrase,
         "status-code": HTTPStatus.OK,
     }

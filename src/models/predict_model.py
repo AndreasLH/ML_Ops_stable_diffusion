@@ -70,7 +70,7 @@ def eval_gcs(model_dir, steps=None, n_images=None):
     os.makedirs(test_dir, exist_ok=True)
     save_point = f"{test_dir}/{os.path.basename(model_path)[:-5]}.png"
     image_grid.save(save_point)
-    return save_point
+    return image_grid
 
 
 def make_grid(images, rows, cols):
