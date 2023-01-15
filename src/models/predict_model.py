@@ -48,6 +48,7 @@ def eval(model_dir, steps=None, n_images=None):
         image_grid.save(save_point)
         return save_point
 
+
 def eval_gcs(model_dir, steps=None, n_images=None):
 
     n = n_images
