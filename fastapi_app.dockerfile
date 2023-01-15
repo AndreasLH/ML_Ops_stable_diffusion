@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
     git \
     && rm -rf /var/lib/apt/lists/*
+RUN apt install curl -y
 
 COPY setup.py setup.py
 COPY requirements.txt requirements.txt
@@ -19,7 +20,6 @@ RUN pip install -r requirements.txt
 RUN pip install fastapi
 RUN pip install pydantic
 RUN pip install uvicorn
-RUN apt-get install curl
 RUN curl https://storage.googleapis.com/butterfly_jar/model_best/best.ckpt --output best.ckpt
 
 CMD exec uvicorn api:app --port $PORT --host 0.0.0.0 --workers 1
