@@ -8,8 +8,9 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     software-properties-common \
     git \
+    curl \
     && rm -rf /var/lib/apt/lists/*
-RUN apt-get install -y curl
+# RUN apt-get install -y curl
 
 COPY setup.py setup.py
 COPY requirements.txt requirements.txt
