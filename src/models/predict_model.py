@@ -48,6 +48,29 @@ def eval(model_dir, steps=None, n_images=None):
         image_grid.save(save_point)
         return save_point
 
+def eval_gcs(model_dir, steps=None, n_images=None):
+
+    n = n_images
+    root = int(np.sqrt(n))
+    assert root**2 == n, "eval_batch_size must be quadratic"
+    rows, cols = root, root
+
+    model_path = model_dir
+    model = UNet2DModelPL.load_from_checkpoint(
+        model_path, sample_size=128
+    )
+    images = model.sample(
+        batch_size=n,
+        seed=123,
+        num_inference_steps=steps,
+    )
+    image_grid = make_grid(images, rows, cols)
+    test_dir = "/gcs/model_best/samples"
+    os.makedirs(test_dir, exist_ok=True)
+    save_point = f"{test_dir}/{os.path.basename(model_path)[:-5]}.png"
+    image_grid.save(save_point)
+    return save_point
+
 
 def make_grid(images, rows, cols):
     w, h = images[0].size
