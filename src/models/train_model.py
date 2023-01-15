@@ -5,6 +5,7 @@ import hydra
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import wandb
 from accelerate import Accelerator, notebook_launcher
 from diffusers import DDPMPipeline, DDPMScheduler, UNet2DModel
 from diffusers.hub_utils import init_git_repo, push_to_hub
@@ -15,7 +16,6 @@ from torchmetrics.image.inception import InceptionScore
 from torchvision import transforms
 from tqdm.auto import tqdm
 
-import wandb
 from src.data.dataset import ButterflyDataset
 
 wandb.init(name="Yucheng", project="mlopsproject21")
