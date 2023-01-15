@@ -49,7 +49,7 @@ def eval(model_dir, steps=None, n_images=None):
         return save_point
 
 
-def eval_gcs(model_dir, steps=None, n_images=None):
+def eval_gcs(model_dir, steps=None, n_images=None, seed=0):
 
     n = n_images
     root = int(np.sqrt(n))
@@ -62,7 +62,7 @@ def eval_gcs(model_dir, steps=None, n_images=None):
     )
     images = model.sample(
         batch_size=n,
-        seed=123,
+        seed=seed,
         num_inference_steps=steps,
     )
     image_grid = make_grid(images, rows, cols)

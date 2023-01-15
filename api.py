@@ -26,9 +26,9 @@ def read_item(item_id: int):
 
 
 @app.get("/generate_sample/")
-def generate_sample(steps: int, n_images: int):
+def generate_sample(steps: int, n_images: int, seed: int = 0):
     try:
-        image_grid = eval_gcs("best.ckpt", steps, n_images)
+        image_grid = eval_gcs("best.ckpt", steps, n_images, seed)
     except AssertionError as message:
         response = {
             "message": "error " + str(message),
