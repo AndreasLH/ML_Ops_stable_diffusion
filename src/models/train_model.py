@@ -88,7 +88,7 @@ def main(cfg: dict) -> None:
         num_training_steps=(len(train_dataloader) * config.num_epochs),
     )
 
-    # helper functions - importt from somewhere else?
+    # helper functions - take from somewhere else?
 
     def compute_inceptionscore(batch: torch.Tensor) -> torch.Tensor:
         """
