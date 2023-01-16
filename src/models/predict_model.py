@@ -54,9 +54,10 @@ def eval(model_dir, steps=None, n_images=None):
 @click.command()
 @click.option("--model_path", default="", help="model's path relative to root")
 @click.option("--steps", default=3, help="model's directory")
+@click.option("--save_path", default="", help="where to save output")
 @click.option("--n", default=16, help="number of images generated")
 @click.option("--seed", default=213, help="number of images generated")
-def eval2(model_path, steps, n, seed):
+def eval2(model_path, steps, save_path, n, seed):
     root = int(np.sqrt(n))
     assert root ** 2 == n, "n must be quadratic"
     rows, cols = root, root
@@ -70,11 +71,7 @@ def eval2(model_path, steps, n, seed):
         num_inference_steps=steps,
     )
     image_grid = make_grid(images, rows, cols)
-    # image_grid.show()
-    test_dir = os.path.join(_PROJECT_ROOT, "samples")
-    os.makedirs(test_dir, exist_ok=True)
-    save_point = f"{test_dir}/{os.path.basename(model_path)[:-5]}.png"
-    image_grid.save(save_point)
+    image_grid.save(save_path)
 
 
 
