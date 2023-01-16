@@ -32,7 +32,7 @@ def main(cfg):
 
     torch.manual_seed(seed)  # Set seed
 
-    path = os.path.join(_PATH_DATA, "../drive/MyDrive/data/processed/train.pt")
+    path = os.path.join(_PROJECT_ROOT, "../drive/MyDrive/dtu_mlops_data/data/processed/train.pt")
 
     model = UNet2DModelPL(image_size, learning_rate, hpms)
     # logger = WandbLogger(name=name, project="mlopsproject21")
