@@ -52,33 +52,22 @@ def eval(model_dir, steps=None, n_images=None):
         return save_point
 
 @click.command()
-@click.option("--model_name", default="", help="model's directory")
+@click.option("--model_path", default="", help="model's path relative to root")
 @click.option("--steps", default=3, help="model's directory")
-def eval2(model_name, steps=None, n_images=None, seed=0):
-    with open(
-        os.path.join(_PROJECT_ROOT, "conf", "experiment", "train_conf.yaml"), "r"
-    ) as f:
-        conf = yaml.safe_load(f)
-    hpms = conf["hyperparameters"]
-    if steps is not None:
-        hpms["num_inference_steps"] = steps
-    if n_images is not None:
-        hpms["eval_batch_size"] = n_images
-
-    n = hpms["eval_batch_size"]
+@click.option("--n", default=16, help="number of images generated")
+@click.option("--seed", default=213, help="number of images generated")
+def eval2(model_path, steps, n, seed):
     root = int(np.sqrt(n))
-    assert root ** 2 == n, "eval_batch_size must be quadratic"
+    assert root ** 2 == n, "n must be quadratic"
     rows, cols = root, root
 
-    model_path = os.path.join(_PROJECT_ROOT, "models", model_name)
-    model = UNet2DModelPL.load_from_checkpoint(
-        model_path, sample_size=hpms["image_size"]
-    )
+    model_path = os.path.join(_PROJECT_ROOT, model_path)
+    model = UNet2DModelPL.load_from_checkpoint(model_path)
     model = model.to(device)
     images = model.sample(
         batch_size=n,
-        seed=hpms["seed"],
-        num_inference_steps=hpms["num_inference_steps"],
+        seed=seed,
+        num_inference_steps=steps,
     )
     image_grid = make_grid(images, rows, cols)
     # image_grid.show()

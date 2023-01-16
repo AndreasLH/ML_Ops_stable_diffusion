@@ -33,13 +33,20 @@ def main(cfg):
 
     torch.manual_seed(seed)  # Set seed
 
-    path = os.path.join(_PROJECT_ROOT, "../drive/MyDrive/dtu_mlops_data/data/processed/train.pt")
+    path = os.path.join(_PROJECT_ROOT, hpms.datapath)
 
     model = UNet2DModelPL(image_size, learning_rate, hpms)
     model = model.to(device)
-    # logger = WandbLogger(name=name, project="mlopsproject21")
+    if hpms.wandb_log:
+        logger = WandbLogger(name=name, project="mlopsproject21")
+    else:
+        logger = False
+    if torch.cuda.is_available():
+        accelerator='gpu'
+    else:
+        accelerator='cpu'
     checkpoint_callback = ModelCheckpoint(
-        dirpath='models',
+        dirpath=hpms.output_dir,
         save_top_k=1,
         monitor="train_loss",
         mode="min",
@@ -49,8 +56,9 @@ def main(cfg):
     trainer = pl.Trainer(
         max_epochs=epochs,
         log_every_n_steps=log_frequency,
+        logger=logger,
         callbacks=[checkpoint_callback],
-        accelerator='gpu'
+        accelerator=accelerator
     )
     # todo: vi skal have en val dataloader som ikke bare er det samme som train dataloaderen
     dataloaders = {

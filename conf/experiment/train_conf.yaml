@@ -10,12 +10,13 @@ hyperparameters:
   save_image_epochs: 5 # 10
   save_model_epochs: 5 # 30
   mixed_precision: 'no'  # `no` for float32, `fp16` for automatic mixed precision
-  output_dir: 'ddpm-butterflies-128'  # the model namy locally and on the HF Hub
+  output_dir: '/gcs/butterfly_jar/model_best'
   seed: 123
   workers: 4 # Workers for training with pytorch lightning
   log_frequency: 2
   dataset_name: "huggan/smithsonian_butterflies_subset"
-  datapath: "../../data/processed/train.pt" # Hydra sets cwd to outputs logs folder
+  datapath: "data/processed/train.pt"
   num_inference_steps: 1000
-  wandb_log: True #maybe remove?
+  wandb_log: True
   experiment_name: "full-run-inception-score"
+
