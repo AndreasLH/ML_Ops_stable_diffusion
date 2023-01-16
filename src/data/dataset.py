@@ -16,6 +16,7 @@ class ButterflyDataset(Dataset):
         :return: length of dataset
         """
         return len(self.images)
+        # return 2
 
     def __getitem__(self, idx: int) -> torch.Tensor:
         """
