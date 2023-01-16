@@ -74,6 +74,7 @@ def eval2(model_name, steps=None, n_images=None, seed=0):
     model = UNet2DModelPL.load_from_checkpoint(
         model_path, sample_size=hpms["image_size"]
     )
+    model = model.to(device)
     images = model.sample(
         batch_size=n,
         seed=hpms["seed"],
