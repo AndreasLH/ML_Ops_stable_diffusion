@@ -4,9 +4,12 @@ import click
 import numpy as np
 import yaml
 from PIL import Image
+import torch
 
 from src import _PROJECT_ROOT
 from src.models.model import UNet2DModelPL
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 @click.command()
@@ -97,6 +100,7 @@ def eval_gcs(model_dir, steps=None, n_images=None, seed=0):
     model = UNet2DModelPL.load_from_checkpoint(
         model_path, sample_size=128
     )
+    model = model.to(device)
     images = model.sample(
         batch_size=n,
         seed=seed,
