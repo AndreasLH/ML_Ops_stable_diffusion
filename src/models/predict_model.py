@@ -47,7 +47,12 @@ def eval(model_dir, steps=None, n_images=None):
         save_point = f"{test_dir}/{os.path.basename(model_path)[:-5]}.png"
         image_grid.save(save_point)
         return save_point
-def eval2(model_dir, steps=None, n_images=None, seed=0):
+
+@click.command()
+@click.option("--model_dir", default="", help="model's directory")
+@click.option("--model_name", default="", help="model's directory")
+@click.option("--steps", default=3, help="model's directory")
+def eval2(model_dir, model_name, steps=None, n_images=None, seed=0):
     with open(
         os.path.join(_PROJECT_ROOT, model_dir, ".hydra", "config.yaml"), "r"
     ) as f:
@@ -63,7 +68,7 @@ def eval2(model_dir, steps=None, n_images=None, seed=0):
     assert root ** 2 == n, "eval_batch_size must be quadratic"
     rows, cols = root, root
 
-    model_path = os.path.join(_PROJECT_ROOT, "models", "best.ckpt")
+    model_path = os.path.join(_PROJECT_ROOT, "models", model_name)
     model = UNet2DModelPL.load_from_checkpoint(
         model_path, sample_size=hpms["image_size"]
     )
@@ -116,6 +121,7 @@ def make_grid(images, rows, cols):
 
 
 if __name__ == "__main__":
+    eval2()
     # evaluate()
-    eval2('outputs/2023-01-16/14-11-58')
+    # eval2('outputs/2023-01-16/14-11-58')
 
