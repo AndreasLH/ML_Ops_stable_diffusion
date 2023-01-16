@@ -11,6 +11,7 @@ from src import _PATH_DATA, _PROJECT_ROOT
 from src.data.dataset import ButterflyDataset, ValidationDataset
 from src.models.model import UNet2DModelPL
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 @hydra.main(
     version_base="1.2",
@@ -35,6 +36,7 @@ def main(cfg):
     path = os.path.join(_PROJECT_ROOT, "../drive/MyDrive/dtu_mlops_data/data/processed/train.pt")
 
     model = UNet2DModelPL(image_size, learning_rate, hpms)
+    model = model.to(device)
     # logger = WandbLogger(name=name, project="mlopsproject21")
     checkpoint_callback = ModelCheckpoint(
         dirpath='models',
