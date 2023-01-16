@@ -50,6 +50,7 @@ def main(cfg):
         max_epochs=epochs,
         log_every_n_steps=log_frequency,
         callbacks=[checkpoint_callback],
+        accelerator='gpu'
     )
     # todo: vi skal have en val dataloader som ikke bare er det samme som train dataloaderen
     dataloaders = {
