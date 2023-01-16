@@ -49,15 +49,14 @@ def eval(model_dir, steps=None, n_images=None):
         return save_point
 
 @click.command()
-@click.option("--model_dir", default="", help="model's directory")
 @click.option("--model_name", default="", help="model's directory")
 @click.option("--steps", default=3, help="model's directory")
-def eval2(model_dir, model_name, steps=None, n_images=None, seed=0):
+def eval2(model_name, steps=None, n_images=None, seed=0):
     with open(
-        os.path.join(_PROJECT_ROOT, model_dir, ".hydra", "config.yaml"), "r"
+        os.path.join(_PROJECT_ROOT, "conf", "experiment", "train_conf.yaml"), "r"
     ) as f:
         conf = yaml.safe_load(f)
-    hpms = conf["experiment"]["hyperparameters"]
+    hpms = conf["hyperparameters"]
     if steps is not None:
         hpms["num_inference_steps"] = steps
     if n_images is not None:
