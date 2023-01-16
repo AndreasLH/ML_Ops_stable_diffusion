@@ -8,12 +8,16 @@ from src.data.dataset import ButterflyDataset
 from src.models.train_model_PL import UNet2DModelPL
 from tests import _PATH_DATA
 
+
 class testClass():
     def __init__(self):
         self.eval_batch_size = 8
         self.seed = 123
+
+
 hpms = testClass()
 model = UNet2DModelPL(32, 1e-3, hpms)
+
 
 @pytest.mark.skipif(
     not os.path.exists(f"{_PATH_DATA}/processed"), reason="Data files not found"
