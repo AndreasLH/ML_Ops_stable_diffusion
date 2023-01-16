@@ -35,19 +35,18 @@ def main(cfg):
     path = os.path.join(_PATH_DATA, "processed/train.pt")
 
     model = UNet2DModelPL(image_size, learning_rate, hpms)
-    logger = WandbLogger(name=name, project="mlopsproject21")
+    # logger = WandbLogger(name=name, project="mlopsproject21")
     checkpoint_callback = ModelCheckpoint(
-        dirpath='/gcs/butterfly_jar/model_best',
+        dirpath='models',
         save_top_k=1,
-        monitor="inception score",
-        mode="max",
+        monitor="train_loss",
+        mode="min",
         every_n_epochs=1,
         filename="best",
     )
     trainer = pl.Trainer(
         max_epochs=epochs,
         log_every_n_steps=log_frequency,
-        logger=logger,
         callbacks=[checkpoint_callback],
     )
     # todo: vi skal have en val dataloader som ikke bare er det samme som train dataloaderen
