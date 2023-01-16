@@ -14,8 +14,8 @@ from torch.utils.data import DataLoader
 from torchmetrics.image.inception import InceptionScore
 from torchvision import transforms
 from tqdm.auto import tqdm
-
 import wandb
+
 from src.data.dataset import ButterflyDataset
 
 wandb.init(name="Yucheng", project="mlopsproject21")
