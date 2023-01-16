@@ -5,10 +5,10 @@ hyperparameters:
   validation_n_samples: 16
   num_epochs: 30
   gradient_accumulation_steps: 1
-  learning_rate: 1e-5
+  learning_rate: 1e-4
   lr_warmup_steps: 500
-  save_image_epochs: 1 # 10
-  save_model_epochs: 1 # 30
+  save_image_epochs: 5 # 10
+  save_model_epochs: 5 # 30
   mixed_precision: 'no'  # `no` for float32, `fp16` for automatic mixed precision
   output_dir: 'ddpm-butterflies-128'  # the model namy locally and on the HF Hub
   seed: 123
@@ -16,6 +16,6 @@ hyperparameters:
   log_frequency: 2
   dataset_name: "huggan/smithsonian_butterflies_subset"
   datapath: "../../data/processed/train.pt" # Hydra sets cwd to outputs logs folder
-  num_inference_steps: 2
+  num_inference_steps: 1000
   wandb_log: True #maybe remove?
   experiment_name: "full-run-inception-score"

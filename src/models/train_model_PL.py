@@ -11,6 +11,7 @@ from src import _PATH_DATA, _PROJECT_ROOT
 from src.data.dataset import ButterflyDataset, ValidationDataset
 from src.models.model import UNet2DModelPL
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 @hydra.main(
     version_base="1.2",
@@ -32,23 +33,24 @@ def main(cfg):
 
     torch.manual_seed(seed)  # Set seed
 
-    path = os.path.join(_PATH_DATA, "processed/train.pt")
+    path = os.path.join(_PROJECT_ROOT, "../drive/MyDrive/dtu_mlops_data/data/processed/train.pt")
 
     model = UNet2DModelPL(image_size, learning_rate, hpms)
-    logger = WandbLogger(name=name, project="mlopsproject21")
+    model = model.to(device)
+    # logger = WandbLogger(name=name, project="mlopsproject21")
     checkpoint_callback = ModelCheckpoint(
-        dirpath='/gcs/butterfly_jar/model_best',
+        dirpath='models',
         save_top_k=1,
-        monitor="inception score",
-        mode="max",
+        monitor="train_loss",
+        mode="min",
         every_n_epochs=1,
         filename="best",
     )
     trainer = pl.Trainer(
         max_epochs=epochs,
         log_every_n_steps=log_frequency,
-        logger=logger,
         callbacks=[checkpoint_callback],
+        accelerator='gpu'
     )
     # todo: vi skal have en val dataloader som ikke bare er det samme som train dataloaderen
     dataloaders = {
@@ -56,6 +58,7 @@ def main(cfg):
             dataset=ButterflyDataset(path=path),
             batch_size=batch_size,
             num_workers=workers,
+            shuffle=True
         ),
         "val": DataLoader(
             dataset=ValidationDataset(n_samples=validation_n_samples),
