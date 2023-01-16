@@ -58,6 +58,7 @@ def main(cfg):
             dataset=ButterflyDataset(path=path),
             batch_size=batch_size,
             num_workers=workers,
+            shuffle=True
         ),
         "val": DataLoader(
             dataset=ValidationDataset(n_samples=validation_n_samples),
