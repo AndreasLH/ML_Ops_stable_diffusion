@@ -104,7 +104,10 @@ class UNet2DModelPL(pl.LightningModule):
         return inception_mean
 
     def validation_step(self, batch: int, batch_idx: int) -> torch.Tensor:
-        images = self.sample(batch_size=self.hpms.eval_batch_size, num_inference_steps=self.hpms.num_inference_steps)
+        images = self.sample(
+            batch_size=self.hpms.eval_batch_size,
+            num_inference_steps=self.hpms.num_inference_steps,
+        )
 
         # transform PIL Image to tensors to compute inception score
         transform = transforms.Compose([transforms.PILToTensor()])

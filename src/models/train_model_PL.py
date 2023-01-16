@@ -11,7 +11,8 @@ from src import _PATH_DATA, _PROJECT_ROOT
 from src.data.dataset import ButterflyDataset, ValidationDataset
 from src.models.model import UNet2DModelPL
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 @hydra.main(
     version_base="1.2",
@@ -42,9 +43,9 @@ def main(cfg):
     else:
         logger = False
     if torch.cuda.is_available():
-        accelerator='gpu'
+        accelerator = "gpu"
     else:
-        accelerator='cpu'
+        accelerator = "cpu"
     checkpoint_callback = ModelCheckpoint(
         dirpath=hpms.output_dir,
         save_top_k=1,
@@ -58,7 +59,7 @@ def main(cfg):
         log_every_n_steps=log_frequency,
         logger=logger,
         callbacks=[checkpoint_callback],
-        accelerator=accelerator
+        accelerator=accelerator,
     )
     # todo: vi skal have en val dataloader som ikke bare er det samme som train dataloaderen
     dataloaders = {
@@ -66,7 +67,7 @@ def main(cfg):
             dataset=ButterflyDataset(path=path),
             batch_size=batch_size,
             num_workers=workers,
-            shuffle=True
+            shuffle=True,
         ),
         "val": DataLoader(
             dataset=ValidationDataset(n_samples=validation_n_samples),

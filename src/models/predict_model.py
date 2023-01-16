@@ -2,14 +2,14 @@ import os
 
 import click
 import numpy as np
+import torch
 import yaml
 from PIL import Image
-import torch
 
 from src import _PROJECT_ROOT
 from src.models.model import UNet2DModelPL
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 @click.command()
@@ -51,6 +51,7 @@ def eval(model_dir, steps=None, n_images=None):
         image_grid.save(save_point)
         return save_point
 
+
 @click.command()
 @click.option("--model_path", default="", help="model's path relative to root")
 @click.option("--steps", default=3, help="model's directory")
@@ -59,7 +60,7 @@ def eval(model_dir, steps=None, n_images=None):
 @click.option("--seed", default=213, help="number of images generated")
 def eval2(model_path, steps, save_path, n, seed):
     root = int(np.sqrt(n))
-    assert root ** 2 == n, "n must be quadratic"
+    assert root**2 == n, "n must be quadratic"
     rows, cols = root, root
 
     model_path = os.path.join(_PROJECT_ROOT, model_path)
@@ -74,8 +75,6 @@ def eval2(model_path, steps, save_path, n, seed):
     image_grid.save(save_path)
 
 
-
-
 def eval_gcs(model_dir, steps=None, n_images=None, seed=0):
 
     n = n_images
@@ -84,9 +83,7 @@ def eval_gcs(model_dir, steps=None, n_images=None, seed=0):
     rows, cols = root, root
 
     model_path = model_dir
-    model = UNet2DModelPL.load_from_checkpoint(
-        model_path, sample_size=128
-    )
+    model = UNet2DModelPL.load_from_checkpoint(model_path, sample_size=128)
     model = model.to(device)
     images = model.sample(
         batch_size=n,
@@ -114,4 +111,3 @@ if __name__ == "__main__":
     eval2()
     # evaluate()
     # eval2('outputs/2023-01-16/14-11-58')
-

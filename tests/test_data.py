@@ -23,8 +23,8 @@ def test_data_length():
 )  # skip this test if dir data/processed does not exist
 def test_data_shape():
     dataset = ButterflyDataset(os.path.join(_PATH_DATA, "processed/train.pt"))
-    assert (
-        torch.all(torch.tensor([i["images"].shape == (3, 128, 128) for i in dataset]))
+    assert torch.all(
+        torch.tensor([i["images"].shape == (3, 128, 128) for i in dataset])
     ), "Samples in the dataset does not have the correct shape (3, 128, 128)"
     # assert all images have shape (3, 128, 128) (channel, width, height)
 
