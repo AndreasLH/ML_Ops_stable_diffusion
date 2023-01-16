@@ -1,7 +1,9 @@
 outputs/
 wandb/
 samples/
+models/
 checkpoints/
+!src/models/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

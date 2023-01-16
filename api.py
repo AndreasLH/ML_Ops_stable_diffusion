@@ -3,7 +3,7 @@ from http import HTTPStatus
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 
-from src.models.predict_model import eval
+from src.models.predict_model import eval_gcs
 
 # from fastapi.templating import Jinja2Templates
 # templates = Jinja2Templates(directory="templates/")
@@ -22,23 +22,23 @@ def read_item(item_id: int):
     return {"item_id": item_id}
 
 
-# http://127.0.0.1:8000/generate_sample/?steps=2&n_images=16
+# http://127.0.0.1:8000/generate_sample/?steps=1&n_images=1
 
 
 @app.get("/generate_sample/")
-def generate_sample(steps: int, n_images: int):
+def generate_sample(steps: int, n_images: int, seed: int = 0):
     try:
-        save_point = eval("outputs/2023-01-13/11-41-12", steps, n_images)
+        image_grid = eval_gcs("best.ckpt", steps, n_images, seed)
     except AssertionError as message:
         response = {
             "message": "error " + str(message),
             "status-code": HTTPStatus.BAD_REQUEST,
         }
         return response
-    response = {
-        # "input": image,
-        "output": FileResponse(save_point),
-        "message": HTTPStatus.OK.phrase,
-        "status-code": HTTPStatus.OK,
-    }
-    return response
+    # response = {
+    #     # "input": image,
+    #     "output": FileResponse(file),
+    #     "message": HTTPStatus.OK.phrase,
+    #     "status-code": HTTPStatus.OK,
+    # }
+    return FileResponse(image_grid)
