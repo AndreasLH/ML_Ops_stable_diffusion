@@ -14,8 +14,8 @@ from torch.utils.data import DataLoader
 from torchmetrics.image.inception import InceptionScore
 from torchvision import transforms
 from tqdm.auto import tqdm
-import wandb
 
+import wandb
 from src.data.dataset import ButterflyDataset
 
 wandb.init(name="Yucheng", project="mlopsproject21")
@@ -88,7 +88,7 @@ def main(cfg: dict) -> None:
         num_training_steps=(len(train_dataloader) * config.num_epochs),
     )
 
-    # helper functions - import from somewhere else?
+    # helper functions - importt from somewhere else?
 
     def compute_inceptionscore(batch: torch.Tensor) -> torch.Tensor:
         """
