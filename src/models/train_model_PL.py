@@ -7,7 +7,7 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import WandbLogger
 from torch.utils.data import DataLoader
 
-from src import _PATH_DATA, _PROJECT_ROOT
+from src import _PROJECT_ROOT
 from src.data.dataset import ButterflyDataset, ValidationDataset
 from src.models.model import UNet2DModelPL
 
