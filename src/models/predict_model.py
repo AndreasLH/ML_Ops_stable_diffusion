@@ -2,9 +2,9 @@ import os
 
 import click
 import numpy as np
+import torch
 import yaml
 from PIL import Image
-import torch
 
 from src import _PROJECT_ROOT
 from src.models.model import UNet2DModelPL
