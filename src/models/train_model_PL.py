@@ -58,7 +58,7 @@ def main(cfg):
         max_epochs=epochs,
         log_every_n_steps=log_frequency,
         logger=logger,
-        callbacks=[checkpoint_callback, ModelPruning("l1_unstructured", amount=0.5)],
+        callbacks=[checkpoint_callback],
         accelerator=accelerator,
         check_val_every_n_epoch=hpms.check_val_every_n_epoch,
         num_sanity_val_steps=0,
