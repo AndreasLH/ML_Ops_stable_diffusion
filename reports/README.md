@@ -366,7 +366,7 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 17 fill here ---
+We used the following services: Bucket, cloud build, Vertex AI, Cloud Run, and Monitoring. Bucket is a cloud storage solution and is used for storing our data, cloud build is a service that builds docker containers for us, it is used for continuously building 2 docker containers, one used for serving the API, as well as one used for training the model. Vertex AI is the service that we used to train the model; it is supposed to be a more specialised compute engine specifically for AI tasks. Cloud run is used for hosting the API through a fastapi API, Cloud run is a platform as a service (PaaS) it gave us the necessary control over our prediction app to both load the model and save the generated data for monitoring. Monitoring was used to set up monitoring rules such that we can get warnings on a slack server if things are wrong.
 
 ### Question 18
 
@@ -381,7 +381,7 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 18 fill here ---
+We did not use the compute engine, but instead used the Vertex AI service. We used this service to train our model with a container specified in the `Dockerfile` Dockerfile and the cloud run script specified in `src/models/config_cpu.yaml`. We used an instance with the hardware specified as `n1-highmem-16` which gives 16 cores and approx. 100GB memory for training. Using this configuration with could reasonably train the model in about 12 hours. However, this configuration is far from ideal, initially we started with the `n1-highmem-2` config which led to us run out of memory, so we just chose an instance with more. Model training with this instance was still slow, so an instance with a GPU (like the `a2-highgpu-1g`) would really be desired, but we were unable to use one because we were afraid that it would eat up all our credits.
 
 ### Question 19
 
@@ -390,7 +390,11 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 19 fill here ---
+Overview of the buckets the current dataset are the new generated images, the model_best is where we save the generated model.
+
+![Overview](figures/bucket1.png)
+Main dataset part, approx. 200 mb
+![main data](figures/bucket2.png)
 
 ### Question 20
 
@@ -399,7 +403,7 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 20 fill here ---
+![container_registry](figures/container_registry.png)
 
 ### Question 21
 
@@ -408,7 +412,7 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 21 fill here ---
+![container_registry](figures/cloud_build.png)
 
 ### Question 22
 
@@ -424,7 +428,14 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 22 fill here ---
+For deployment for wrapped our prediction model in a fastapi app that we host on google cloud run. First, we tried to serve the API locally using the uvicorn module and once that worked, we pushed it to a container using the `fastapi_app` dockerfile. In the cloud we had many problems with accessing the gcs file location and ended up with a hacky solution where we use curl in the dockerfile to get the model. The API can be either access by going to
+
+`https://generate-images-api-pcx2povw6a-ew.a.run.app/generate_sample/?steps=1&n_images=1&seed=0`
+or use a curl command to download a generated image directly
+
+`curl -X 'GET'   'https://generate-images-api-pcx2povw6a-ew.a.run.app/generate_sample/?steps=1&n_images=1&seed=0'   -H 'accept: application/json' --output "image.png"`
+
+The parameters are given as `steps=1&n_images=1&seed=0`, which are all ints. To get a nice output the steps need to be at least 500, ideally 1000. However, since the cloud run service on uses CPU, it takes around 15-30 min to generate an image, which is far from usable. Furthermore, we had to increase the memory allowance of the container to 4gb to avoid running out of memory.
 
 ### Question 23
 
@@ -439,7 +450,7 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 23 fill here ---
+Every time a user asked for a request, we saved the generate image which is saved to a current_data folder. 
 
 ### Question 24
 
@@ -453,7 +464,7 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 24 fill here ---
+For the main part of the project used about 25$, however we also held back a lot to avoid running out of credits. 4 out 5 group members had accidentally spent all of their credits before the project started, so we were a bit wary. The service that had by far the highest spending was the Vertex AI service, which we used for training.
 
 ## Overall discussion of project
 
