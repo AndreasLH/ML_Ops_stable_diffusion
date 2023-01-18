@@ -41,6 +41,8 @@ evaluate:
 gcloud_train:
 	gcloud ai custom-jobs create --region=europe-west1 --display-name=test-run --config=src/models/config_cpu.yaml
 
+run_api:
+	uvicorn --reload --port 8000 api:app
 
 ## Lint using flake8
 lint:
