@@ -22,10 +22,9 @@ tqdm==4.64.1
 diffusers[training]==0.11.1
 torchmetrics==0.11.0
 torch-fidelity==0.3.0
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==1.13.1
-torchaudio==0.13.1
-torchvision==0.14.1
+torch
+torchaudio
+torchvision
 hydra-core==1.3.1
 wandb==0.13.7
 dvc==2.38.1
@@ -35,6 +34,4 @@ tensorboard==2.11.0
 snakeviz==2.1.1
 pytorch_lightning==1.8.6
 google-api-python-client
-PyYAML==5.4
 protobuf==3.20
-google.cloud

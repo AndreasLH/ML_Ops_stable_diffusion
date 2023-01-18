@@ -52,36 +52,36 @@ end of the project.
 
 * [x] Create a git repository
 * [x] Make sure that all team members have write access to the github repository
-* [ ] Create a dedicated environment for you project to keep track of your packages
+* [x] Create a dedicated environment for you project to keep track of your packages
 * [x] Create the initial file structure using cookiecutter
-* [ ] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
-* [ ] Add a model file and a training script and get that running
-* [ ] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
-* [ ] Remember to comply with good coding practices (`pep8`) while doing the project
-* [ ] Do a bit of code typing and remember to document essential parts of your code
-* [ ] Setup version control for your data or part of your data
-* [ ] Construct one or multiple docker files for your code
-* [ ] Build the docker files locally and make sure they work as intended
-* [ ] Write one or multiple configurations files for your experiments
-* [ ] Used Hydra to load the configurations and manage your hyperparameters
+* [x] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
+* [x] Add a model file and a training script and get that running
+* [x] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
+* [x] Remember to comply with good coding practices (`pep8`) while doing the project
+* [x] Do a bit of code typing and remember to document essential parts of your code
+* [x] Setup version control for your data or part of your data
+* [x] Construct one or multiple docker files for your code
+* [x] Build the docker files locally and make sure they work as intended
+* [x] Write one or multiple configurations files for your experiments
+* [x] Used Hydra to load the configurations and manage your hyperparameters
 * [ ] When you have something that works somewhat, remember at some point to to some profiling and see if
       you can optimize your code
-* [ ] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
+* [x] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
       consider running a hyperparameter optimization sweep.
-* [ ] Use Pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code
+* [x] Use Pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code
 
 ### Week 2
 
-* [ ] Write unit tests related to the data part of your code
-* [ ] Write unit tests related to model construction and or model training
-* [ ] Calculate the coverage.
-* [ ] Get some continuous integration running on the github repository
-* [ ] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
-* [ ] Create a trigger workflow for automatically building your docker images
-* [ ] Get your model training in GCP using either the Engine or Vertex AI
-* [ ] Create a FastAPI application that can do inference using your model
-* [ ] If applicable, consider deploying the model locally using torchserve
-* [ ] Deploy your model in GCP using either Functions or Run as the backend
+* [x] Write unit tests related to the data part of your code
+* [x] Write unit tests related to model construction and or model training
+* [x] Calculate the coverage.
+* [x] Get some continuous integration running on the github repository
+* [x] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
+* [x] Create a trigger workflow for automatically building your docker images
+* [x] Get your model training in GCP using either the Engine or Vertex AI
+* [x] Create a FastAPI application that can do inference using your model
+* [x] If applicable, consider deploying the model locally using torchserve
+* [x] Deploy your model in GCP using either Functions or Run as the backend
 
 ### Week 3
 
@@ -105,7 +105,7 @@ end of the project.
 >
 > Answer:
 
---- question 1 fill here ---
+Awesome 21
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -116,7 +116,7 @@ end of the project.
 >
 > Answer:
 
---- question 2 fill here ---
+s194235, s194238, s194241, s194255, s194257
 
 ### Question 3
 > **What framework did you choose to work with and did it help you complete the project?**
@@ -129,7 +129,7 @@ end of the project.
 >
 > Answer:
 
---- question 3 fill here ---
+We used the Diffusers framework by Huggingface in our project to easily implement a denoising diffusion probabilistic model (DDPM). From the diffusers package, we used the DDPMScheduler function to gradually apply noise to an image, the DDPMPipeline function to denoise encoded images from the model, and imported a 2D U-Net model. 
 
 ## Coding environment
 
@@ -148,7 +148,8 @@ end of the project.
 >
 > Answer:
 
---- question 4 fill here ---
+We have a Conda virtual envrionment specifically for the project and use a requirements.txt file to keep track of dependencies. The requirements.txt file was generated by the cookie cutter structure and updated by running the terminal command "pip list --format=freeze > requirements.txt". The requirements.txt file contains all the packages and dependencies, as well as a specific version if required. To get a complete copy of our development environment, one can simply run the following commands: 
+"conda create --name MLOps" to create the virtual environment, "conda activate MLOps" to activate the virtual environment, and then "pip install requirements.txt" to install the necessary packages. Additionally, a few other requirements files exist to create a cuda enabled environment.
 
 ### Question 5
 
@@ -163,7 +164,7 @@ end of the project.
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+Using the cookiecutter template we decided to not fill in the only the data/processed folder, since the script we are using has built in functionality to download the raw data from huggingface. The docs have not been filled, but we do know that they can be made by running `make html` from within `docs`. Notebooks, visualization, and references were untouched. The best saved models were saved under the models folder, alongside with the respective log files generated by hydra such that we could trace back the configuration that the model was trained with. A folder called samples was added to save all the outputs from the trained models. The conf folder was added to keep our hydra config files. The tests folder was added to contain all the tests we have written in `pytest`.
 
 ### Question 6
 
@@ -174,7 +175,14 @@ end of the project.
 >
 > Answer:
 
---- question 6 fill here ---
+We implemented the following flake8 settings, since the default settings were simply too strict for us. Although, we realise that the line length is probably a bit too relaxed. We had to also pass the tests for our CI/CD pipelines.
+```ini
+max-line-length = 170
+max-complexity = 15
+--ignore = E203, E266, E501, W503
+exclude = tests/test_model.py
+```
+Furthermore, we implemented isort and black as a code formatters. These concepts matter in larger projects because each of us have our own code style, which might be confusing for the others. By using these formatters, we ensure that the code is standardised for everyone.
 
 ## Version control
 
@@ -238,7 +246,7 @@ Most of the group members created their own branches as to work independently fr
 >
 > Answer:
 
---- question 10 fill here ---
+We used DVC for managing the data in our project, initially we had the data stored on Google Drive, but later transferred it to a Google cloud bucket. This is made is super easy for all of our group members to download the data. We did quite a lot of pre-processing on our data: rescaling, random horizontal flip, and normalisation among other things. In the end, we ended up not actually using any of the version control part of DVC, since we never changed the pre-processing pipeline. project we implemented here was one that we knew would work beforehand. However, we could easily have used the version control if we had decided to make any changes to our pre-processing pipeline, as these kinds of operations do have a major influence on the performance of the model.
 
 ### Question 11
 
@@ -254,7 +262,13 @@ Most of the group members created their own branches as to work independently fr
 >
 > Answer:
 
---- question 11 fill here ---
+In total we have created 4 different CI runs using the GitHub actions framework:
+
+- Pytest
+- isort
+- flake8
+- code coverage
+
 
 ## Running code and tracking experiments
 
@@ -273,7 +287,7 @@ Most of the group members created their own branches as to work independently fr
 >
 > Answer:
 
---- question 12 fill here ---
+For configuration of the experiments we used [Hydra](https://hydra.cc/) as our tool to manage the configuration of the various parameters of the model. To train our model we call `python src/models/train_model_PL.py`. This will automatically call the training script with the relevant parameters and save everything in an output folder `ouputs/<date>/<time>`, this made it easy for us to remember which settings each experiment was run with. Additionally, we also implemted some path information in this files which made it easier for us to switch between training locally, for testing, and on the cloud.
 
 ### Question 13
 
@@ -352,7 +366,7 @@ All group members used the built in debugging tool in their respective IDE's (Vi
 >
 > Answer:
 
---- question 17 fill here ---
+We used the following services: Bucket, cloud build, Vertex AI, Cloud Run, and Monitoring. Bucket is a cloud storage solution and is used for storing our data, cloud build is a service that builds docker containers for us, it is used for continuously building 2 docker containers, one used for serving the API, as well as one used for training the model. Vertex AI is the service that we used to train the model; it is supposed to be a more specialised compute engine specifically for AI tasks. Cloud run is used for hosting the API through a fastapi API, Cloud run is a platform as a service (PaaS) it gave us the necessary control over our prediction app to both load the model and save the generated data for monitoring. Monitoring was used to set up monitoring rules such that we can get warnings on a slack server if things are wrong.
 
 ### Question 18
 
@@ -367,7 +381,7 @@ All group members used the built in debugging tool in their respective IDE's (Vi
 >
 > Answer:
 
---- question 18 fill here ---
+We did not use the compute engine, but instead used the Vertex AI service. We used this service to train our model with a container specified in the `Dockerfile` Dockerfile and the cloud run script specified in `src/models/config_cpu.yaml`. We used an instance with the hardware specified as `n1-highmem-16` which gives 16 cores and approx. 100GB memory for training. Using this configuration with could reasonably train the model in about 12 hours. However, this configuration is far from ideal, initially we started with the `n1-highmem-2` config which led to us run out of memory, so we just chose an instance with more. Model training with this instance was still slow, so an instance with a GPU (like the `a2-highgpu-1g`) would really be desired, but we were unable to use one because we were afraid that it would eat up all our credits.
 
 ### Question 19
 
@@ -376,7 +390,11 @@ All group members used the built in debugging tool in their respective IDE's (Vi
 >
 > Answer:
 
---- question 19 fill here ---
+Overview of the buckets the current dataset are the new generated images, the model_best is where we save the generated model.
+
+![Overview](figures/bucket1.png)
+Main dataset part, approx. 200 mb
+![main data](figures/bucket2.png)
 
 ### Question 20
 
@@ -385,7 +403,7 @@ All group members used the built in debugging tool in their respective IDE's (Vi
 >
 > Answer:
 
---- question 20 fill here ---
+![container_registry](figures/container_registry.png)
 
 ### Question 21
 
@@ -394,7 +412,7 @@ All group members used the built in debugging tool in their respective IDE's (Vi
 >
 > Answer:
 
---- question 21 fill here ---
+![container_registry](figures/cloud_build.png)
 
 ### Question 22
 
@@ -410,7 +428,14 @@ All group members used the built in debugging tool in their respective IDE's (Vi
 >
 > Answer:
 
---- question 22 fill here ---
+For deployment for wrapped our prediction model in a fastapi app that we host on google cloud run. First, we tried to serve the API locally using the uvicorn module and once that worked, we pushed it to a container using the `fastapi_app` dockerfile. In the cloud we had many problems with accessing the gcs file location and ended up with a hacky solution where we use curl in the dockerfile to get the model. The API can be either access by going to
+
+`https://generate-images-api-pcx2povw6a-ew.a.run.app/generate_sample/?steps=1&n_images=1&seed=0`
+or use a curl command to download a generated image directly
+
+`curl -X 'GET'   'https://generate-images-api-pcx2povw6a-ew.a.run.app/generate_sample/?steps=1&n_images=1&seed=0'   -H 'accept: application/json' --output "image.png"`
+
+The parameters are given as `steps=1&n_images=1&seed=0`, which are all ints. To get a nice output the steps need to be at least 500, ideally 1000. However, since the cloud run service on uses CPU, it takes around 15-30 min to generate an image, which is far from usable. Furthermore, we had to increase the memory allowance of the container to 4gb to avoid running out of memory.
 
 ### Question 23
 
@@ -425,7 +450,7 @@ All group members used the built in debugging tool in their respective IDE's (Vi
 >
 > Answer:
 
---- question 23 fill here ---
+Every time a user asked for a request, we saved the generate image which is saved to a current_data folder. 
 
 ### Question 24
 
@@ -439,7 +464,7 @@ All group members used the built in debugging tool in their respective IDE's (Vi
 >
 > Answer:
 
---- question 24 fill here ---
+For the main part of the project used about 25$, however we also held back a lot to avoid running out of credits. 4 out 5 group members had accidentally spent all of their credits before the project started, so we were a bit wary. The service that had by far the highest spending was the Vertex AI service, which we used for training.
 
 ## Overall discussion of project
 

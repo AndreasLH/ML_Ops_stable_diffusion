@@ -1,57 +1,109 @@
-import torch
-import hydra
-import logging
 import os
-import wandb
+
+import click
 import numpy as np
-from hydra.utils import get_original_cwd
-
-from omegaconf import OmegaConf
-
-from src.data.dataloader import ButterflyDataloader
-from src.models.model import UNet2DModelPL
+import torch
+import yaml
 from PIL import Image
-from diffusers import DDPMPipeline
-from diffusers import DDPMScheduler
 
-noise_scheduler = DDPMScheduler(num_train_timesteps=1000)
+from src import _PROJECT_ROOT
+from src.models.model import UNet2DModelPL
 
-log = logging.getLogger(__name__)
-# wandb.init(project='Butterflies')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# python src/models/predict_model.py hydra.job.chdir=True
 
-@hydra.main(version_base=None, config_path="../../conf", config_name="config.yaml")
-def evaluate(config):
-    # Sample some images from random noise (this is the backward diffusion process).
-    # The default pipeline output type is `List[PIL.Image]`
-    log.info(f"configuration: \n{OmegaConf.to_yaml(config)}")
-    config = config.experiment
-    model_checkpoint =  get_original_cwd()+"/models/model.ckpt"
-    model = UNet2DModelPL()
-    # state_dict = torch.load(model_checkpoint, map_location=torch.device('cpu'))
-    # model.load_state_dict(state_dict)
-# C:\Users\andre\OneDriveDTU\MLops 02476\ML_Ops_stable_diffusion\models\lightning_logs\version_0\checkpoints\epoch=2-step=30.ckpt
-    model = UNet2DModelPL.load_from_checkpoint(model_checkpoint)
-    model.eval()
+@click.command()
+@click.option("--model_dir", default="", help="model's directory")
+def evaluate(model_dir):
+    eval(model_dir)
 
-    images = model.sample(config.hparams.eval_batch_size, config.hparams.seed)
 
-    # Make a grid out of the images
-    image_grid = make_grid(images, rows=4, cols=4)
+def eval(model_dir, steps=None, n_images=None):
+    with open(
+        os.path.join(_PROJECT_ROOT, model_dir, ".hydra", "config.yaml"), "r"
+    ) as f:
+        conf = yaml.safe_load(f)
+    hpms = conf["experiment"]["hyperparameters"]
+    if steps is not None:
+        hpms["num_inference_steps"] = steps
+    if n_images is not None:
+        hpms["eval_batch_size"] = n_images
 
-    # Save the images
-    test_dir = os.path.join(config.hparams.output_dir, "samples")
-    os.makedirs(test_dir, exist_ok=True)
-    image_grid.save(f"{test_dir}/hej.png")
+    for checkpoint in os.listdir(os.path.join(_PROJECT_ROOT, model_dir, "checkpoints")):
+        n = hpms["eval_batch_size"]
+        root = int(np.sqrt(n))
+        assert root**2 == n, "eval_batch_size must be quadratic"
+        rows, cols = root, root
+
+        model_path = os.path.join(_PROJECT_ROOT, model_dir, "checkpoints", checkpoint)
+        model = UNet2DModelPL.load_from_checkpoint(
+            model_path, sample_size=hpms["image_size"]
+        )
+        images = model.sample(
+            batch_size=n,
+            seed=hpms["seed"],
+            num_inference_steps=hpms["num_inference_steps"],
+        )
+        image_grid = make_grid(images, rows, cols)
+        test_dir = os.path.join(_PROJECT_ROOT, "samples")
+        os.makedirs(test_dir, exist_ok=True)
+        save_point = f"{test_dir}/{os.path.basename(model_path)[:-5]}.png"
+        image_grid.save(save_point)
+        return save_point
+
+
+@click.command()
+@click.option("--model_path", default="", help="model's path relative to root")
+@click.option("--steps", default=3, help="model's directory")
+@click.option("--save_path", default="", help="where to save output")
+@click.option("--n", default=16, help="number of images generated")
+@click.option("--seed", default=213, help="number of images generated")
+def eval2(model_path, steps, save_path, n, seed):
+    root = int(np.sqrt(n))
+    assert root**2 == n, "n must be quadratic"
+    rows, cols = root, root
+
+    model_path = os.path.join(_PROJECT_ROOT, model_path)
+    model = UNet2DModelPL.load_from_checkpoint(model_path)
+    model = model.to(device)
+    images = model.sample(
+        batch_size=n,
+        seed=seed,
+        num_inference_steps=steps,
+    )
+    image_grid = make_grid(images, rows, cols)
+    image_grid.save(save_path)
+
+
+def eval_gcs(model_dir, steps=None, n_images=None, seed=0):
+    n = n_images
+    root = int(np.sqrt(n))
+    assert root**2 == n, "eval_batch_size must be quadratic"
+    rows, cols = root, root
+
+    model_path = model_dir
+    model = UNet2DModelPL.load_from_checkpoint(model_path, sample_size=128)
+    model = model.to(device)
+    images = model.sample(
+        batch_size=n,
+        seed=seed,
+        num_inference_steps=steps,
+    )
+    image_grid = make_grid(images, rows, cols)
+
+    return image_grid
 
 
 def make_grid(images, rows, cols):
     w, h = images[0].size
-    grid = Image.new('RGB', size=(cols*w, rows*h))
+
+    grid = Image.new("RGB", size=(cols * w, rows * h))
     for i, image in enumerate(images):
-        grid.paste(image, box=(i%cols*w, i//cols*h))
+        grid.paste(image, box=(i % cols * w, i // cols * h))
     return grid
 
+
 if __name__ == "__main__":
-    evaluate()
+    eval2()
+    # evaluate()
+    # eval2('outputs/2023-01-16/14-11-58')
