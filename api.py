@@ -43,12 +43,11 @@ def generate_sample(steps: int, n_images: int, seed: int = 0):
     #     "message": HTTPStatus.OK.phrase,
     #     "status-code": HTTPStatus.OK,
     # }
-    test_dir = "/gcs/butterfly_jar/current_data"
+    test_dir = "gcs/butterfly_jar/current_data"
     os.makedirs(test_dir, exist_ok=True)
     save_point = test_dir+f"/image_grid_{steps}_{n_images}_{seed}.png"
     image_grid.save(save_point)
     with open(save_point, "wb") as f:
         image_grid.save(f)
-    with open(save_point, "wb") as f:
-        pickle.dump(image_grid, f)
+        print("saved image at " + save_point)
     return FileResponse(save_point)
