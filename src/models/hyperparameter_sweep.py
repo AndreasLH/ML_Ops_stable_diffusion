@@ -1,14 +1,14 @@
 import os
 
 import optuna
+import pytorch_lightning as pl
 import torch
 import yaml
-import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
 from torch.utils.data import DataLoader
 
-from src.data.dataset import ButterflyDataset, ValidationDataset
 from src import _PROJECT_ROOT
+from src.data.dataset import ButterflyDataset, ValidationDataset
 from src.models.model_sweep import UNet2DModelPL
 
 accelerator = "cpu"
