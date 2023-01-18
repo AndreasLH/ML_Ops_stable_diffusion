@@ -1,19 +1,21 @@
-import evidently
-from src.data.dataset import ButterflyDataset
-from torch.utils.data import Subset, DataLoader, Dataset
-from transformers import CLIPProcessor, CLIPModel
-import random
-import numpy as np
-from tqdm import tqdm
-import torch
-import pandas as pd
-import os
-from src import _PROJECT_ROOT
-from PIL import Image
-from torchvision import transforms
-from evidently.report import Report
-from evidently.metric_preset import DataDriftPreset
 import click
+import os
+import random
+
+import evidently
+import numpy as np
+import pandas as pd
+import torch
+from evidently.metric_preset import DataDriftPreset
+from evidently.report import Report
+from PIL import Image
+from torch.utils.data import DataLoader, Dataset, Subset
+from torchvision import transforms
+from tqdm import tqdm
+from transformers import CLIPModel, CLIPProcessor
+
+from src import _PROJECT_ROOT
+from src.data.dataset import ButterflyDataset
 
 n_subsample = 2
 reference_data_path = "data/processed/train.pt"

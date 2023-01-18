@@ -4,6 +4,7 @@ samples/
 models/
 checkpoints/
 !src/models/
+*.ckpt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
