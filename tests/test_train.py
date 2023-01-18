@@ -13,6 +13,7 @@ class testClass:
     def __init__(self):
         self.eval_batch_size = 8
         self.seed = 123
+        self.num_inference_steps = 2
 
 
 hpms = testClass()
