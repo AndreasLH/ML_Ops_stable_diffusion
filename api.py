@@ -1,5 +1,5 @@
 import os
-import pickle
+from google.cloud import storage 
 from http import HTTPStatus
 
 from fastapi import FastAPI
@@ -7,9 +7,11 @@ from fastapi.responses import FileResponse
 
 from src.models.predict_model import eval_gcs
 
-# from fastapi.templating import Jinja2Templates
-# templates = Jinja2Templates(directory="templates/")
+# Create a client
+client = storage.Client()
 
+# Get the bucket
+bucket = client.bucket("butterfly_jar")
 
 app = FastAPI()
 
@@ -37,18 +39,13 @@ def generate_sample(steps: int, n_images: int, seed: int = 0):
             "status-code": HTTPStatus.BAD_REQUEST,
         }
         return response
-    # response = {
-    #     # "input": image,
-    #     "output": FileResponse(file),
-    #     "message": HTTPStatus.OK.phrase,
-    #     "status-code": HTTPStatus.OK,
-    # }
-    test_dir = "/gcs/butterfly_jar/current_data"
+
+    test_dir = "gcs/butterfly_jar/current_data"
     os.makedirs(test_dir, exist_ok=True)
     save_point = test_dir+f"/image_grid_{steps}_{n_images}_{seed}.png"
     image_grid.save(save_point)
-    with open(save_point, "wb") as f:
-        image_grid.save(f)
-    with open(save_point, "wb") as f:
-        pickle.dump(image_grid, f)
+    # Create a blob from a file-like object
+    blob = bucket.blob("current_data"+f"/image_grid_{steps}_{n_images}_{seed}.png")
+    # Upload the file
+    blob.upload_from_filename(save_point)
     return FileResponse(save_point)

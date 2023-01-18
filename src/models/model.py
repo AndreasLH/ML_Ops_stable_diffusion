@@ -104,21 +104,22 @@ class UNet2DModelPL(pl.LightningModule):
         return inception_mean
 
     def validation_step(self, batch: int, batch_idx: int) -> torch.Tensor:
-        images = self.sample(
-            batch_size=self.hpms.eval_batch_size,
-            num_inference_steps=self.hpms.num_inference_steps,
-        )
+        with torch.no_grad():
+            images = self.sample(
+                batch_size=self.hpms.eval_batch_size,
+                num_inference_steps=self.hpms.num_inference_steps,
+            )
 
-        # transform PIL Image to tensors to compute inception score
-        transform = transforms.Compose([transforms.PILToTensor()])
-        images_as_tensors = torch.stack([transform(i) for i in images])
+            # transform PIL Image to tensors to compute inception score
+            transform = transforms.Compose([transforms.PILToTensor()])
+            images_as_tensors = torch.stack([transform(i) for i in images])
 
-        inception_score = self.compute_inceptionscore(images_as_tensors)
+            inception_score = self.compute_inceptionscore(images_as_tensors)
 
-        # log inception score
-        self.log("inception score", inception_score)
+            # log inception score
+            self.log("inception score", inception_score)
 
-        return inception_score
+            return inception_score
 
     def configure_optimizers(self):
         return torch.optim.AdamW(
