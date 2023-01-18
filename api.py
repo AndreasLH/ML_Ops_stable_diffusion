@@ -1,4 +1,5 @@
 import os
+import pickle
 from http import HTTPStatus
 
 from fastapi import FastAPI
@@ -46,5 +47,8 @@ def generate_sample(steps: int, n_images: int, seed: int = 0):
     os.makedirs(test_dir, exist_ok=True)
     save_point = test_dir+f"/image_grid_{steps}_{n_images}_{seed}.png"
     image_grid.save(save_point)
-
-    return FileResponse(image_grid)
+    with open(save_point, "wb") as f:
+        image_grid.save(f)
+    with open(save_point, "wb") as f:
+        pickle.dump(image_grid, f)
+    return FileResponse(save_point)
