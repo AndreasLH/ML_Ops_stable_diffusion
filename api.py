@@ -1,9 +1,9 @@
 import os
-from google.cloud import storage 
 from http import HTTPStatus
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from google.cloud import storage
 
 from src.models.predict_model import eval_gcs
 
@@ -42,10 +42,10 @@ def generate_sample(steps: int, n_images: int, seed: int = 0):
 
     test_dir = "gcs/butterfly_jar/current_data"
     os.makedirs(test_dir, exist_ok=True)
-    save_point = test_dir+f"/image_grid_{steps}_{n_images}_{seed}.png"
+    save_point = test_dir + f"/image_grid_{steps}_{n_images}_{seed}.png"
     image_grid.save(save_point)
     # Create a blob from a file-like object
-    blob = bucket.blob("current_data"+f"/image_grid_{steps}_{n_images}_{seed}.png")
+    blob = bucket.blob("current_data" + f"/image_grid_{steps}_{n_images}_{seed}.png")
     # Upload the file
     blob.upload_from_filename(save_point)
     return FileResponse(save_point)

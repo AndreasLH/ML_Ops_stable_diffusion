@@ -43,7 +43,7 @@ class GeneratedButterflyDataset(Dataset):
         self.paths = self._get_paths(self.root)
         self.img_transforms = transforms.Compose(
             [
-                transforms.Resize((128, 128)), 
+                transforms.Resize((128, 128)),
                 transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
                 transforms.Normalize([0.5], [0.5]),
