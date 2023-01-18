@@ -23,7 +23,7 @@ def read_item(item_id: int):
     return {"item_id": item_id}
 
 
-# http://127.0.0.1:8000/generate_sample/?steps=1&n_images=1
+# http://127.0.0.1:8000/generate_sample/?steps=1&n_images=1&seed=0
 
 
 @app.get("/generate_sample/")
@@ -42,5 +42,9 @@ def generate_sample(steps: int, n_images: int, seed: int = 0):
     #     "message": HTTPStatus.OK.phrase,
     #     "status-code": HTTPStatus.OK,
     # }
+    test_dir = "/gcs/butterfly_jar/current_data"
+    os.makedirs(test_dir, exist_ok=True)
+    save_point = test_dir+f"/image_grid_{steps}_{n_images}_{seed}.png"
+    image_grid.save(save_point)
 
     return FileResponse(image_grid)

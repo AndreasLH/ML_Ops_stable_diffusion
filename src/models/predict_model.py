@@ -90,11 +90,8 @@ def eval_gcs(model_dir, steps=None, n_images=None, seed=0):
         num_inference_steps=steps,
     )
     image_grid = make_grid(images, rows, cols)
-    test_dir = "/gcs/butterfly_jar/current_data"
-    os.makedirs(test_dir, exist_ok=True)
-    save_point = test_dir+f"/image_grid_{steps}_{n_images}_{seed}.png"
-    image_grid.save(save_point)
-    return save_point
+
+    return image_grid
 
 
 def make_grid(images, rows, cols):
