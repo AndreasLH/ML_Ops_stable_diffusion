@@ -1,12 +1,13 @@
-import time
 import argparse
 import multiprocessing
+import time
 
-import torch
-from src.data.dataset import ButterflyDataset
-from torch.utils.data import DataLoader
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+from torch.utils.data import DataLoader
+
+from src.data.dataset import ButterflyDataset
+
 
 def timing(dataloader):
     res = []
@@ -23,6 +24,7 @@ def timing(dataloader):
     print(f'Timing: {np.mean(res)}+-{np.std(res)}')
     return res
 
+
 def errorbar(mean_list, std_list, worker_list):
     plt.errorbar(x=worker_list, y=mean_list, yerr=std_list, ecolor=['red', 'green', 'blue', 'cyan', 'magenta'])
     plt.xlabel("Number of workers")
@@ -36,7 +38,7 @@ if __name__ == '__main__':
     print(f"Number of cores: {cores}, Number of threads: {2 * cores}")
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--path_to_folder', default='', type=str) # "../../data/processed/train.pt"
+    parser.add_argument('--path_to_folder', default='', type=str)  # "../../data/processed/train.pt"
     parser.add_argument('--batch_size', default=16, type=int)
     parser.add_argument('--num_workers', default=0, type=int)
     parser.add_argument('--create_errorbar', action='store_true')
@@ -62,5 +64,3 @@ if __name__ == '__main__':
             std_list.append(np.std(res))
 
         errorbar(mean_list, std_list, worker_list)
-
-

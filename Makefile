@@ -38,6 +38,10 @@ clean:
 evaluate:
 	$(PYTHON_INTERPRETER) src/models/predict_model.py hydra.job.chdir=True
 
+gcloud_train:
+	gcloud ai custom-jobs create --region=europe-west1 --display-name=test-run --config=src/models/config_cpu.yaml
+
+
 ## Lint using flake8
 lint:
 	flake8 src
