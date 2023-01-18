@@ -3,7 +3,7 @@ import os
 import hydra
 import pytorch_lightning as pl
 import torch
-from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.callbacks import ModelCheckpoint, QuantizationAwareTraining, ModelPruning
 from pytorch_lightning.loggers import WandbLogger
 from torch.utils.data import DataLoader
 
@@ -58,7 +58,7 @@ def main(cfg):
         max_epochs=epochs,
         log_every_n_steps=log_frequency,
         logger=logger,
-        callbacks=[checkpoint_callback],
+        callbacks=[checkpoint_callback, ModelPruning("l1_unstructured", amount=0.5)],
         accelerator=accelerator,
         check_val_every_n_epoch=hpms.check_val_every_n_epoch,
         num_sanity_val_steps=0,

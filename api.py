@@ -1,4 +1,5 @@
 import os
+import pickle
 from http import HTTPStatus
 
 from fastapi import FastAPI
@@ -23,7 +24,7 @@ def read_item(item_id: int):
     return {"item_id": item_id}
 
 
-# http://127.0.0.1:8000/generate_sample/?steps=1&n_images=1
+# http://127.0.0.1:8000/generate_sample/?steps=1&n_images=1&seed=0
 
 
 @app.get("/generate_sample/")
@@ -42,8 +43,12 @@ def generate_sample(steps: int, n_images: int, seed: int = 0):
     #     "message": HTTPStatus.OK.phrase,
     #     "status-code": HTTPStatus.OK,
     # }
-    if not os.path.exists("/gcs/butterfly_jar/current_data"):
-        os.mkdir("/gcs/butterfly_jar/current_data")
-    with open(image_grid, "rb") as image:
-        image.save(f"/gcs/butterfly_jar/current_data/image_grid_{steps}_{n_images}_{seed}.png")
-    return FileResponse(image_grid)
+    test_dir = "/gcs/butterfly_jar/current_data"
+    os.makedirs(test_dir, exist_ok=True)
+    save_point = test_dir+f"/image_grid_{steps}_{n_images}_{seed}.png"
+    image_grid.save(save_point)
+    with open(save_point, "wb") as f:
+        image_grid.save(f)
+    with open(save_point, "wb") as f:
+        pickle.dump(image_grid, f)
+    return FileResponse(save_point)

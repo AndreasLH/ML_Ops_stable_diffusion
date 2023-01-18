@@ -76,7 +76,6 @@ def eval2(model_path, steps, save_path, n, seed):
 
 
 def eval_gcs(model_dir, steps=None, n_images=None, seed=0):
-
     n = n_images
     root = int(np.sqrt(n))
     assert root**2 == n, "eval_batch_size must be quadratic"
@@ -91,11 +90,8 @@ def eval_gcs(model_dir, steps=None, n_images=None, seed=0):
         num_inference_steps=steps,
     )
     image_grid = make_grid(images, rows, cols)
-    test_dir = "/gcs/model_best/samples"
-    os.makedirs(test_dir, exist_ok=True)
-    save_point = f"{test_dir}/{os.path.basename(model_path)[:-5]}.png"
-    image_grid.save(save_point)
-    return save_point
+
+    return image_grid
 
 
 def make_grid(images, rows, cols):
