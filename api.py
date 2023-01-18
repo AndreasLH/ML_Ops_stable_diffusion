@@ -1,3 +1,4 @@
+import os
 from http import HTTPStatus
 
 from fastapi import FastAPI
@@ -41,4 +42,5 @@ def generate_sample(steps: int, n_images: int, seed: int = 0):
     #     "message": HTTPStatus.OK.phrase,
     #     "status-code": HTTPStatus.OK,
     # }
+
     return FileResponse(image_grid)
