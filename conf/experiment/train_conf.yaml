@@ -9,6 +9,7 @@ hyperparameters:
   lr_warmup_steps: 500
   save_image_epochs: 5 # 10
   save_model_epochs: 5 # 30
+  check_val_every_n_epoch: 5
   mixed_precision: 'no'  # `no` for float32, `fp16` for automatic mixed precision
   output_dir: '/gcs/butterfly_jar/model_best'
   seed: 123

@@ -60,6 +60,8 @@ def main(cfg):
         logger=logger,
         callbacks=[checkpoint_callback, ModelPruning("l1_unstructured", amount=0.5)],
         accelerator=accelerator,
+        check_val_every_n_epoch=hpms.check_val_every_n_epoch,
+        num_sanity_val_steps=0,
     )
     # todo: vi skal have en val dataloader som ikke bare er det samme som train dataloaderen
     dataloaders = {
