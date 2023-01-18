@@ -1,3 +1,4 @@
+import click
 import os
 import random
 
@@ -19,7 +20,7 @@ from src.data.dataset import ButterflyDataset
 n_subsample = 2
 reference_data_path = "data/processed/train.pt"
 batch_size = 2
-generated_data_path = 'C:/Users/elleh/OneDrive/MachineLearningOperation/billeder'
+current_data_path = 'C:/Users/elleh/OneDrive/MachineLearningOperation/billeder'
 
 
 def get_reference_data(model, processor, data_path, n_subsample, batch_size):
@@ -34,11 +35,12 @@ def get_reference_data(model, processor, data_path, n_subsample, batch_size):
         reference.append(img_features)
     reference = torch.concatenate(reference, dim=0)
     reference = pd.DataFrame(reference.detach().numpy())
+    reference = reference.add(0.001)
     return reference
 
 class GeneratedButterflyDataset(Dataset):
     def __init__(self, root_path):
-        self.root = os.path.join(_PROJECT_ROOT, root_path)
+        self.root = root_path
         self.paths = self._get_paths(self.root)
         self.img_transforms = transforms.Compose(
             [
@@ -76,23 +78,32 @@ def get_current_data(model, processor, data_path, batch_size):
         current.append(img_features)
     current = torch.concatenate(current, dim=0)
     current = pd.DataFrame(current.detach().numpy())
+    current = current.add(0.001)
     return current
 
 
+
+@click.command()
+@click.option("--reference_data_path", default="")
+@click.option("--current_data_path", default="")
+@click.option("--n_subsample", default=20)
+@click.option("--batch_size", default=16)
+def main(reference_data_path, current_data_path, n_subsample, batch_size):
+    model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
+    reference_data = get_reference_data(model, processor, reference_data_path, n_subsample, batch_size)
+    current_data = get_current_data(model, processor, current_data_path, batch_size)
+
+    report = Report(metrics=[DataDriftPreset()])
+    report.run(reference_data=reference_data, current_data=current_data)
+    report.save_html(os.path.join(_PROJECT_ROOT, 'reference.html'))
 
 
 
 
 if __name__ == "__main__":
-    model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-
-    reference_data = get_reference_data(model, processor, reference_data_path, n_subsample, batch_size)
-    current_data = get_current_data(model, processor, generated_data_path, batch_size)
-
-    report = Report(metrics=[DataDriftPreset()])
-    report.run(reference_data=reference_data, current_data=current_data)
-    report.save_html(os.path.join(_PROJECT_ROOT, 'reference.html'))
+    main()
 
 
 
