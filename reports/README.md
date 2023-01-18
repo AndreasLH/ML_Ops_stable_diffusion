@@ -302,7 +302,8 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 13 fill here ---
+We use Hydra to keep track of the hyperparameters used in each experiment and store them in a config file, ensuring that no information is lost. If one wants to reproduce the results of an experiment, one can open the config file and inspect the hyperparameters for that specific experiment. 
+Among the hyperparameters stored in the config file is the 'seed' parameter, which is used to control the source of randomness in the PyTorch module. This ensures that model weights are initialised the same, optimisation processes yield the same results etc. Furthermore, we keep track of specific versions for core Python modules in the ``requirements.txt`` file. For example, it is essential to the project that we use the Python module ``diffusers===0.11.1``. 
 
 ### Question 14
 
@@ -334,7 +335,7 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 15 fill here ---
+We have a Docker image for both training and testing the model. The training image has a designated Python version (3.10) and install the necessary dependencies from the ``requirements.txt`` file. 
 
 ### Question 16
 
@@ -347,13 +348,13 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 > *Debugging method was dependent on group member. Some just used ... and others used ... . We did a single profiling*
 > *run of our main code at some point that showed ...*
 >
-> Answer:
+> Answer: 
 
 All group members used the built in debugging tool in their respective IDE's (Visual Studio, Pycharm) to solve problems when running into specific error messages. Furthermore, the unit tests could make mistakes (such as data not being loaded correctly) easier to locate. As most of our code has been adapted from trustworthy sources, i.e. using Pytorch Lightning for training, the built in torch dataloader, and the model structure from Hugging Face, we did not see much use for profiling in our case. 
 
 ## Working in the cloud
 
-> In the following section we would like to know more about your experience when developing in the cloud.
+> In the following section we would like to know more about your experience when developing in the cloud. 
 
 ### Question 17
 
