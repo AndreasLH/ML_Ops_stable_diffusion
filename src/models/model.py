@@ -85,7 +85,7 @@ class UNet2DModelPL(pl.LightningModule):
         noise_pred = self(noisy_images, timesteps, return_dict=False)
         loss = F.mse_loss(noise_pred, noise)
 
-        self.log("train_loss", loss)
+        self.log("train_loss", loss.item())
 
         return loss
 
@@ -117,7 +117,7 @@ class UNet2DModelPL(pl.LightningModule):
             inception_score = self.compute_inceptionscore(images_as_tensors)
 
             # log inception score
-            self.log("inception score", inception_score)
+            self.log("inception score", inception_score.item())
 
             return inception_score
 
