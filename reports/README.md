@@ -52,36 +52,36 @@ end of the project.
 
 * [x] Create a git repository
 * [x] Make sure that all team members have write access to the github repository
-* [ ] Create a dedicated environment for you project to keep track of your packages
+* [x] Create a dedicated environment for you project to keep track of your packages
 * [x] Create the initial file structure using cookiecutter
-* [ ] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
-* [ ] Add a model file and a training script and get that running
-* [ ] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
-* [ ] Remember to comply with good coding practices (`pep8`) while doing the project
-* [ ] Do a bit of code typing and remember to document essential parts of your code
-* [ ] Setup version control for your data or part of your data
-* [ ] Construct one or multiple docker files for your code
-* [ ] Build the docker files locally and make sure they work as intended
-* [ ] Write one or multiple configurations files for your experiments
-* [ ] Used Hydra to load the configurations and manage your hyperparameters
+* [x] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
+* [x] Add a model file and a training script and get that running
+* [x] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
+* [x] Remember to comply with good coding practices (`pep8`) while doing the project
+* [x] Do a bit of code typing and remember to document essential parts of your code
+* [x] Setup version control for your data or part of your data
+* [x] Construct one or multiple docker files for your code
+* [x] Build the docker files locally and make sure they work as intended
+* [x] Write one or multiple configurations files for your experiments
+* [x] Used Hydra to load the configurations and manage your hyperparameters
 * [ ] When you have something that works somewhat, remember at some point to to some profiling and see if
       you can optimize your code
-* [ ] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
+* [x] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
       consider running a hyperparameter optimization sweep.
-* [ ] Use Pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code
+* [x] Use Pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code
 
 ### Week 2
 
-* [ ] Write unit tests related to the data part of your code
-* [ ] Write unit tests related to model construction and or model training
-* [ ] Calculate the coverage.
-* [ ] Get some continuous integration running on the github repository
-* [ ] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
-* [ ] Create a trigger workflow for automatically building your docker images
-* [ ] Get your model training in GCP using either the Engine or Vertex AI
-* [ ] Create a FastAPI application that can do inference using your model
-* [ ] If applicable, consider deploying the model locally using torchserve
-* [ ] Deploy your model in GCP using either Functions or Run as the backend
+* [x] Write unit tests related to the data part of your code
+* [x] Write unit tests related to model construction and or model training
+* [x] Calculate the coverage.
+* [x] Get some continuous integration running on the github repository
+* [x] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
+* [x] Create a trigger workflow for automatically building your docker images
+* [x] Get your model training in GCP using either the Engine or Vertex AI
+* [x] Create a FastAPI application that can do inference using your model
+* [x] If applicable, consider deploying the model locally using torchserve
+* [x] Deploy your model in GCP using either Functions or Run as the backend
 
 ### Week 3
 
@@ -105,7 +105,7 @@ end of the project.
 >
 > Answer:
 
---- question 1 fill here ---
+Awesome 21
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -116,7 +116,7 @@ end of the project.
 >
 > Answer:
 
---- question 2 fill here ---
+s194235, s194238, s194241, s194255, s194257
 
 ### Question 3
 > **What framework did you choose to work with and did it help you complete the project?**
@@ -129,7 +129,7 @@ end of the project.
 >
 > Answer:
 
---- question 3 fill here ---
+We used the Diffusers framework by Huggingface in our project to easily implement a denoising diffusion probabilistic model (DDPM). From the diffusers package, we used the DDPMScheduler function to gradually apply noise to an image, the DDPMPipeline function to denoise encoded images from the model, and imported a 2D U-Net model. 
 
 ## Coding environment
 
@@ -148,7 +148,8 @@ end of the project.
 >
 > Answer:
 
---- question 4 fill here ---
+We have a Conda virtual envrionment specifically for the project and use a requirements.txt file to keep track of dependencies. The requirements.txt file was generated by the cookie cutter structure and updated by running the terminal command "pip list --format=freeze > requirements.txt". The requirements.txt file contains all the packages and dependencies, as well as a specific version if required. To get a complete copy of our development environment, one can simply run the following commands: 
+"conda create --name MLOps" to create the virtual environment, "conda activate MLOps" to activate the virtual environment, and then "pip install requirements.txt" to install the necessary packages. Additionally, a few other requirements files exist to create a cuda enabled environment.
 
 ### Question 5
 
@@ -163,7 +164,7 @@ end of the project.
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+Using the cookiecutter template we decided to not fill in the only the data/processed folder, since the script we are using has built in functionality to download the raw data from huggingface. The docs have not been filled, but we do know that they can be made by running `make html` from within `docs`. Notebooks, visualization, and references were untouched. The best saved models were saved under the models folder, alongside with the respective log files generated by hydra such that we could trace back the configuration that the model was trained with. A folder called samples was added to save all the outputs from the trained models. The conf folder was added to keep our hydra config files. The tests folder was added to contain all the tests we have written in `pytest`.
 
 ### Question 6
 
@@ -174,7 +175,14 @@ end of the project.
 >
 > Answer:
 
---- question 6 fill here ---
+We implemented the following flake8 settings, since the default settings were simply too strict for us. Although, we realise that the line length is probably a bit too relaxed. We had to also pass the tests for our CI/CD pipelines.
+```ini
+max-line-length = 170
+max-complexity = 15
+--ignore = E203, E266, E501, W503
+exclude = tests/test_model.py
+```
+Furthermore, we implemented isort and black as a code formatters. These concepts matter in larger projects because each of us have our own code style, which might be confusing for the others. By using these formatters, we ensure that the code is standardised for everyone.
 
 ## Version control
 
@@ -238,7 +246,7 @@ end of the project.
 >
 > Answer:
 
---- question 10 fill here ---
+We used DVC for managing the data in our project, initially we had the data stored on Google Drive, but later transferred it to a Google cloud bucket. This is made is super easy for all of our group members to download the data. We did quite a lot of pre-processing on our data: rescaling, random horizontal flip, and normalisation among other things. In the end, we ended up not actually using any of the version control part of DVC, since we never changed the pre-processing pipeline. project we implemented here was one that we knew would work beforehand. However, we could easily have used the version control if we had decided to make any changes to our pre-processing pipeline, as these kinds of operations do have a major influence on the performance of the model.
 
 ### Question 11
 
@@ -254,7 +262,13 @@ end of the project.
 >
 > Answer:
 
---- question 11 fill here ---
+In total we have created 4 different CI runs using the GitHub actions framework:
+
+- Pytest
+- isort
+- flake8
+- code coverage
+
 
 ## Running code and tracking experiments
 
@@ -273,7 +287,7 @@ end of the project.
 >
 > Answer:
 
---- question 12 fill here ---
+For configuration of the experiments we used [Hydra](https://hydra.cc/) as our tool to manage the configuration of the various parameters of the model. To train our model we call `python src/models/train_model_PL.py`. This will automatically call the training script with the relevant parameters and save everything in an output folder `ouputs/<date>/<time>`, this made it easy for us to remember which settings each experiment was run with. Additionally, we also implemted some path information in this files which made it easier for us to switch between training locally, for testing, and on the cloud.
 
 ### Question 13
 
@@ -288,7 +302,8 @@ end of the project.
 >
 > Answer:
 
---- question 13 fill here ---
+We use Hydra to keep track of the hyperparameters used in each experiment and store them in a config file, ensuring that no information is lost. If one wants to reproduce the results of an experiment, one can open the config file and inspect the hyperparameters for that specific experiment. 
+Among the hyperparameters stored in the config file is the 'seed' parameter, which is used to control the source of randomness in the PyTorch module. This ensures that model weights are initialised the same, optimisation processes yield the same results etc. Furthermore, we keep track of specific versions for core Python modules in the ``requirements.txt`` file. For example, it is essential to the project that we use the Python module ``diffusers===0.11.1``. 
 
 ### Question 14
 
@@ -320,7 +335,7 @@ end of the project.
 >
 > Answer:
 
---- question 15 fill here ---
+We have a Docker image for both training and testing the model. The training image has a designated Python version (3.10) and install the necessary dependencies from the ``requirements.txt`` file. 
 
 ### Question 16
 
@@ -333,13 +348,13 @@ end of the project.
 > *Debugging method was dependent on group member. Some just used ... and others used ... . We did a single profiling*
 > *run of our main code at some point that showed ...*
 >
-> Answer:
+> Answer: 
 
 --- question 16 fill here ---
 
 ## Working in the cloud
 
-> In the following section we would like to know more about your experience when developing in the cloud.
+> In the following section we would like to know more about your experience when developing in the cloud. 
 
 ### Question 17
 
