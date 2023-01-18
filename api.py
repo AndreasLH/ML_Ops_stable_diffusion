@@ -42,8 +42,5 @@ def generate_sample(steps: int, n_images: int, seed: int = 0):
     #     "message": HTTPStatus.OK.phrase,
     #     "status-code": HTTPStatus.OK,
     # }
-    if not os.path.exists("/gcs/butterfly_jar/current_data"):
-        os.mkdir("/gcs/butterfly_jar/current_data")
-    with open(image_grid, "rb") as image:
-        image.save(f"/gcs/butterfly_jar/current_data/image_grid_{steps}_{n_images}_{seed}.png")
+
     return FileResponse(image_grid)
