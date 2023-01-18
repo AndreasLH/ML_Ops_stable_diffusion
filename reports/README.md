@@ -201,7 +201,7 @@ Furthermore, we implemented isort and black as a code formatters. These concepts
 >
 > Answer:
 
---- question 7 fill here ---
+The tests folder contains the 8 tests perfomed using `pytest`. We test both the training, evaluation, and data loading part of the pipeline. We test if the metrics are of correct datatype, if the output dimensions from the model are correct, as well as if the dimensions of the data is correct.
 
 ### Question 8
 
@@ -231,7 +231,7 @@ Furthermore, we implemented isort and black as a code formatters. These concepts
 >
 > Answer:
 
---- question 9 fill here ---
+Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working on *weights and biases*. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch.
 
 ### Question 10
 
@@ -349,7 +349,7 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 >
 > Answer:
 
---- question 16 fill here ---
+All group members used the built in debugging tool in their respective IDE's (Visual Studio, Pycharm) to solve problems when running into specific error messages. Furthermore, the unit tests could make mistakes (such as data not being loaded correctly) easier to locate. As most of our code has been adapted from trustworthy sources, i.e. using Pytorch Lightning for training, the built in torch dataloader, and the model structure from Hugging Face, we did not see much use for profiling in our case. 
 
 ## Working in the cloud
 
