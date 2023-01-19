@@ -233,6 +233,7 @@ The tests folder contains the 13 tests perfomed using `pytest`. We test both the
 
 Working on branches and using pull requests were an integral part of the project to secure a steady workflow. Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working implementing *weights and biases* in the training loop. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch. 
 
+
 ### Question 10
 
 > **Did you use DVC for managing data in your project? If yes, then how did it improve your project to have version**
@@ -262,12 +263,13 @@ We used DVC for managing the data in our project, initially we had the data stor
 >
 > Answer:
 
-In total we have created 4 different CI runs using the GitHub actions framework:
+In total we have created 4 different CI runs using the GitHub actions framework, which all run for each pull request/git push:
 
-- Pytest
-- isort
-- flake8
-- code coverage
+- **Pytest**: the tests in `pytest` make sure that the main parts of the pipeline still runs smoothly after git commits.
+- **isort**: `isort` checks that both native packages, conda/pip installed packages, and local folders are imported correctly.
+- **flake8**: with `flake8` we make sure our code is streamlined, with no unnecessary spaces and proper formatting. 
+- **code coverage**: code coverage measures the percentage of code, which optimally should be all of the code, but at the very least the most important parts of the code.
+
 
 
 ## Running code and tracking experiments
@@ -304,6 +306,7 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 
 We use Hydra to keep track of the hyperparameters used in each experiment and store them in a config file, ensuring that no information is lost. If one wants to reproduce the results of an experiment, one can open the config file and inspect the hyperparameters for that specific experiment. 
 Among the hyperparameters stored in the config file is the 'seed' parameter, which is used to control the source of randomness in the PyTorch module. This ensures that model weights are initialised the same, optimisation processes yield the same results etc. Furthermore, we keep track of specific versions for core Python modules in the ``requirements.txt`` file. For example, it is essential to the project that we use the Python module ``diffusers===0.11.1``. 
+
 
 ### Question 14
 
@@ -353,6 +356,8 @@ to create a Docker container called "training", using the latest version of our 
 >
 > Answer: 
 
+
+--- question 16 fill here ---
 All group members used the built in debugging tool in their respective IDE's (Visual Studio, Pycharm) to solve problems when running into specific error messages. Furthermore, the unit tests could make mistakes (such as data not being loaded correctly) easier to locate. As most of our code has been adapted from trustworthy sources, i.e. using Pytorch Lightning for training, the built in torch dataloader, and the model structure from Hugging Face, we did not see much use for profiling in our case. 
 
 ## Working in the cloud
