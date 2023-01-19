@@ -454,7 +454,6 @@ The parameters are given as `steps=1&n_images=1&seed=0`, which are all ints. To 
 >
 > Answer:
 
-
 To obtain an underlying distribution of our image data, we first use the CLIP model to extract image feature embeddings on all 1000 images in the Smithsonian Butterfly dataset. 
 
 Every time a user asked for a request from the API, we saved the generated image to a `current_data` folder in a Google Cloud storage bucket. Feature embeddings of the generated images are extracted. We then use the framework Evidently to detect data drifting by comparing the feature embeddings of the original train dataset with the feature embeddings of the generated images.
@@ -494,7 +493,16 @@ For the main part of the project used about 30$, however we also held back a lot
 >
 > Answer:
 
---- question 25 fill here ---
+The overall architecture of the system is shown below on the figure below:
+![container_registry](figures/system.png)
+
+The dotted lines indicate that the component in the system is in the cloud.
+
+The starting point of the diagram is the developer (Dev), which can commit and push code to the Github repository. Whenever this happens, Github Actions run our tests and linting workflows on the code to ensure the CI/CD pipeline runs smoothly. Concurrently, a trigger has been implemented on the Google Cloud Platform (GCP) which makes a Docker image and puts it in the Container Registry. 
+
+The developer uses Python modules such as Wandb, diffusers (by Huggingface), Torch, Pytorch lightning and Hydra to build a training loop used to train the model. The training is run on Vertex AI. The data is stored in a GCP bucket, and can be pulled from DVC with `dvc pull`. After training, the trained model is stored in a GCP bucket.
+
+We created an API with FastAPI that uses the trained model stored in the GCP bucket to generate new images of butterflies at the request of a user. 
 
 ### Question 26
 
