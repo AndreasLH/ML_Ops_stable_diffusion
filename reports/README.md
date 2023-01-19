@@ -194,7 +194,7 @@ max-complexity = 15
 --ignore = E203, E266, E501, W503
 exclude = tests/test_model.py
 ```
-Furthermore, we implemented isort and black as a code formatter. These concepts matter in larger projects because each person has their own code style, which might be confusing for the others. By using these formatters, we ensure that the code is standardised for everyone.
+Furthermore, we implemented isort and black as code formatters. These concepts matter in larger projects because each person has their own code style, which might be confusing for the others. By using these formatters, we ensure that the code is standardised for everyone.
 
 
 ## Version control
