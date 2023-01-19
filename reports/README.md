@@ -576,7 +576,7 @@ Managing credentials was also a significant challenge when using W&B on Google C
 
 - Andreas s194235: Cloud build, FastAPI, dvc, and Buckets.
 - Andreas s194238: Vertex AI running, docker file scripting. Setup weights and biases
-- Yucheng s194241: Data processing, visualising data, unittest for data, validation step in Pytorch Lightning. 
+- Yucheng s194241: Data processing, visualising data, unittest for data, validation step for training. 
 - Christian s194255: implementing the model in Pytorch Lightning, Evidently for data drifting.
 - Malthe s194257: was in charge of making developing the testing framework and writing tests. Training code. Hydra configuration.
 
