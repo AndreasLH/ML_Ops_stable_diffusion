@@ -95,7 +95,7 @@ end of the project.
 ### Additional
 
 * [x] Revisit your initial project description. Did the project turn out as you wanted?
-* [ ] Make sure all group members have a understanding about all parts of the project
+* [x] Make sure all group members have a understanding about all parts of the project
 * [x] Uploaded all your code to github
 
 ## Group information
@@ -201,7 +201,7 @@ Furthermore, we implemented isort and black as a code formatters. These concepts
 >
 > Answer:
 
-The tests folder contains the 8 tests perfomed using `pytest`. We test both the training, evaluation, and data loading part of the pipeline. We test if the metrics are of correct datatype, if the output dimensions from the model are correct, as well as if the dimensions of the data is correct. 
+The tests folder contains the 8 tests perfomed using `pytest`. We test both the training, evaluation, and data loading part of the pipeline. We test if the metrics are of correct datatype, if the output dimensions from the model are correct, as well as if the dimensions of the data is correct.
 
 ### Question 8
 
@@ -231,7 +231,7 @@ The tests folder contains the 8 tests perfomed using `pytest`. We test both the 
 >
 > Answer:
 
-Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working on *weights and biases*. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch. 
+Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working on *weights and biases*. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch.
 
 ### Question 10
 
@@ -335,7 +335,10 @@ Among the hyperparameters stored in the config file is the 'seed' parameter, whi
 >
 > Answer:
 
-We have a Docker image for both training and testing the model. The training image has a designated Python version (3.10) and install the necessary dependencies from the ``requirements.txt`` file. 
+We have a Docker image for both training the model and using the model for image generation. Both images have a designated Python version (3.10) and installs the necessary dependencies from the ``requirements.txt`` file. The training Docker image is used to setup a virtual machine to train the model, while the other Docker image is used to setup the virtual machine for running the API that generates new images using the trained model. If the training Docker image is hosted locally on a computer, we can simply run the Docker training image using the command 
+
+      docker run --name training testing:latest
+to create a Docker container called "training", using the latest version of our Docker image "testing". But we build and store the Docker images on Google Cloud Build which automatically creates the containers from our Docker images.
 
 ### Question 16
 
@@ -350,7 +353,7 @@ We have a Docker image for both training and testing the model. The training ima
 >
 > Answer: 
 
---- question 16 fill here ---
+All group members used the built in debugging tool in their respective IDE's (Visual Studio, Pycharm) to solve problems when running into specific error messages. Furthermore, the unit tests could make mistakes (such as data not being loaded correctly) easier to locate. As most of our code has been adapted from trustworthy sources, i.e. using Pytorch Lightning for training, the built in torch dataloader, and the model structure from Hugging Face, we did not see much use for profiling in our case. 
 
 ## Working in the cloud
 
@@ -367,7 +370,7 @@ We have a Docker image for both training and testing the model. The training ima
 >
 > Answer:
 
---- question 17 fill here ---
+We used the following services: Bucket, cloud build, Vertex AI, Cloud Run, and Monitoring. Bucket is a cloud storage solution and is used for storing our data, cloud build is a service that builds docker containers for us, it is used for continuously building 2 docker containers, one used for serving the API, as well as one used for training the model. Vertex AI is the service that we used to train the model; it is supposed to be a more specialised compute engine specifically for AI tasks. Cloud run is used for hosting the API through a fastapi API, Cloud run is a platform as a service (PaaS) it gave us the necessary control over our prediction app to both load the model and save the generated data for monitoring. Monitoring was used to set up monitoring rules such that we can get warnings on a slack server if things are wrong.
 
 ### Question 18
 
@@ -382,7 +385,7 @@ We have a Docker image for both training and testing the model. The training ima
 >
 > Answer:
 
---- question 18 fill here ---
+We did not use the compute engine, but instead used the Vertex AI service. We used this service to train our model with a container specified in the `Dockerfile` Dockerfile and the cloud run script specified in `src/models/config_cpu.yaml`. We used an instance with the hardware specified as `n1-highmem-16` which gives 16 cores and approx. 100GB memory for training. Using this configuration with could reasonably train the model in about 12 hours. However, this configuration is far from ideal, initially we started with the `n1-highmem-2` config which led to us run out of memory, so we just chose an instance with more. Model training with this instance was still slow, so an instance with a GPU (like the `a2-highgpu-1g`) would really be desired, but we were unable to use one because we were afraid that it would eat up all our credits.
 
 ### Question 19
 
@@ -392,8 +395,8 @@ We have a Docker image for both training and testing the model. The training ima
 > Answer:
 
 Overview of the buckets the current dataset are the new generated images, the `model_best` folder is where we save the generated model.
-
 ![Overview](figures/bucket1.png)
+
 Main dataset part, approximately 200 mb
 ![main data](figures/bucket2.png)
 
@@ -404,7 +407,7 @@ Main dataset part, approximately 200 mb
 >
 > Answer:
 
---- question 20 fill here ---
+![container_registry](figures/container_registry.png)
 
 ### Question 21
 
@@ -413,7 +416,7 @@ Main dataset part, approximately 200 mb
 >
 > Answer:
 
---- question 21 fill here ---
+![container_registry](figures/cloud_build.png)
 
 ### Question 22
 
@@ -429,7 +432,14 @@ Main dataset part, approximately 200 mb
 >
 > Answer:
 
---- question 22 fill here ---
+For deployment for wrapped our prediction model in a fastapi app that we host on google cloud run. First, we tried to serve the API locally using the uvicorn module and once that worked, we pushed it to a container using the `fastapi_app` dockerfile. In the cloud we had many problems with accessing the gcs file location and ended up with a hacky solution where we use curl in the dockerfile to get the model. The API can be either access by going to
+
+`https://generate-images-api-pcx2povw6a-ew.a.run.app/generate_sample/?steps=1&n_images=1&seed=0`
+or use a curl command to download a generated image directly
+
+`curl -X 'GET'   'https://generate-images-api-pcx2povw6a-ew.a.run.app/generate_sample/?steps=1&n_images=1&seed=0'   -H 'accept: application/json' --output "image.png"`
+
+The parameters are given as `steps=1&n_images=1&seed=0`, which are all ints. To get a nice output the steps need to be at least 500, ideally 1000. However, since the cloud run service on uses CPU, it takes around 15-30 min to generate an image, which is far from usable. Furthermore, we had to increase the memory allowance of the container to 4gb to avoid running out of memory.
 
 ### Question 23
 
@@ -444,9 +454,12 @@ Main dataset part, approximately 200 mb
 >
 > Answer:
 
+
 To obtain an underlying distribution of our image data, we first use the CLIP model to extract image feature embeddings on all 1000 images in the Smithsonian Butterfly dataset. 
 
 Every time a user asked for a request from the API, we saved the generated image to a `current_data` folder in a Google Cloud storage bucket. Feature embeddings of the generated images are extracted. We then use the framework Evidently to detect data drifting by comparing the feature embeddings of the original train dataset with the feature embeddings of the generated images.
+
+Every time a user asks for a request, we save the generated image which is saved to a current_data folder in the GCP bucket. After some time, we aggregate enough images that we can compare to the reference dataset. We do compare by using a feature extractor that extracts numerical features from the images. We are using the CLIPProcessor and CLIPModel from huggingface transformers. Using these abstracted image features we can run a report with Evidently AI to generate a report. Given the nature of project this a bit sought, but we at least hope that it can give us an indication of whether the generated images were meaningful. Perhaps a better way to do this would be to implement a thumbs up/down system where the user could rate the generated content. If we saw a large negative wave, we would know that something is wrong. As an additional thing, we also set up the monitoring of the services themselves, such that if the API service crashes or is very slow we are informed on a slack server.
 
 ### Question 24
 
@@ -460,7 +473,7 @@ Every time a user asked for a request from the API, we saved the generated image
 >
 > Answer:
 
---- question 24 fill here ---
+For the main part of the project used about 30$, however we also held back a lot to avoid running out of credits. 4 out 5 group members had accidentally spent all their credits before the project started, so we were a bit wary. The service that had by far the highest spending was the Vertex AI service, which we used for training.
 
 ## Overall discussion of project
 

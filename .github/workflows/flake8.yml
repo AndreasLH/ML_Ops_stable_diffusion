@@ -20,4 +20,4 @@ jobs:
         python -m pip install flake8
     - name: Run flake8
       run: |
-        flake8 . --max-line-length 200 --exclude docs/conf.py
+        flake8 . --max-line-length 200

@@ -19,7 +19,9 @@ pandas==1.5.2
 tqdm==4.64.1
 
 # project stuff
-diffusers[training]==0.5.1
+diffusers[training]==0.11.1
+torchmetrics==0.11.0
+torch-fidelity==0.3.0
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==1.13.1
 torchaudio==0.13.1
@@ -35,3 +37,4 @@ pytorch_lightning==1.8.6
 google-api-python-client
 PyYAML==5.4
 protobuf==3.20
+google.cloud

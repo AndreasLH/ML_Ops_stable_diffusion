@@ -3,7 +3,7 @@ from torch.utils.data import Dataset
 
 
 class ButterflyDataset(Dataset):
-    def __init__(self, path : str) -> None:
+    def __init__(self, path: str) -> None:
         """
 
         :param path: path to where the processed dataset is located
@@ -16,8 +16,9 @@ class ButterflyDataset(Dataset):
         :return: length of dataset
         """
         return len(self.images)
+        # return 2
 
-    def __getitem__(self, idx : int) -> torch.Tensor:
+    def __getitem__(self, idx: int) -> torch.Tensor:
         """
         Allows ButterflyDataset to be indexed.
         :param idx: index
@@ -25,4 +26,26 @@ class ButterflyDataset(Dataset):
         """
         images = self.images[idx]
 
-        return {'images': images}
+        return {"images": images}
+
+
+class ValidationDataset(Dataset):
+    def __init__(self, n_samples: int):
+        """
+        :param n_samples: number of samples to be generated during validation
+        """
+        self.n_samples = n_samples
+
+    def __len__(self):
+        """
+        Allows len to be used on ValidationDataset
+        :return: length of dataset
+        """
+        return self.n_samples
+
+    def __getitem__(self, idx):
+        """
+        :param idx: index
+        :return: just returning None as this is just a dummy data set
+        """
+        return {"images": torch.randn((0, 3, 128, 128))}
