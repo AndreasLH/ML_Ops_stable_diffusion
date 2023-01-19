@@ -483,9 +483,7 @@ The parameters are given as `steps=1&n_images=1&seed=0`, which are all ints. To 
 
 To obtain an underlying distribution of our image data, we first use the CLIP model to extract image feature embeddings on all 1000 images in the Smithsonian Butterfly dataset. 
 
-Every time a user asked for a request from the API, we saved the generated image to a `current_data` folder in a Google Cloud storage bucket. Feature embeddings of the generated images are extracted. We then use the framework Evidently to detect data drifting by comparing the feature embeddings of the original train dataset with the feature embeddings of the generated images.
-
-Every time a user asks for a request, we save the generated image which is saved to a current_data folder in the GCP bucket. After some time, we aggregate enough images that we can compare to the reference dataset. We compare by using a feature extractor that extracts numerical features from the images. We are using the CLIPProcessor and CLIPModel from huggingface transformers. Using these abstracted image features we can use Evidently AI to generate a report. This a bit sought, but we hope that it indicates if the generated images were meaningful. Perhaps a better way to do this would be a thumbs up/down rating system.
+Every time a user asks for a request, we save the generated image which is saved to a `current_data` folder in the GCP bucket. After some time, we aggregate enough images that we can compare to the reference dataset. We compare by using a feature extractor that extracts numerical features from the images. We are using the CLIPProcessor and CLIPModel from huggingface transformers. Using these abstracted image features we can use Evidently AI to generate a report. This a bit far-fetched, but we hope that it indicates if the generated images were meaningful. Perhaps a better way to do this would be a thumbs up/down rating system.
 
 ### Question 24
 
@@ -499,7 +497,7 @@ Every time a user asks for a request, we save the generated image which is saved
 >
 > Answer:
 
-For the main part of the project used about 30$, however we also held back a lot to avoid running out of credits. 4 out 5 group members had accidentally spent all their credits before the project started, so we were a bit wary. The service that had by far the highest spending was the Vertex AI service, which we used for training.
+The main part of the project used about 30$ worth of credit, however we also held back a lot to avoid running out of credits. 4 out 5 group members had accidentally spent all their credits before the project started, so we were a bit wary. The service that had by far the highest spending was the Vertex AI service, which we used for training.
 
 ## Overall discussion of project
 
@@ -574,10 +572,10 @@ Managing credentials was also a significant challenge when using W&B on Google C
 >
 > Answer:
 
-- Andreas s194235 Cloud build, fast api, dvc, and buckets.
-- Andreas s194238 Vertex AI running, docker file scripting. Setup weights and biases
-- Yucheng s194241 has eaten a whole bag of matador mix. Unittest for data data loader. A lot of different things
-- Christian s194255 implementing the model in pytorch lightning.  Evidently.
-- Malthe s194257 was in charge of making developing the testing framework and writing tests. Training code. Hydra configuration.
+- Andreas s194235: Cloud build, FastAPI, dvc, and Buckets.
+- Andreas s194238: Vertex AI running, docker file scripting. Setup weights and biases
+- Yucheng s194241: Data processing, visualising data, unittest for data, validation step for training. 
+- Christian s194255: implementing the model in Pytorch Lightning, Evidently for data drifting.
+- Malthe s194257: was in charge of making developing the testing framework and writing tests. Training code. Hydra configuration.
 
 In general, each of us had their hands dirty with a lot of different things, so it is impossible to dedicate tasks explicitly to any person.
