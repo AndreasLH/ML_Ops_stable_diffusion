@@ -7,6 +7,7 @@ import pandas as pd
 import torch
 from evidently.metric_preset import DataDriftPreset
 from evidently.report import Report
+from google.cloud import storage
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset, Subset
 from torchvision import transforms
@@ -43,7 +44,7 @@ class GeneratedButterflyDataset(Dataset):
         self.paths = self._get_paths(self.root)
         self.img_transforms = transforms.Compose(
             [
-                transforms.Resize((128, 128)), 
+                transforms.Resize((128, 128)),
                 transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
                 transforms.Normalize([0.5], [0.5]),
@@ -66,11 +67,66 @@ class GeneratedButterflyDataset(Dataset):
         return {"images": img}
 
 
+# class GoogleCloudGeneratedButterflyDataset(Dataset):
+#
+#     def __init__(self):
+#         self.client = storage.Client()
+#
+#         self.bucket = self.client.bucket("butterfly_jar")
+#
+#         self.blobs = self.client.list_blobs("butterfly_jar", prefix='current_data/')
+#
+#         for blob in self.blobs:
+#             with open(os.path.join(_PROJECT_ROOT, "billede.png"), "wb") as f:
+#                 blob.download_to_file(f)
+#             break
+#         a = 2
+#
+#     def __len__(self):
+#         return len(self.blobs)
+#
+#     def __getitem__(self, idx):
+#         blob = self.blobs[idx]
+#         a = 2
+
+
+class GCSDataset(Dataset):
+    def __init__(self, bucket_name, folder_name):
+        self.bucket_name = bucket_name
+        self.folder_name = folder_name
+        self.client = storage.Client()
+        self.bucket = self.client.get_bucket(self.bucket_name)
+        self.blobs_iterator = self.bucket.list_blobs(prefix=self.folder_name)
+        self.blobs = [blob for blob in self.blobs_iterator]
+        self.blobs = [blob for blob in self.blobs if ".png" in blob.path]
+        self.img_transforms = transforms.Compose(
+            [
+                transforms.Resize((128, 128)),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor(),
+                transforms.Normalize([0.5], [0.5]),
+            ]
+        )
+
+    def __len__(self):
+        return len(self.blobs)
+
+    def __getitem__(self, idx):
+        cache_path = os.path.join(_PROJECT_ROOT, "cache.png")
+
+        blob = self.blobs[idx]
+        blob.download_to_filename(cache_path)
+        img = Image.open(os.path.join(cache_path))
+        # os.remove(cache_path)
+        img = self.img_transforms(img)
+        return {"images": img}
+
+
 def get_current_data(model, processor, data_path, batch_size):
-    dataset = GeneratedButterflyDataset(root_path=data_path)
+    dataset = GCSDataset("butterfly_jar", "current_data")
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=0)
     current = []
-    for batch in dataloader:
+    for batch in tqdm(dataloader):
         imgs = [img for img in batch["images"]]
         inputs = processor(text=None, images=imgs, return_tensors="pt", padding=True)
         img_features = model.get_image_features(inputs["pixel_values"])
@@ -82,7 +138,7 @@ def get_current_data(model, processor, data_path, batch_size):
 
 @click.command()
 @click.option("--reference_data_path", default="")
-@click.option("--current_data_path", default="")
+@click.option("--current_data_path", type=str)
 @click.option("--n_subsample", default=20)
 @click.option("--batch_size", default=16)
 def main(reference_data_path, current_data_path, n_subsample, batch_size):
@@ -97,6 +153,9 @@ def main(reference_data_path, current_data_path, n_subsample, batch_size):
     report = Report(metrics=[DataDriftPreset()])
     report.run(reference_data=reference_data, current_data=current_data)
     report.save_html(os.path.join(_PROJECT_ROOT, "reference.html"))
+
+    if os.path.exists(os.path.join(_PROJECT_ROOT, "cache.png")):
+        os.remove(os.path.join(_PROJECT_ROOT, "cache.png"))
 
 
 if __name__ == "__main__":
