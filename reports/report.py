@@ -57,7 +57,7 @@ def check():
         answer = answer.split()
         if not (min <= len(answer) <= max):
             warnings.warn(
-                f"Question {index} failed check. Expected number of words to be"
+                f"Question {index+1} failed check. Expected number of words to be"
                 f" between {min} and {max} but got {len(answer)}",
                 TeacherWarning,
             )
@@ -66,7 +66,7 @@ def check():
         links = re.findall(r"\!\[.*?\]\(.*?\)", answer)
         if not (min <= len(links) <= max):
             warnings.warn(
-                f"Question {index} failed check. Expected number of screenshots to be"
+                f"Question {index+1} failed check. Expected number of screenshots to be"
                 f" between {min} and {max} but got {len(links)}",
                 TeacherWarning,
             )
