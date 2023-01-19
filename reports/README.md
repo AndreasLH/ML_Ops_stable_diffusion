@@ -129,7 +129,7 @@ s194235, s194238, s194241, s194255, s194257
 >
 > Answer:
 
-We used the Diffusers framework by Huggingface in our project to easily implement a denoising diffusion probabilistic model (DDPM). From the diffusers package, we used the DDPMScheduler function to gradually apply noise to an image, the DDPMPipeline function to denoise encoded images from the model and imported a 2D U-Net model. We used Pytorch lighting to wrap the model and get access to all the nice features granted for free. We used the functionality to save the best model automatically and to select the device smartly. It was also much easier to log things with W&B through Pytorch lightning. Pytorch lightning also has a metrics library that we used for evaluation during training.
+We used the Diffusers framework by Huggingface in our project to easily implement a denoising diffusion probabilistic model (DDPM). From the diffusers package, we used the DDPMScheduler function to gradually apply noise to an image, the DDPMPipeline function to denoise encoded images from the model and imported a 2D U-Net model. We used Pytorch-Lightning to wrap the model and get access to all the nice features granted for free. We used the functionality to save the best model automatically and to select the device smartly. It was also much easier to log things with W&B through Pytorch lightning. Pytorch lightning also has a metrics library that we used for evaluation during training.
 
 ## Coding environment
 
