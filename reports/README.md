@@ -129,7 +129,7 @@ s194235, s194238, s194241, s194255, s194257
 >
 > Answer:
 
-We used the Diffusers framework by Huggingface in our project to easily implement a denoising diffusion probabilistic model (DDPM). From the diffusers package, we used the DDPMScheduler function to gradually apply noise to an image, the DDPMPipeline function to denoise encoded images from the model, and imported a 2D U-Net model. 
+We used the Diffusers framework by Huggingface in our project to easily implement a denoising diffusion probabilistic model (DDPM). From the diffusers package, we used the DDPMScheduler function to gradually apply noise to an image, the DDPMPipeline function to denoise encoded images from the model and imported a 2D U-Net model. We used Pytorch lighting to wrap the model and get access to all the nice features granted for free. We used the functionality to save the best model automatically and to select the device smartly. It was also much easier to log things with W&B through Pytorch lightning. Pytorch lightning also has a metrics library that we used for evaluation during training.
 
 ## Coding environment
 
@@ -175,14 +175,15 @@ Using the cookiecutter template we decided to not fill in the only the data/proc
 >
 > Answer:
 
-We implemented the following flake8 settings, since the default settings were simply too strict for us. Although, we realise that the line length is probably a bit too relaxed. We had to also pass the tests for our CI/CD pipelines.
+We implemented the following flake8 settings since the default settings were too strict for us. Although, we realise that the line length is probably a bit too relaxed. We wanted to pass the tests for our CI/CD pipelines.
 ```ini
 max-line-length = 170
 max-complexity = 15
 --ignore = E203, E266, E501, W503
 exclude = tests/test_model.py
 ```
-Furthermore, we implemented isort and black as a code formatters. These concepts matter in larger projects because each of us have our own code style, which might be confusing for the others. By using these formatters, we ensure that the code is standardised for everyone.
+Furthermore, we implemented isort and black as a code formatter. These concepts matter in larger projects because each person has their own code style, which might be confusing for the others. By using these formatters, we ensure that the code is standardised for everyone.
+
 
 ## Version control
 
@@ -201,7 +202,7 @@ Furthermore, we implemented isort and black as a code formatters. These concepts
 >
 > Answer:
 
-The tests folder contains the 8 tests perfomed using `pytest`. We test both the training, evaluation, and data loading part of the pipeline. We test if the metrics are of correct datatype, if the output dimensions from the model are correct, as well as if the dimensions of the data is correct.
+The tests folder contains the 13 tests perfomed using `pytest`. We test both the training, evaluation, and data loading part of the pipeline. We test if the metrics are of correct datatype, if the output dimensions from the model are correct, as well as if the dimensions of the data is correct.
 
 ### Question 8
 
@@ -216,7 +217,7 @@ The tests folder contains the 8 tests perfomed using `pytest`. We test both the 
 >
 > Answer:
 
---- question 8 fill here ---
+The total code coverage of the project is 60%, this is for all project files, including some that might not make sense to include in the total tally. Some of the code does not make sense to run a test for since it requires training the model in some regard, which takes a lot of time. Most of the code made is exactly training code which is why the percentage is low. We would rather have a low coverage than have some shitty tests that run through code but does not actually do anything. We used the code [coverage website](https://app.codecov.io/gh/AndreasLH/ML_Ops_stable_diffusion) to track the coverage over time and to generate the badge for the Github readme.
 
 ### Question 9
 
@@ -231,7 +232,8 @@ The tests folder contains the 8 tests perfomed using `pytest`. We test both the 
 >
 > Answer:
 
-Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working on *weights and biases*. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch.
+Working on branches and using pull requests were an integral part of the project to secure a steady workflow. Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working implementing *weights and biases* in the training loop. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch. 
+
 
 ### Question 10
 
@@ -262,13 +264,16 @@ We used DVC for managing the data in our project, initially we had the data stor
 >
 > Answer:
 
-In total we have created 4 different CI runs using the GitHub actions framework:
+In total we have created 4 different CI runs using the GitHub actions framework, which all run for each pull request/git push:
 
-- Pytest
-- isort
-- flake8
-- code coverage
+- **Pytest**: the tests in `pytest` make sure that the main parts of the pipeline still runs smoothly after git commits.
+- **isort**: `isort` checks that both native packages, conda/pip installed packages, and local folders are imported correctly.
+- **flake8**: with `flake8`  We make sure that our code is streamlined and properly formatted according to the PEP8 guideline, with no unnecessary spaces. This helps to catch any errors that may have been introduced during development and ensures that our code meets industry standards.  
+- **code coverage**: We use code coverage to measure the percentage of code that is being executed. Ideally, we aim for 100% coverage, but at the very least we aim to cover the most important parts of the code.
 
+We test our code on both windows, macOS and linux. This is to make sure our code is compatible with different environments. We use caching to speed up the CI process, this way we don't need to download the same dependencies every time.
+
+Overall, our continuous integration setup is designed to catch any errors or inconsistencies that may be introduced during development and to ensure that our code is functioning correctly and meeting industry standards.
 
 ## Running code and tracking experiments
 
@@ -305,6 +310,7 @@ For configuration of the experiments we used [Hydra](https://hydra.cc/) as our t
 We use Hydra to keep track of the hyperparameters used in each experiment and store them in a config file, ensuring that no information is lost. If one wants to reproduce the results of an experiment, one can open the config file and inspect the hyperparameters for that specific experiment. 
 Among the hyperparameters stored in the config file is the 'seed' parameter, which is used to control the source of randomness in the PyTorch module. This ensures that model weights are initialised the same, optimisation processes yield the same results etc. Furthermore, we keep track of specific versions for core Python modules in the ``requirements.txt`` file. For example, it is essential to the project that we use the Python module ``diffusers===0.11.1``. 
 
+
 ### Question 14
 
 > **Upload 1 to 3 screenshots that show the experiments that you have done in W&B (or another experiment tracking**
@@ -320,7 +326,8 @@ Among the hyperparameters stored in the config file is the 'seed' parameter, whi
 >
 > Answer:
 
---- question 14 fill here ---
+![wandb_logs](figures/wandb_logs.png)
+As seen on the image we are tracking three things: the epoch count, the loss and the inception score. The epoch count simply tells us how long we have been training and how many times the model has trained on the entire dataset. The loss graph show us that the model has learned something, as the loss decreases rapidly in the beginning and then stays low. Finally, we use pytorch-lightning metrics’ inception score to validate that our model is actually improving and getting better at generating images of butterflies. 
 
 ### Question 15
 
@@ -353,6 +360,8 @@ to create a Docker container called "training", using the latest version of our 
 >
 > Answer: 
 
+
+--- question 16 fill here ---
 All group members used the built in debugging tool in their respective IDE's (Visual Studio, Pycharm) to solve problems when running into specific error messages. Furthermore, the unit tests could make mistakes (such as data not being loaded correctly) easier to locate. As most of our code has been adapted from trustworthy sources, i.e. using Pytorch Lightning for training, the built in torch dataloader, and the model structure from Hugging Face, we did not see much use for profiling in our case. 
 
 ## Working in the cloud
@@ -516,7 +525,19 @@ We created an API with FastAPI that uses the trained model stored in the GCP buc
 >
 > Answer:
 
---- question 26 fill here ---
+We encountered challenges training our machine learning model on Google Cloud Service (GSC) due to a misunderstanding of the pricing structure for GPU usage. As a result, 4 out of 5 group members ran out of credits before we were able to start the project. Our training requires GPUs but they are very expensive on the GSC. To continue training, we switched to Google Colab. However, this introduced new difficulties, such as the risk of run crashes if we disconnected from the internet or closed our local machine.
+
+Initially, the cloned repo was not implemented in Pytorch-Lightning (PL). We had to do that ourselves. That essentially meant creating a wrapper class around the original Pytorch model, and then implementing the training_step, validation_step and configure_optimizers functions.
+
+One of the main challenges we faced was related to the validation step of our pipeline, which was extremely slow due to the sampling of new images. A full validation step took around 6 minutes, while a training step only took 1. To solve this problem, we changed the frequency of when the validation step was performed during training.
+
+Additionally, we faced challenges with Pytorch-Lightning’s integration of W&B. We experienced crashes after many epochs of training. 
+
+Another challenge we faced was related to communication with the GCS bucket. Initially, we had trouble understanding how to code towards the bucket, and subsequently had issues managing the credentials. 
+
+Managing credentials was also a significant challenge when using W&B on Google Cloud Service. Since GSC requires the credentials for access, it was necessary to find a secure method of storing them to prevent unauthorized access. To solve this problem, we created a GSC secret which we accessed through the code during runtime.
+
+
 
 ### Question 27
 
