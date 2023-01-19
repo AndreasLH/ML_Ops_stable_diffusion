@@ -268,10 +268,12 @@ In total we have created 4 different CI runs using the GitHub actions framework,
 
 - **Pytest**: the tests in `pytest` make sure that the main parts of the pipeline still runs smoothly after git commits.
 - **isort**: `isort` checks that both native packages, conda/pip installed packages, and local folders are imported correctly.
-- **flake8**: with `flake8` we make sure our code is streamlined, with no unnecessary spaces and proper formatting. 
-- **code coverage**: code coverage measures the percentage of code, which optimally should be all of the code, but at the very least the most important parts of the code.
+- **flake8**: with `flake8`  We make sure that our code is streamlined and properly formatted according to the PEP8 guideline, with no unnecessary spaces. This helps to catch any errors that may have been introduced during development and ensures that our code meets industry standards.  
+- **code coverage**: We use code coverage to measure the percentage of code that is being executed. Ideally, we aim for 100% coverage, but at the very least we aim to cover the most important parts of the code.
 
+We test our code on both windows, macOS and linux. This is to make sure our code is compatible with different environments. We use caching to speed up the CI process, this way we don't need to download the same dependencies every time.
 
+Overall, our continuous integration setup is designed to catch any errors or inconsistencies that may be introduced during development and to ensure that our code is functioning correctly and meeting industry standards.
 
 ## Running code and tracking experiments
 
@@ -324,7 +326,8 @@ Among the hyperparameters stored in the config file is the 'seed' parameter, whi
 >
 > Answer:
 
---- question 14 fill here ---
+![wandb_logs](figures/wandb_logs)
+As seen on the image we are tracking three things: the epoch count, the loss and the inception score. The epoch count simply tells us how long we have been training and how many times the model has trained on the entire dataset. The loss graph show us that the model has learned something, as the loss decreases rapidly in the beginning and then stays low. Finally, we use pytorch-lightning metrics’ inception score to validate that our model is actually improving and getting better at generating images of butterflies. 
 
 ### Question 15
 
