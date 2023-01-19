@@ -497,7 +497,7 @@ Every time a user asks for a request, we save the generated image which is saved
 >
 > Answer:
 
-For the main part of the project used about 30$, however we also held back a lot to avoid running out of credits. 4 out 5 group members had accidentally spent all their credits before the project started, so we were a bit wary. The service that had by far the highest spending was the Vertex AI service, which we used for training.
+The main part of the project used about 30$ worth of credit, however we also held back a lot to avoid running out of credits. 4 out 5 group members had accidentally spent all their credits before the project started, so we were a bit wary. The service that had by far the highest spending was the Vertex AI service, which we used for training.
 
 ## Overall discussion of project
 
