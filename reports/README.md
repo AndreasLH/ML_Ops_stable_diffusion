@@ -350,8 +350,8 @@ By monitoring these metrics, we can make informed decisions about how to improve
 
 We have a Docker image for both training the model and using the model for image generation. Both images have a designated Python version (3.10) and installs the necessary dependencies from the ``requirements.txt`` file. The training Docker image is used to setup a virtual machine to train the model, while the other Docker image is used to setup the virtual machine for running the API that generates new images using the trained model. If the training Docker image is hosted locally on a computer, we can simply run the Docker training image using the command 
 
-      docker run --name training testing:latest
-to create a Docker container called "training", using the latest version of our Docker image "testing". But we build and store the Docker images on Google Cloud Build which automatically creates the containers from our Docker images.
+      docker run --name train training:latest
+to create a Docker container called "train", using the latest version of our Docker image "training". But we build and store the Docker images on Google Cloud Build which automatically creates the containers from our Docker images.
 
 ### Question 16
 
@@ -517,7 +517,7 @@ The developer uses Python modules such as Wandb, diffusers (by Huggingface), Tor
 
 We created an API with FastAPI that uses the trained model stored in the GCP bucket to generate new images of butterflies at the request of a user. The generated image is stored in the GCP bucket, where it is used to monitor data drifting. 
 
-The user can use a `curl` command to invoke the API to generate an image. The user also has the option to git clone the repo and get the code on their on device.
+The user can use a `curl` command to invoke the API to generate an image. The user also has the option to git clone the repo and get the code on their on device. 
 
 ### Question 26
 
