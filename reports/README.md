@@ -232,7 +232,7 @@ The total code coverage of the project is 60%, this is for all project files, in
 >
 > Answer:
 
-Working on branches and using pull requests were an integral part of the project to secure a steady workflow. Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working implementing *weights and biases* in the training loop. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch. 
+Working on branches and using pull requests were an integral part of the project to secure a steady workflow. Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultaneously, e.g. implementing config files through Hydra while working implementing *weights and biases* in the training loop. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch. 
 
 
 ### Question 10
@@ -292,7 +292,7 @@ Overall, our continuous integration setup is designed to catch any errors or inc
 >
 > Answer:
 
-For configuration of the experiments we used [Hydra](https://hydra.cc/) as our tool to manage the configuration of the various parameters of the model. To train our model we call `python src/models/train_model_PL.py`. This will automatically call the training script with the relevant parameters and save everything in an output folder `ouputs/<date>/<time>`, this made it easy for us to remember which settings each experiment was run with. Additionally, we also implemted some path information in this files which made it easier for us to switch between training locally, for testing, and on the cloud.
+For configuration of the experiments, we used [Hydra](https://hydra.cc/) as our tool to manage the configuration of the various parameters of the model. To train our model we call `python src/models/train_model_PL.py`. This will automatically call the training script with the relevant parameters and save everything in an output folder `outputs/<date>/<time>`, this made it easy for us to remember which settings each experiment was run with. Additionally, we also implemented some path information in these files which made it easier for us to switch between training locally, for testing, and on the cloud.
 
 ### Question 13
 
@@ -523,7 +523,7 @@ We created an API with FastAPI that uses the trained model stored in the GCP buc
 >
 > Answer:
 
-We encountered challenges training our machine learning model on Google Cloud Service (GSC) due to a misunderstanding of the pricing structure for GPU usage. As a result, 4 out of 5 group members ran out of credits before we were able to start the project. Our training requires GPUs but they are very expensive on the GSC. To continue training, we switched to Google Colab. However, this introduced new difficulties, such as the risk of run crashes if we disconnected from the internet or closed our local machine.
+We encountered challenges training our machine learning model on Google Cloud Service (GSC) due to a misunderstanding of the pricing structure for GPU usage. As a result, 4 out of 5 group members ran out of credits before we were able to start the project. Our training requires GPUs, but they are very expensive on the GSC. To continue training, we switched to Google Colab. However, this introduced new difficulties, such as the risk of run crashes if we disconnected from the internet or closed our local machine.
 
 Initially, the cloned repo was not implemented in Pytorch-Lightning (PL). We had to do that ourselves. That essentially meant creating a wrapper class around the original Pytorch model, and then implementing the training_step, validation_step and configure_optimizers functions.
 
@@ -558,4 +558,4 @@ Managing credentials was also a significant challenge when using W&B on Google C
 - Christian s194255 implementing the model in pytorch lightning.  Evidently.
 - Malthe s194257 was in charge of making developing the testing framework and writing tests. Training code. Hydra configuration.
 
-In general each of us had their hands dirty with a lot of different things, so it is impossible to dedicate tasks explicitly to any person.
+In general, each of us had their hands dirty with a lot of different things, so it is impossible to dedicate tasks explicitly to any person.
