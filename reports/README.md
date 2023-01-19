@@ -419,10 +419,10 @@ We did not use the compute engine, but instead used the Vertex AI service. We us
 >
 > Answer:
 
-Overview of the buckets the current dataset are the new generated images, the `model_best` folder is where we save the generated model.
+Overview of the buckets: the `current_data` folder contains the new generated images, the `model_best` folder is where we save the generated model.
 ![Overview](figures/bucket1.png)
 
-Main dataset part, approximately 200 mb
+The main dataset part is approximately 200 mb
 ![main data](figures/bucket2.png)
 
 ### Question 20
