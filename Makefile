@@ -44,6 +44,9 @@ gcloud_train:
 run_api:
 	uvicorn --reload --port 8000 api:app
 
+evidently_report:
+	$(PYTHON_INTERPRETER)  src/data/data_drift.py --reference_data_path data/processed/train.pt --n_subsample 200
+
 ## Lint using flake8
 lint:
 	flake8 src
