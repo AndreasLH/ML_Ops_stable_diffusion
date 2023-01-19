@@ -129,7 +129,7 @@ s194235, s194238, s194241, s194255, s194257
 >
 > Answer:
 
-We used the Diffusers framework by Huggingface in our project to easily implement a denoising diffusion probabilistic model (DDPM). From the diffusers package, we used the DDPMScheduler function to gradually apply noise to an image, the DDPMPipeline function to denoise encoded images from the model, and imported a 2D U-Net model. 
+We used the Diffusers framework by Huggingface in our project to easily implement a denoising diffusion probabilistic model (DDPM). From the diffusers package, we used the DDPMScheduler function to gradually apply noise to an image, the DDPMPipeline function to denoise encoded images from the model and imported a 2D U-Net model. We used Pytorch lighting to wrap the model and get access to all the nice features granted for free. We used the functionality to save the best model automatically and to select the device smartly. It was also much easier to log things with W&B through Pytorch lightning. Pytorch lightning also has a metrics library that we used for evaluation during training.
 
 ## Coding environment
 
@@ -175,14 +175,15 @@ Using the cookiecutter template we decided to not fill in the only the data/proc
 >
 > Answer:
 
-We implemented the following flake8 settings, since the default settings were simply too strict for us. Although, we realise that the line length is probably a bit too relaxed. We had to also pass the tests for our CI/CD pipelines.
+We implemented the following flake8 settings since the default settings were too strict for us. Although, we realise that the line length is probably a bit too relaxed. We wanted to pass the tests for our CI/CD pipelines.
 ```ini
 max-line-length = 170
 max-complexity = 15
 --ignore = E203, E266, E501, W503
 exclude = tests/test_model.py
 ```
-Furthermore, we implemented isort and black as a code formatters. These concepts matter in larger projects because each of us have our own code style, which might be confusing for the others. By using these formatters, we ensure that the code is standardised for everyone.
+Furthermore, we implemented isort and black as a code formatter. These concepts matter in larger projects because each person has their own code style, which might be confusing for the others. By using these formatters, we ensure that the code is standardised for everyone.
+
 
 ## Version control
 
@@ -216,7 +217,7 @@ The tests folder contains the 13 tests perfomed using `pytest`. We test both the
 >
 > Answer:
 
---- question 8 fill here ---
+The total code coverage of the project is 60%, this is for all project files, including some that might not make sense to include in the total tally. Some of the code does not make sense to run a test for since it requires training the model in some regard, which takes a lot of time. Most of the code made is exactly training code which is why the percentage is low. We would rather have a low coverage than have some shitty tests that run through code but does not actually do anything. We used the code [coverage website](https://app.codecov.io/gh/AndreasLH/ML_Ops_stable_diffusion) to track the coverage over time and to generate the badge for the Github readme.
 
 ### Question 9
 
