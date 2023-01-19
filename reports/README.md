@@ -335,7 +335,10 @@ Among the hyperparameters stored in the config file is the 'seed' parameter, whi
 >
 > Answer:
 
-We have a Docker image for both training and testing the model. The training image has a designated Python version (3.10) and install the necessary dependencies from the ``requirements.txt`` file. 
+We have a Docker image for both training the model and using the model for image generation. Both images have a designated Python version (3.10) and installs the necessary dependencies from the ``requirements.txt`` file. The training Docker image is used to setup a virtual machine to train the model, while the other Docker image is used to setup the virtual machine for running the API that generates new images using the trained model. If the training Docker image is hosted locally on a computer, we can simply run the Docker training image using the command 
+
+      docker run --name training testing:latest
+to create a Docker container called "training", using the latest version of our Docker image "testing". But we build and store the Docker images on Google Cloud Build which automatically creates the containers from our Docker images.
 
 ### Question 16
 
