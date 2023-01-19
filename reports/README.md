@@ -464,7 +464,7 @@ or use a curl command to download a generated image directly
 
 `curl -X 'GET'   'https://generate-images-api-pcx2povw6a-ew.a.run.app/generate_sample/?steps=1&n_images=1&seed=0'   -H 'accept: application/json' --output "image.png"`
 
-The parameters are given as `steps=1&n_images=1&seed=0`, which are all ints. To get a nice output the steps need to be at least 500, ideally 1000. However, since the cloud run service on uses CPU, it takes around 15-30 min to generate an image, which is far from usable. Furthermore, we had to increase the memory allowance of the container to 4gb to avoid running out of memory.
+The parameters are given as `steps=1&n_images=1&seed=0`, which are all ints. To get a nice output the steps need to be at least 500, ideally 1000. However, since the cloud run service uses CPU, it takes around 15-30 min to generate an image, which is far from usable. Furthermore, we had to increase the memory allowance of the container to 4gb to avoid running out of memory.
 
 ### Question 23
 
