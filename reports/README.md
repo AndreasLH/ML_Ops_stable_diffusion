@@ -214,7 +214,7 @@ Furthermore, we implemented isort and black as code formatters. These concepts m
 >
 > Answer:
 
-The tests folder contains the 13 tests perfomed using `pytest`. We test both the training, evaluation, and data loading part of the pipeline. We test if the metrics are of correct datatype, if the output dimensions from the model are correct, as well as if the dimensions of the data is correct.
+The tests folder contains the 13 tests perfomed using `pytest`. We test both the training, evaluation, and data loading part of the pipeline. We test if the metrics are of correct datatype, if the output dimensions from the model are correct, as well as if the dimensions of the data is correct. 
 
 ### Question 8
 
@@ -229,7 +229,7 @@ The tests folder contains the 13 tests perfomed using `pytest`. We test both the
 >
 > Answer:
 
-The total code coverage of the project is 60%, this is for all project files, including some that might not make sense to include in the total tally. Some of the code does not make sense to run a test for since it requires training the model in some regard, which takes a lot of time. Most of the code made is exactly training code which is why the percentage is low. We would rather have a low coverage than have some shitty tests that run through code but does not actually do anything. We used the code [coverage website](https://app.codecov.io/gh/AndreasLH/ML_Ops_stable_diffusion) to track the coverage over time and to generate the badge for the Github readme.
+The total code coverage of the project is 60%, this is for all project files, including some that might not make sense to include in the total tally. Some of the code does not make sense to run a test for since it requires training the model in some regard, which takes a lot of time. Most of the code made is exactly training code which is why the percentage is low. We would rather have a low coverage than have some arbitrary tests that run through code but does not actually do anything. We used the code [coverage website](https://app.codecov.io/gh/AndreasLH/ML_Ops_stable_diffusion) to track the coverage over time and to generate the badge for the Github readme.
 
 ### Question 9
 
