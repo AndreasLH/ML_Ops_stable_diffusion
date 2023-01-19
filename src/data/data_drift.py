@@ -67,29 +67,6 @@ class GeneratedButterflyDataset(Dataset):
         return {"images": img}
 
 
-# class GoogleCloudGeneratedButterflyDataset(Dataset):
-#
-#     def __init__(self):
-#         self.client = storage.Client()
-#
-#         self.bucket = self.client.bucket("butterfly_jar")
-#
-#         self.blobs = self.client.list_blobs("butterfly_jar", prefix='current_data/')
-#
-#         for blob in self.blobs:
-#             with open(os.path.join(_PROJECT_ROOT, "billede.png"), "wb") as f:
-#                 blob.download_to_file(f)
-#             break
-#         a = 2
-#
-#     def __len__(self):
-#         return len(self.blobs)
-#
-#     def __getitem__(self, idx):
-#         blob = self.blobs[idx]
-#         a = 2
-
-
 class GCSDataset(Dataset):
     def __init__(self, bucket_name, folder_name):
         self.bucket_name = bucket_name
