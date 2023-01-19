@@ -327,7 +327,13 @@ Among the hyperparameters stored in the config file is the 'seed' parameter, whi
 > Answer:
 
 ![wandb_logs](figures/wandb_logs.png)
-As seen on the image we are tracking three things: the epoch count, the loss and the inception score. The epoch count simply tells us how long we have been training and how many times the model has trained on the entire dataset. The loss graph show us that the model has learned something, as the loss decreases rapidly in the beginning and then stays low. Finally, we use pytorch-lightning metrics’ inception score to validate that our model is actually improving and getting better at generating images of butterflies. 
+As mentioned, we are using W&B and we are tracking two main metrics in our experiments: the inception score and the loss.
+
+The inception score is a measure of the quality of generated images, it uses a pre-trained inception model to classify the generated images and assigns a score based on the confidence of the classifications. The higher the score, the better the quality of the generated images. As seen in the first image, we can observe that the inception score increases over the training process, which tells us that the model is generating more and more realistic images.
+
+As seen in the second image, we can observe that the loss decreases rapidly in the beginning and then stays low, which tells us that the model is learning and improving.
+
+By monitoring these metrics, we can make informed decisions about how to improve our model and achieve better results. We can also compare the performance of different models and select the best one for the task. We chose to select the model with the smallest loss, but we could have also selected the one with the highest inception score. In addition, tracking the inception score and loss over the training process gives us an idea of when the model starts to overfit and when to stop training. 
 
 ### Question 15
 
