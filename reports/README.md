@@ -280,7 +280,7 @@ In total we have created 4 different CI runs using the GitHub actions framework,
 
 - **Pytest**: the tests in `pytest` make sure that the main parts of the pipeline still runs smoothly after git commits.
 - **isort**: `isort` checks that both native packages, conda/pip installed packages, and local folders are imported correctly.
-- **flake8**: with `flake8`  We make sure that our code is streamlined and properly formatted according to the PEP8 guideline, with no unnecessary spaces. This helps to catch any errors that may have been introduced during development and ensures that our code meets industry standards.  
+- **flake8**: with `flake8`  we make sure that our code is streamlined and properly formatted according to the PEP8 guideline, with no unnecessary spaces. This helps to catch any errors that may have been introduced during development and ensures that our code meets industry standards.  
 - **code coverage**: We use code coverage to measure the percentage of code that is being executed. Ideally, we aim for 100% coverage, but at the very least we aim to cover the most important parts of the code.
 
 We test our code on both windows, macOS and linux. This is to make sure our code is compatible with different environments. We use caching to speed up the CI process, this way we don't need to download the same dependencies every time.
