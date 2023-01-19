@@ -357,9 +357,7 @@ to create a Docker container called "training", using the latest version of our 
 >
 > Answer: 
 
-
---- question 16 fill here ---
-All group members used the built in debugging tool in their respective IDE's (Visual Studio, Pycharm) to solve problems when running into specific error messages. Furthermore, the unit tests could make mistakes (such as data not being loaded correctly) easier to locate. As most of our code has been adapted from trustworthy sources, i.e. using Pytorch Lightning for training, the built in torch dataloader, and the model structure from Hugging Face, we did not see much use for profiling in our case. 
+All group members used the built in debugging tool in their respective IDE's (Visual Studio, Pycharm) to solve problems when running into specific error messages. However, debugging the dockerfiles / containers had been tedious because we essentially just must wait for it to fail and try something new. We had the same experience with pretty much everything on Google cloud. Furthermore, the unit tests could make mistakes (such as data not being loaded correctly) easier to locate. As most of our code has been adapted from trustworthy sources, i.e., using Pytorch Lightning for training, the built in torch dataloader, and the model structure from Hugging Face, we did not see much use for profiling in our case it is our assumption that the code had been optimized by people cleverer than us.
 
 ## Working in the cloud
 
@@ -465,7 +463,7 @@ To obtain an underlying distribution of our image data, we first use the CLIP mo
 
 Every time a user asked for a request from the API, we saved the generated image to a `current_data` folder in a Google Cloud storage bucket. Feature embeddings of the generated images are extracted. We then use the framework Evidently to detect data drifting by comparing the feature embeddings of the original train dataset with the feature embeddings of the generated images.
 
-Every time a user asks for a request, we save the generated image which is saved to a current_data folder in the GCP bucket. After some time, we aggregate enough images that we can compare to the reference dataset. We do compare by using a feature extractor that extracts numerical features from the images. We are using the CLIPProcessor and CLIPModel from huggingface transformers. Using these abstracted image features we can run a report with Evidently AI to generate a report. Given the nature of project this a bit sought, but we at least hope that it can give us an indication of whether the generated images were meaningful. Perhaps a better way to do this would be to implement a thumbs up/down system where the user could rate the generated content. If we saw a large negative wave, we would know that something is wrong. As an additional thing, we also set up the monitoring of the services themselves, such that if the API service crashes or is very slow we are informed on a slack server.
+Every time a user asks for a request, we save the generated image which is saved to a current_data folder in the GCP bucket. After some time, we aggregate enough images that we can compare to the reference dataset. We compare by using a feature extractor that extracts numerical features from the images. We are using the CLIPProcessor and CLIPModel from huggingface transformers. Using these abstracted image features we can use Evidently AI to generate a report. This a bit sought, but we hope that it indicates if the generated images were meaningful. Perhaps a better way to do this would be a thumbs up/down rating system.
 
 ### Question 24
 
