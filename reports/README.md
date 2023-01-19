@@ -201,7 +201,7 @@ Furthermore, we implemented isort and black as a code formatters. These concepts
 >
 > Answer:
 
-The tests folder contains the 8 tests perfomed using `pytest`. We test both the training, evaluation, and data loading part of the pipeline. We test if the metrics are of correct datatype, if the output dimensions from the model are correct, as well as if the dimensions of the data is correct.
+The tests folder contains the 13 tests perfomed using `pytest`. We test both the training, evaluation, and data loading part of the pipeline. We test if the metrics are of correct datatype, if the output dimensions from the model are correct, as well as if the dimensions of the data is correct.
 
 ### Question 8
 
@@ -231,7 +231,7 @@ The tests folder contains the 8 tests perfomed using `pytest`. We test both the 
 >
 > Answer:
 
-Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working on *weights and biases*. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch.
+Working on branches and using pull requests were an integral part of the project to secure a steady workflow. Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working implementing *weights and biases* in the training loop. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch. 
 
 ### Question 10
 
@@ -494,7 +494,7 @@ For the main part of the project used about 30$, however we also held back a lot
 >
 > Answer:
 
---- question 25 fill here ---
+The starting point of the diagram is the developer 
 
 ### Question 26
 
