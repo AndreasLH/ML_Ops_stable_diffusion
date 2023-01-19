@@ -1,11 +1,5 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  entrypoint: 'bash'
-  args: ['-c', 'docker build -t gcr.io/mlops-butterflies/training --build-arg WANDB_API_KEY=$$WANDBKEY']
-  secretEnv: ['WANDBKEY']
+  args: ['build', '-t', 'gcr.io/mlops-butterflies/training', '.']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/mlops-butterflies/training']
-availableSecrets:
-  secretManager:
-  - versionName: projects/mlops-butterflies/secrets/wandb-key/versions/2
-    env: 'WANDBKEY'
