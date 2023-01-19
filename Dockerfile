@@ -5,7 +5,7 @@ FROM python:3.10-slim
 RUN apt update && \
     apt install --no-install-recommends -y build-essential gcc && \
     apt clean && rm -rf /var/lib/apt/lists/*
-
+ARG WANDB_API_KEY
 # COPY requirements_cuda.txt requirements_cuda.txt
 # COPY setup.py setup.py
 # COPY src/ src/
@@ -23,7 +23,8 @@ RUN apt update && \
 # RUN dvc pull 
 # should really do this https://cloud.google.com/build/docs/securing-builds/use-secrets
 RUN pip install wandb
-RUN python -c "import wandb; wandb.login()"
+
+RUN python -c "import wandb; wandb.login($WANDB_API_KEY)" 
 # RUN python -c "import wandb; wandb.login(key='5df58a0e3f5189c3a99e6c0a1afc0f107a3519d9')"
 
 ENTRYPOINT ["python", "-u", "src/models/train_model_PL.py"]
