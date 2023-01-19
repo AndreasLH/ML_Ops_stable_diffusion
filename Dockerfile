@@ -23,8 +23,8 @@ ARG WANDB_API_KEY
 # RUN dvc pull 
 # should really do this https://cloud.google.com/build/docs/securing-builds/use-secrets
 RUN pip install wandb
-
-RUN python -c "import wandb; wandb.login($WANDB_API_KEY)" 
+RUN echo $WANDB_API_KEY > wandbkey.txt
+RUN python -c "import wandb; wandb.login(key=input())" < wandbkey.txt 
 # RUN python -c "import wandb; wandb.login(key='5df58a0e3f5189c3a99e6c0a1afc0f107a3519d9')"
 
 ENTRYPOINT ["python", "-u", "src/models/train_model_PL.py"]
