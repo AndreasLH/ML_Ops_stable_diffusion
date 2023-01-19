@@ -262,12 +262,13 @@ We used DVC for managing the data in our project, initially we had the data stor
 >
 > Answer:
 
-In total we have created 4 different CI runs using the GitHub actions framework:
+In total we have created 4 different CI runs using the GitHub actions framework, which all run for each pull request/git push:
 
-- Pytest
-- isort
-- flake8
-- code coverage
+- **Pytest**: the tests in `pytest` make sure that the main parts of the pipeline still runs smoothly after git commits.
+- **isort**: `isort` checks that both native packages, conda/pip installed packages, and local folders are imported correctly.
+- **flake8**: with `flake8` we make sure our code is streamlined, with no unnecessary spaces and proper formatting. 
+- **code coverage**: code coverage measures the percentage of code, which optimally should be all of the code, but at the very least the most important parts of the code.
+
 
 
 ## Running code and tracking experiments

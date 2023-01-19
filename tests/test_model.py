@@ -1,11 +1,8 @@
-import os
-
 import pytest
 import torch
 from diffusers import UNet2DModel
 
 from src.models.model import UNet2DModelPL
-from tests import _PROJECT_ROOT
 
 # create inputs to model output size test
 test_input = [
