@@ -85,18 +85,18 @@ end of the project.
 
 ### Week 3
 
-* [ ] Check how robust your model is towards data drifting
+* [x] Check how robust your model is towards data drifting
 * [ ] Setup monitoring for the system telemetry of your deployed model
-* [ ] Setup monitoring for the performance of your deployed model
-* [ ] If applicable, play around with distributed data loading
+* [x] Setup monitoring for the performance of your deployed model
+* [x] If applicable, play around with distributed data loading
 * [ ] If applicable, play around with distributed model training
-* [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed
+* [x] Play around with quantization, compilation and pruning for you trained models to increase inference speed
 
 ### Additional
 
-* [ ] Revisit your initial project description. Did the project turn out as you wanted?
-* [ ] Make sure all group members have a understanding about all parts of the project
-* [ ] Uploaded all your code to github
+* [x] Revisit your initial project description. Did the project turn out as you wanted?
+* [x] Make sure all group members have a understanding about all parts of the project
+* [x] Uploaded all your code to github
 
 ## Group information
 
@@ -451,7 +451,7 @@ The parameters are given as `steps=1&n_images=1&seed=0`, which are all ints. To 
 >
 > Answer:
 
-Every time a user asked for a request, we saved the generate image which is saved to a current_data folder. 
+Every time a user asks for a request, we save the generated image which is saved to a current_data folder in the GCP bucket. After some time, we aggregate enough images that we can compare to the reference dataset. We do compare by using a feature extractor that extracts numerical features from the images. We are using the CLIPProcessor and CLIPModel from huggingface transformers. Using these abstracted image features we can run a report with Evidently AI to generate a report. Given the nature of project this a bit sought, but we at least hope that it can give us an indication of whether the generated images were meaningful. Perhaps a better way to do this would be to implement a thumbs up/down system where the user could rate the generated content. If we saw a large negative wave, we would know that something is wrong. As an additional thing, we also set up the monitoring of the services themselves, such that if the API service crashes or is very slow we are informed on a slack server.
 
 ### Question 24
 
@@ -465,7 +465,7 @@ Every time a user asked for a request, we saved the generate image which is save
 >
 > Answer:
 
-For the main part of the project used about 25$, however we also held back a lot to avoid running out of credits. 4 out 5 group members had accidentally spent all of their credits before the project started, so we were a bit wary. The service that had by far the highest spending was the Vertex AI service, which we used for training.
+For the main part of the project used about 30$, however we also held back a lot to avoid running out of credits. 4 out 5 group members had accidentally spent all their credits before the project started, so we were a bit wary. The service that had by far the highest spending was the Vertex AI service, which we used for training.
 
 ## Overall discussion of project
 
