@@ -483,9 +483,7 @@ The parameters are given as `steps=1&n_images=1&seed=0`, which are all ints. To 
 
 To obtain an underlying distribution of our image data, we first use the CLIP model to extract image feature embeddings on all 1000 images in the Smithsonian Butterfly dataset. 
 
-Every time a user asked for a request from the API, we saved the generated image to a `current_data` folder in a Google Cloud storage bucket. Feature embeddings of the generated images are extracted. We then use the framework Evidently to detect data drifting by comparing the feature embeddings of the original train dataset with the feature embeddings of the generated images.
-
-Every time a user asks for a request, we save the generated image which is saved to a current_data folder in the GCP bucket. After some time, we aggregate enough images that we can compare to the reference dataset. We compare by using a feature extractor that extracts numerical features from the images. We are using the CLIPProcessor and CLIPModel from huggingface transformers. Using these abstracted image features we can use Evidently AI to generate a report. This a bit sought, but we hope that it indicates if the generated images were meaningful. Perhaps a better way to do this would be a thumbs up/down rating system.
+Every time a user asks for a request, we save the generated image which is saved to a `current_data` folder in the GCP bucket. After some time, we aggregate enough images that we can compare to the reference dataset. We compare by using a feature extractor that extracts numerical features from the images. We are using the CLIPProcessor and CLIPModel from huggingface transformers. Using these abstracted image features we can use Evidently AI to generate a report. This a bit far-fetched, but we hope that it indicates if the generated images were meaningful. Perhaps a better way to do this would be a thumbs up/down rating system.
 
 ### Question 24
 
