@@ -39,7 +39,7 @@ def main(cfg):
     model = UNet2DModelPL(image_size, learning_rate, hpms)
     model = model.to(device)
     if hpms.wandb_log:
-        logger = WandbLogger(name=name, project="mlopsproject21")
+        logger = WandbLogger(name=name, project="mlopsproject21", entity="mlopsproject21")
     else:
         logger = False
     if torch.cuda.is_available():
