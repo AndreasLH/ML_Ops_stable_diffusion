@@ -509,7 +509,9 @@ The starting point of the diagram is the developer (Dev), which can commit and p
 
 The developer uses Python modules such as Wandb, diffusers (by Huggingface), Torch, Pytorch lightning and Hydra to build a training loop used to train the model. The training is run on Vertex AI. The data is stored in a GCP bucket, and can be pulled from DVC with `dvc pull`. After training, the trained model is stored in a GCP bucket.
 
-We created an API with FastAPI that uses the trained model stored in the GCP bucket to generate new images of butterflies at the request of a user. 
+We created an API with FastAPI that uses the trained model stored in the GCP bucket to generate new images of butterflies at the request of a user. The generated image is stored in the GCP bucket, where it is used to monitor data drifting. 
+
+The user can use a `curl` command to invoke the API to generate an image. The user also has the option to git clone the repo and get the code on their on device.
 
 ### Question 26
 
