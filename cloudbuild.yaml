@@ -6,5 +6,5 @@ steps:
   args: ['push', 'gcr.io/mlops-butterflies/testing']
 availableSecrets:
   secretManager:
-  - versionName: projects/624694019755/secrets/wandb-key/versions/1
+  - versionName: projects/mlops-butterflies/secrets/wandb-key/versions/1
     env: 'wandbkey'
