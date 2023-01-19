@@ -394,10 +394,10 @@ We did not use the compute engine, but instead used the Vertex AI service. We us
 >
 > Answer:
 
-Overview of the buckets the current dataset are the new generated images, the model_best is where we save the generated model.
-
+Overview of the buckets the current dataset are the new generated images, the `model_best` folder is where we save the generated model.
 ![Overview](figures/bucket1.png)
-Main dataset part, approx. 200 mb
+
+Main dataset part, approximately 200 mb
 ![main data](figures/bucket2.png)
 
 ### Question 20
@@ -453,6 +453,11 @@ The parameters are given as `steps=1&n_images=1&seed=0`, which are all ints. To 
 > *measure ... and ... that would inform us about this ... behaviour of our application.*
 >
 > Answer:
+
+
+To obtain an underlying distribution of our image data, we first use the CLIP model to extract image feature embeddings on all 1000 images in the Smithsonian Butterfly dataset. 
+
+Every time a user asked for a request from the API, we saved the generated image to a `current_data` folder in a Google Cloud storage bucket. Feature embeddings of the generated images are extracted. We then use the framework Evidently to detect data drifting by comparing the feature embeddings of the original train dataset with the feature embeddings of the generated images.
 
 Every time a user asks for a request, we save the generated image which is saved to a current_data folder in the GCP bucket. After some time, we aggregate enough images that we can compare to the reference dataset. We do compare by using a feature extractor that extracts numerical features from the images. We are using the CLIPProcessor and CLIPModel from huggingface transformers. Using these abstracted image features we can run a report with Evidently AI to generate a report. Given the nature of project this a bit sought, but we at least hope that it can give us an indication of whether the generated images were meaningful. Perhaps a better way to do this would be to implement a thumbs up/down system where the user could rate the generated content. If we saw a large negative wave, we would know that something is wrong. As an additional thing, we also set up the monitoring of the services themselves, such that if the API service crashes or is very slow we are informed on a slack server.
 
