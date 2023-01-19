@@ -326,7 +326,7 @@ Among the hyperparameters stored in the config file is the 'seed' parameter, whi
 >
 > Answer:
 
-![wandb_logs](figures/wandb_logs)
+![wandb_logs](figures/wandb_logs.png)
 As seen on the image we are tracking three things: the epoch count, the loss and the inception score. The epoch count simply tells us how long we have been training and how many times the model has trained on the entire dataset. The loss graph show us that the model has learned something, as the loss decreases rapidly in the beginning and then stays low. Finally, we use pytorch-lightning metrics’ inception score to validate that our model is actually improving and getting better at generating images of butterflies. 
 
 ### Question 15
