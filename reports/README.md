@@ -457,7 +457,7 @@ The main dataset part is approximately 200 mb
 >
 > Answer:
 
-For deployment for wrapped our prediction model in a fastapi app that we host on google cloud run. First, we tried to serve the API locally using the uvicorn module and once that worked, we pushed it to a container using the `fastapi_app` dockerfile. In the cloud we had many problems with accessing the gcs file location and ended up with a hacky solution where we use curl in the dockerfile to get the model. The API can be either access by going to
+For deployment we wrapped our prediction model in a FastAPI app that we host on Google Cloud Run. First, we tried to serve the API locally using the uvicorn module and once that worked, we pushed it to a container using the `fastapi_app` dockerfile. In the cloud we had many problems with accessing the gcs file location and ended up with a hacky solution where we use curl in the dockerfile to get the model. The API can be either access by going to
 
 `https://generate-images-api-pcx2povw6a-ew.a.run.app/generate_sample/?steps=1&n_images=1&seed=0`
 or use a curl command to download a generated image directly
