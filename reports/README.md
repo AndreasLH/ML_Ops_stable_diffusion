@@ -508,7 +508,19 @@ The starting point of the diagram is the developer
 >
 > Answer:
 
---- question 26 fill here ---
+We encountered challenges training our machine learning model on Google Cloud Service (GSC) due to a misunderstanding of the pricing structure for GPU usage. As a result, 4 out of 5 group members ran out of credits before we were able to start the project. Our training requires GPUs but they are very expensive on the GSC. To continue training, we switched to Google Colab. However, this introduced new difficulties, such as the risk of run crashes if we disconnected from the internet or closed our local machine.
+
+Initially, the cloned repo was not implemented in Pytorch-Lightning (PL). We had to do that ourselves. That essentially meant creating a wrapper class around the original Pytorch model, and then implementing the training_step, validation_step and configure_optimizers functions.
+
+One of the main challenges we faced was related to the validation step of our pipeline, which was extremely slow due to the sampling of new images. A full validation step took around 6 minutes, while a training step only took 1. To solve this problem, we changed the frequency of when the validation step was performed during training.
+
+Additionally, we faced challenges with Pytorch-Lightning’s integration of W&B. We experienced crashes after many epochs of training. 
+
+Another challenge we faced was related to communication with the GCS bucket. Initially, we had trouble understanding how to code towards the bucket, and subsequently had issues managing the credentials. 
+
+Managing credentials was also a significant challenge when using W&B on Google Cloud Service. Since GSC requires the credentials for access, it was necessary to find a secure method of storing them to prevent unauthorized access. To solve this problem, we created a GSC secret which we accessed through the code during runtime.
+
+
 
 ### Question 27
 
