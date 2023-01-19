@@ -85,18 +85,18 @@ end of the project.
 
 ### Week 3
 
-* [ ] Check how robust your model is towards data drifting
+* [x] Check how robust your model is towards data drifting
 * [ ] Setup monitoring for the system telemetry of your deployed model
-* [ ] Setup monitoring for the performance of your deployed model
-* [ ] If applicable, play around with distributed data loading
+* [x] Setup monitoring for the performance of your deployed model
+* [x] If applicable, play around with distributed data loading
 * [ ] If applicable, play around with distributed model training
-* [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed
+* [x] Play around with quantization, compilation and pruning for you trained models to increase inference speed
 
 ### Additional
 
-* [ ] Revisit your initial project description. Did the project turn out as you wanted?
+* [x] Revisit your initial project description. Did the project turn out as you wanted?
 * [ ] Make sure all group members have a understanding about all parts of the project
-* [ ] Uploaded all your code to github
+* [x] Uploaded all your code to github
 
 ## Group information
 
@@ -201,7 +201,7 @@ Furthermore, we implemented isort and black as a code formatters. These concepts
 >
 > Answer:
 
---- question 7 fill here ---
+The tests folder contains the 8 tests perfomed using `pytest`. We test both the training, evaluation, and data loading part of the pipeline. We test if the metrics are of correct datatype, if the output dimensions from the model are correct, as well as if the dimensions of the data is correct. 
 
 ### Question 8
 
@@ -231,7 +231,7 @@ Furthermore, we implemented isort and black as a code formatters. These concepts
 >
 > Answer:
 
---- question 9 fill here ---
+Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working on *weights and biases*. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch. 
 
 ### Question 10
 
@@ -391,7 +391,11 @@ We have a Docker image for both training and testing the model. The training ima
 >
 > Answer:
 
---- question 19 fill here ---
+Overview of the buckets the current dataset are the new generated images, the `model_best` folder is where we save the generated model.
+
+![Overview](figures/bucket1.png)
+Main dataset part, approximately 200 mb
+![main data](figures/bucket2.png)
 
 ### Question 20
 
@@ -440,7 +444,9 @@ We have a Docker image for both training and testing the model. The training ima
 >
 > Answer:
 
---- question 23 fill here ---
+To obtain an underlying distribution of our image data, we first use the CLIP model to extract image feature embeddings on all 1000 images in the Smithsonian Butterfly dataset. 
+
+Every time a user asked for a request from the API, we saved the generated image to a `current_data` folder in a Google Cloud storage bucket. Feature embeddings of the generated images are extracted. We then use the framework Evidently to detect data drifting by comparing the feature embeddings of the original train dataset with the feature embeddings of the generated images.
 
 ### Question 24
 
