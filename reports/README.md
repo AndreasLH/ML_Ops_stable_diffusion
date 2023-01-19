@@ -232,7 +232,7 @@ The total code coverage of the project is 60%, this is for all project files, in
 >
 > Answer:
 
-Working on branches and using pull requests were an integral part of the project to secure a steady workflow. Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultanously, e.g. implementing config files through Hydra while working implementing *weights and biases* in the training loop. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch. 
+Working on branches and using pull requests were an integral part of the project to secure a steady workflow. Most of the group members created their own branches as to work independently from the main branch, so that it was possible for members to work on the same file simultaneously, e.g. implementing config files through Hydra while working implementing *weights and biases* in the training loop. Doing this, it was possible to solve merge conflicts locally before creating a pull request to the main branch. Due to the size of the project, however, most of the time it was easier just to work directly on the main branch. 
 
 
 ### Question 10
@@ -292,7 +292,7 @@ Overall, our continuous integration setup is designed to catch any errors or inc
 >
 > Answer:
 
-For configuration of the experiments we used [Hydra](https://hydra.cc/) as our tool to manage the configuration of the various parameters of the model. To train our model we call `python src/models/train_model_PL.py`. This will automatically call the training script with the relevant parameters and save everything in an output folder `ouputs/<date>/<time>`, this made it easy for us to remember which settings each experiment was run with. Additionally, we also implemted some path information in this files which made it easier for us to switch between training locally, for testing, and on the cloud.
+For configuration of the experiments, we used [Hydra](https://hydra.cc/) as our tool to manage the configuration of the various parameters of the model. To train our model we call `python src/models/train_model_PL.py`. This will automatically call the training script with the relevant parameters and save everything in an output folder `outputs/<date>/<time>`, this made it easy for us to remember which settings each experiment was run with. Additionally, we also implemented some path information in these files which made it easier for us to switch between training locally, for testing, and on the cloud.
 
 ### Question 13
 
@@ -327,7 +327,13 @@ Among the hyperparameters stored in the config file is the 'seed' parameter, whi
 > Answer:
 
 ![wandb_logs](figures/wandb_logs.png)
-As seen on the image we are tracking three things: the epoch count, the loss and the inception score. The epoch count simply tells us how long we have been training and how many times the model has trained on the entire dataset. The loss graph show us that the model has learned something, as the loss decreases rapidly in the beginning and then stays low. Finally, we use pytorch-lightning metrics’ inception score to validate that our model is actually improving and getting better at generating images of butterflies. 
+As mentioned, we are using W&B and we are tracking two main metrics in our experiments: the inception score and the loss.
+
+The inception score is a measure of the quality of generated images, it uses a pre-trained inception model to classify the generated images and assigns a score based on the confidence of the classifications. The higher the score, the better the quality of the generated images. As seen in the first image, we can observe that the inception score increases over the training process, which tells us that the model is generating more and more realistic images.
+
+As seen in the second image, we can observe that the loss decreases rapidly in the beginning and then stays low, which tells us that the model is learning and improving.
+
+By monitoring these metrics, we can make informed decisions about how to improve our model and achieve better results. We can also compare the performance of different models and select the best one for the task. We chose to select the model with the smallest loss, but we could have also selected the one with the highest inception score. In addition, tracking the inception score and loss over the training process gives us an idea of when the model starts to overfit and when to stop training. 
 
 ### Question 15
 
@@ -525,7 +531,7 @@ The user can use a `curl` command to invoke the API to generate an image. The us
 >
 > Answer:
 
-We encountered challenges training our machine learning model on Google Cloud Service (GSC) due to a misunderstanding of the pricing structure for GPU usage. As a result, 4 out of 5 group members ran out of credits before we were able to start the project. Our training requires GPUs but they are very expensive on the GSC. To continue training, we switched to Google Colab. However, this introduced new difficulties, such as the risk of run crashes if we disconnected from the internet or closed our local machine.
+We encountered challenges training our machine learning model on Google Cloud Service (GSC) due to a misunderstanding of the pricing structure for GPU usage. As a result, 4 out of 5 group members ran out of credits before we were able to start the project. Our training requires GPUs, but they are very expensive on the GSC. To continue training, we switched to Google Colab. However, this introduced new difficulties, such as the risk of run crashes if we disconnected from the internet or closed our local machine.
 
 Initially, the cloned repo was not implemented in Pytorch-Lightning (PL). We had to do that ourselves. That essentially meant creating a wrapper class around the original Pytorch model, and then implementing the training_step, validation_step and configure_optimizers functions.
 
@@ -560,4 +566,4 @@ Managing credentials was also a significant challenge when using W&B on Google C
 - Christian s194255 implementing the model in pytorch lightning.  Evidently.
 - Malthe s194257 was in charge of making developing the testing framework and writing tests. Training code. Hydra configuration.
 
-In general each of us had their hands dirty with a lot of different things, so it is impossible to dedicate tasks explicitly to any person.
+In general, each of us had their hands dirty with a lot of different things, so it is impossible to dedicate tasks explicitly to any person.
