@@ -1,43 +1,39 @@
-ML_Ops stable diffusion Butterfly Image generation
+MLOps principles for Butterfly Image generation with Stable Diffusion
 ==============================
 [![Run tests](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/tests.yml/badge.svg)](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/tests.yml)
 [![isort](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/isort.yml/badge.svg)](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/isort.yml)
 [![flake8](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/flake8.yml/badge.svg)](https://github.com/AndreasLH/ML_Ops_stable_diffusion/actions/workflows/flake8.yml)
 [![codecov](https://codecov.io/gh/AndreasLH/ML_Ops_stable_diffusion/branch/master/graph/badge.svg?token=G9R1JP9118)](https://codecov.io/gh/AndreasLH/ML_Ops_stable_diffusion)
 
-A project for the DTU course Machine Learning Operations. The primary focus is on MLOps and not the models specifically
+Project repository for the DTU course Machine Learning Operations (02476). The primary focus is to apply MLOps principles to a larger deep learning project.   
 
-# Project description: Butterfly Image generation
-by:
-Andreas H: s194235
-Andreas H: s194238
-Yucheng F: s194241
-Christian A: s194255
-Malthe A: s194257
+Made by:
+- Andreas H: s194235
+- Andreas H: s194238
+- Yucheng F: s194241
+- Christian A: s194255
+- Malthe A: s194257
 
 ## Overall goal of the project
-The goal of the project is to train a stable diffusion image generator to generate photorealistic images of butterflies.
-## What framework are you going to use (PyTorch Image Models, Transformer, Pytorch-Geometrics)
+The goal of the project is to train a Stable Diffusion generative model to generate photorealistic images of butterflies and implement MLOps practices for efficient training and deployment to the cloud. 
 
 |Data specific framework| Training framework |Utility framework|
 |:----:|:----:|:----:|
-|Huggingface Diffusers|Pytorch lightning|Hydra|
+|Huggingface Diffusers|PyTorch Lightning|Hydra|
 
-We are using [Huggingface Diffusers](https://github.com/huggingface/diffusers) as our main framework. To code the model and make it simple we will use Pytorch lightning. We are going to use Hydra to configure the models. Furthermore, we will use W&B to log relevant information pertaining to the training of models.
-## How to you intend to include the framework into your project
+We are using [Huggingface Diffusers](https://github.com/huggingface/diffusers) as our main framework. To code the model and make it simple we will use PyTorch Lightning. We are going to use Hydra to configure the models. Furthermore, we will use W&B to log relevant information pertaining to the training of models.
+
 The Huggingface framework provides some convenience functions to load the data that we are going to use.
-Pytorch lightning has some tools to evaluate the quality of the reconstructed images ([Inception score](https://torchmetrics.readthedocs.io/en/stable/image/inception_score.html)), which we are going to use. 
-## What data are you going to run on (initially, may change)
-We are using a dataset called “[Smithsonian butterflies subset](https://huggingface.co/datasets/huggan/smithsonian_butterflies_subset)”. The dataset is a subset of 1000 images of butterflies. Additionally, we might also use a similar dataset with flowers.
-## What deep learning models do you expect to use
-The deep learning model is an unconditional stable diffusion model, developed by Google. The stable diffusion model generates images by learning to remove noise. It is unconditional because it can generate images directly from noise, without an additional input, such as a text prompt.
+Pytorch lightning has some tools to evaluate the quality of the reconstructed images ([Inception score](https://torchmetrics.readthedocs.io/en/stable/image/inception_score.html)).
 
-
-# Original source
-https://huggingface.co/google/ddpm-cifar10-32
+The deep learning model is an unconditional stable diffusion model, developed by [Google](https://huggingface.co/google/ddpm-cifar10-32). The stable diffusion model generates images by learning to remove noise. It is unconditional because it can generate images directly from noise, without an additional input, such as a text prompt.
 
 # Data
-https://huggingface.co/datasets/huggan/smithsonian_butterflies_subset
+We are using a dataset called “[Smithsonian butterflies subset](https://huggingface.co/datasets/huggan/smithsonian_butterflies_subset)”. The dataset is a subset of 1000 images of butterflies. 
+
+# Our MLOps stack
+![alt text](reports/figures/system_b_transparent.png)
+
 
 # To set up repo
 ```
@@ -47,8 +43,6 @@ pip install -r requirements.txt
 ```
 or use the dockerfile
 ```docker build -f env.dockerfile . -t env:latest```
-
-
 
 
 
