@@ -21,12 +21,11 @@ The goal of the project is to train a Stable Diffusion generative model to gener
 |:----:|:----:|:----:|
 |Huggingface Diffusers|PyTorch Lightning|Hydra|
 
-We are using [Huggingface Diffusers](https://github.com/huggingface/diffusers) as our main framework. To code the model and make it simple we will use PyTorch Lightning. We are going to use Hydra to configure the models. Furthermore, we will use W&B to log relevant information pertaining to the training of models.
+We are using [Huggingface Diffusers](https://github.com/huggingface/diffusers) as our main framework. PyTorch Lightning is used to reduce the amount of boilerplate, and we use Hydra to configure the experiments. Furthermore, we log relevant information pertaining to the training of models using W&B.
 
-The Huggingface framework provides some convenience functions to load the data that we are going to use.
-Pytorch lightning has some tools to evaluate the quality of the reconstructed images ([Inception score](https://torchmetrics.readthedocs.io/en/stable/image/inception_score.html)).
+The Huggingface framework provides some convenience functions to load the data that we are going to use, and PyTorch Lightning has some tools to evaluate the quality of the reconstructed images ([Inception score](https://torchmetrics.readthedocs.io/en/stable/image/inception_score.html)).
 
-The deep learning model is an unconditional stable diffusion model, developed by [Google](https://huggingface.co/google/ddpm-cifar10-32). The stable diffusion model generates images by learning to remove noise. It is unconditional because it can generate images directly from noise, without an additional input, such as a text prompt.
+The model is an unconditional diffusion model, developed by [Google](https://huggingface.co/google/ddpm-cifar10-32). The diffusion model generates images by learning to remove noise. It is unconditional because it can generate images directly from noise, without an additional input, such as a text prompt.
 
 # Data
 We are using a dataset called “[Smithsonian butterflies subset](https://huggingface.co/datasets/huggan/smithsonian_butterflies_subset)”. The dataset is a subset of 1000 images of butterflies. 
