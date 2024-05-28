@@ -33,6 +33,9 @@ We are using a dataset called “[Smithsonian butterflies subset](https://huggin
 # Our MLOps stack
 ![alt text](reports/figures/system_b_transparent.png)
 
+# Results
+Images generated using our REST API with 500 diffusion steps.
+![alt text](reports/figures/api_generations.png)
 
 # To set up repo
 ```
