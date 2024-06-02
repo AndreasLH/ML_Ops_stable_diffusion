@@ -21,7 +21,7 @@ The goal of the project is to train a Stable Diffusion generative model to gener
 |:----:|:----:|:----:|
 |Huggingface Diffusers|PyTorch Lightning|Hydra|
 
-We are using [Huggingface Diffusers](https://github.com/huggingface/diffusers) as our main framework. PyTorch Lightning is used to reduce the amount of boilerplate, and we use Hydra to configure the experiments. Furthermore, we log relevant information pertaining to the training of models using W&B.
+We are using [Huggingface Diffusers](https://github.com/huggingface/diffusers) as our main framework. PyTorch Lightning is used to reduce the amount of boilerplate code, and we use Hydra to configure the experiments. Furthermore, we log relevant information pertaining to the training of models using W&B.
 
 The Huggingface framework provides some convenience functions to load the data that we are going to use, and PyTorch Lightning has some tools to evaluate the quality of the reconstructed images ([Inception score](https://torchmetrics.readthedocs.io/en/stable/image/inception_score.html)).
 
